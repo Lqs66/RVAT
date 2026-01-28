@@ -1,0 +1,512 @@
+# PDG C++ Specification (Version 1.0.1) (04/01/2022)
+## Table of Content
+This specification focuses on describing the C++ PDG model definitions and supported features.
+
+Companion files containing C++ source code and LLVM IR code are included to provide a running example that will be referenced throughout this document. 
+
+For each supported C++ features, we provide two corresponding files to facilitate the understanding of the implementation: (1). the example source code and (2). the LLVM IR files compiled from the source code.
+
+
+## Feature List
+
+### Supported Features
+* Represent C++ class
+* Represent the define relation between a class and its class method
+* Template
+* Class hierarchy
+
+### Unsupported Features
+* Invoke instruction
+* Lambda functions
+* C++ Exceptions
+* Smart Pointers
+
+## Node 
+### Node Types Summary
+
+```c
+INST_FUNCALL,
+INST_RET,
+INST_BR,
+INST_OTHER,         // In the future, we may break out INST_INDBR and INST_SWITCH to capture the other types of branching instructions in LLVM
+
+VAR_STATICALLOCGLOBALSCOPE,    // C: global variable          LLVM: global with common linkage
+VAR_STATICALLOCMODULESCOPE,    // C: static global variable   LLVM: global with internal linkage 
+VAR_STATICALLOCFUNCTIONSCOPE,  // C: static function variable LLVM: global with internal linkage, variable name is prefixed by function name  
+VAR_OTHER           // In the future we may also call out VAR_STACK and VAR_HEAP
+
+FUNCTIONENTRY,
+
+PARAM_FORMALIN,   
+PARAM_FORMALOUT, 
+PARAM_ACTUALIN,  
+PARAM_ACTUALOUT
+
+ANNOTATION_VAR,   
+ANNOTATION_GLOBAL, // PL propose splitting global annotation into variables and functions so we would have ANNOTATION_GLOBAL_FUNC and ANNOTATION_GLOBAL_VAR
+ANNOTATION_OTHER, 
+
+CLASS // represent a class defined in the source code
+
+```
+
+### Node Definitions
+
+We define each node type/sub-type below and provide an example for each.
+
+#### Instructions
+***
+Description: The PDG nodes representing LLVM instructions have the type \<INST\>_. For convenience, we create separate subtypes for some instructions, and the rest are included in other. Each type of instruction node is disjoint and the union of each type is the universe of possible instruction nodes.
+***
+**INST_FUNCALL**
+Description: Represents an LLVM _call_ instruction.
+
+* Example: 
+   * Source Line: `36: greeter(username, &age);`
+   * IR Line: `159:  call void @greeter(i8* %10, i32* %2), !dbg !114`
+
+**INST_RET**
+Description:  Represents an LLVM _ret_ instruction.
+
+* Example: 
+   * Source Line: `27:     return sz;`
+   * IR Line: `140:  ret i32 %35, !dbg !93`
+
+**INST_BR**
+Description:  Represents an LLVM _br_ instruction that contains a condition.
+
+* Example: 
+   * Source Line: `25: 	for (i=0; i<sz; i++)`
+   * IR Line: `108: br i1 %11, label %12, label %34, !dbg !79`
+
+**INST_OTHER**
+Description:  Represents all other LLVM instructions not specified above. Future versions of this specification may call out instructions for switch and indirect branches as separate subtypes.
+
+#### Variables
+***
+* Description: Variable nodes denote where memory is allocated and have the type \<VAR\>_. Each type of variable node is disjoint and the union of each type is the universe of possible variable nodes.             
+***
+**VAR_STATICGLOBAL**
+Description: Represents the allocation site for a _global_ variable.
+
+* Example: 
+   * Source Line: `6: 	char *ciphertext;`
+   * IR Line: `11:  @ciphertext = common dso_local global i8* null, align 8, !dbg !16`
+
+**VAR_STATICMODULE**
+Description: Represents the allocation site for a _static global_ variable.
+
+* Example: 
+   * Source Line: `7: 	static unsigned int i;`
+   * IR Line: `10:  @i = internal global i32 0, align 4, !dbg !18`
+
+**VAR_STATICFUNCTION**
+Description: Represents the allocation site for a _static function_ variable.
+
+* Example: 
+   * Source Line: `11: 	static int sample = 1;`
+   * IR Line: `6:  @greeter.sample = internal global i32 1, align 4, !dbg !0`
+
+**VAR_OTHER**
+Description: Represents a variable allocation site not captured by VAR_STATICGLOBAL, VAR_STATICMODULE, or VAR_STATICFUNCTION.
+
+
+### Function Entry
+**FUNCTIONENTRY**
+Description: Defines an entry point to a function.
+
+* Example: 
+   * Source Line: `17: 	void initkey (int sz) {`
+   * IR Line: `51:  define dso_local void @initkey(i32 %0) #0 !dbg !38 {`
+
+### Parameters
+***
+* Description: Parameter nodes denote formal input/output parameters or actual input/output parameters and have the type \<PARAM\>_. These parameter types are disjoint and the union of their types is the universe of possible parameter types.           
+***
+**PARAM_FORMALIN**
+Description: Associated with every formal parameter in a function is a tree of PARAM_FORMALIN node(s).
+
+* Example: 
+   * Source Line: `9: 	void greeter (char *str, int* s) {`
+   * IR Line: `24:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+
+**PARAM_FORMALOUT**
+Description: Associated with every formal parameter in a function that is modified in the function body is a tree of PARAM_FORMALOUT node(s).
+* Example: 
+   * Source Line: `9: 	 void greeter (char *str, int* s) {`
+   * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+
+**PARAM_ACTUALIN**
+Description:  Associated with every actual parameter of a function call is a tree of PARAM_ACTUALIN node(s).
+
+* Example: 
+   * Source Line: `26: 	greeter(username, &age);`
+   * IR Line: `161:  call void @greeter(i8* %10, i32* %2), !dbg !114`
+
+**PARAM_ACTUALOUT**
+Description: Associated with every actual parameter received by the caller after the corresponding argument has been modified during the function call is a tree of PARAM_ACTUALOUT node(s).
+
+* Example: 
+   * Source Line: `26: 	greeter(username, &age);`
+   * IR Line: `161:  call void @greeter(i8* %10, i32* %2), !dbg !114`
+
+#### Annotations
+***
+* Description: Annotation nodes denote LLVM annotations and have the type \<ANNOTATION\>_. The label associated with an annotation can have multiple values. Each annotation type is disjoint and the union of annotation types gives the universe of possible annotation nodes. 
+***
+
+**ANNOTATION_VAR**
+Description: Represents the annotation of a variable.
+
+* Example: 
+   * Source Line: `32: 	char __attribute__((annotate("confidential")))username[20];`
+   * IR Line: `14: @.str.4 = private unnamed_addr constant [13 x i8] c"confidential\00", section "llvm.metadata"`
+   * IR Line: `155:  call void @llvm.var.annotation(i8* %6, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.3, i32 0, i32 0), i32 32), !dbg !104`
+
+
+**ANNOTATION_GLOBAL**
+Description: Contains the annotations for exactly one function or global variable.
+
+* Example: 
+   * Source Line: `23: 	int __attribute__((annotate("sensitive"))) encrypt (char *plaintext, int sz) {`
+   * IR Line: `12: @.str.2 = private unnamed_addr constant [10 x i8] c"sensitive\00", section "llvm.metadata"`
+   * IR Line:` 23:  @llvm.global.annotations = appending global [2 x { i8*, i8*, i8*, i32 }] [{ i8*, i8*, i8*, i32 } { i8* bitcast (i32 (i8*, i32)* @encrypt to i8*), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.3, i32 0, i32 0), i32 23 }, { i8*, i8*, i8*, i32 } { i8* bitcast (i8** @key to i8*), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.12, i32 0, i32 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.3, i32 0, i32 0), i32 5 }], section "llvm.metadata"
+`
+   * Note: The node will refer to the first index of the llvm.global.annotations array in this example.
+
+**ANNOTATION_OTHER**
+Description: Represents an annotation not captured by ANNOTATION_VAR or ANNOTATION_GLOBAL.
+
+### Class/Polymorphism
+***
+* Description: Class related nodes
+***
+**CLASS**
+Description: Represent a class
+
+* Example: testClassMethod.cpp
+  * Source Line: 6 `class Person {`
+  * IR Line: 11 `%class.Person = type <{ %"class.std::__1::basic_string", i32, [4 x i8] }>`
+
+
+## Node Type Properties
+
+Listed below are some useful properties of PDG node types and subtypes. Recall that AllDisjoint(<set<sub>1</sub>>, <set<sub>2</sub>>, ..., <set<sub>n</sub>>) indicates the set(s) specified are disjoint, meaning their intersection is empty. Universe(<set<sub>1</sub>>, <set<sub>2</sub>>, ..., <set<sub>n</sub>>) results in the union of the specified set(s).
+
+***  
+   * Every instruction in an LLVM IR instance will have a corresponding node in the PDG, and the set of these nodes is INST.
+   * Universe(INST_FUNCALL, INST_RET, INST_BR, INST_OTHER) = INST
+   * Every variable allocation in an LLVM IR instance will have a corresponding node in the PDG, and the set of these nodes is VAR.
+   * Universe(VAR_STATICGLOBAL, VAR_STATICFUNCTION, VAR_STATICMODULE, VAR_OTHER) = VAR
+   * Every annotation in an LLVM IR instance will have a corresponding node in the PDG, and the set of these nodes is ANNOTATION.
+   * Universe(ANNOTATION_VAR, ANNOTATION_GLOBAL, ANNOTATION_OTHER) = ANNOTATION
+   * Universe(PARAM_FORMALIN, PARAM_FORMALOUT, PARAM_ACTUALIN, PARAM_ACTUALOUT) = PARAM
+   * Universe(INST, VAR, ANNOTATION, FUNCTIONENTRY, PARAM) = PDGNODES
+   * Universe(CLASS) = CLASS
+   * AllDisjoint(INST_FUNCALL, INST_RET, INST_BR, INST_OTHER) 
+   * AllDisjoint(VAR_STATICGLOBAL, VAR_STATICFUNCTION, VAR_STATICMODULE, VAR_STACK, VAR_HEAP)
+   * AllDisjoint(ANNOTATION_VAR, ANNOTATION_GLOBAL, ANNOTATION_OTHER)
+   * AllDisjoint(PARAM_FORMALIN, PARAM_FORMALOUT, PARAM_ACTUALIN, PARAM_ACTUALOUT)
+   * AllDisjoint(CLASS)
+   * AllDisjoint(INST, VAR, ANNOTATION, FUNCTIONENTRY, PARAM, CLASS)
+***
+
+## Edges 
+
+### Edge Types Summary
+We summaizee the PDG edge types below.
+```c
+	CONTROLDEP_CALLINV,
+	CONTROLDEP_CALLRET,
+	CONTROLDEP_ENTRY,
+	CONTROLDEP_BR,
+	CONTROLDEP_OTHER,
+
+	DATADEP_DEFUSE,
+	DATADEP_RAW,
+	DATADEP_RET,
+	DATADEP_ALIAS,
+
+	PARAMETER_IN,
+	PARAMETER_OUT,
+	PARAMETER_FIELD,
+
+	ANNO_GLOBAL, // PL propose splitting global annotation edges into variables and functions so we would have ANNO_GLOBAL_FUNC and ANNO_GLOBAL_VAR
+	ANNO_VAR,
+        ANNO_OTHER,
+```
+
+## Edge Definitions
+### Control Dependency Edges
+***
+* Description: Control dependency edges are used to indicate that the execution of the destination node depends on the execution of the source node and have type: \<CONTROLDEP\>_. Each type of CONTROLDEP edge is disjoint and the union of each type is the universe of possible CONTROLDEP edges. 
+***
+**CONTROLDEP_CALLINV**
+Description: CONTROLDEP_CALLINV edge connects an INST_FUNCALL node with the FUNCTIONENTRY node of callee. It indicates the control flow transition from the caller to callee.
+
+* Example:
+   * Source 
+      * Source Line: `26: 	greeter(username, &age);`
+      * IR Line: `161:  call void @greeter(i8* %10, i32* %2), !dbg !114`
+   * Destination
+      * Source Line:` 9: 	void greeter (char *str, int* s) {`
+      * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+
+
+**CONTROLDEP_CALLRET**
+Description: CONTROLDEP_CALLRET edge connects an INST_RET node with the corresponding INST_FUNCALL of the caller. It indicates the control flow transition from the callee back to the caller. If there are multiple INST_RET instructions, they will map to the same INST_FUNCALL node.
+
+* Example:
+   * Source 
+      * Source Line: `27:  return sz;`
+      * IR Line: `140:    ret i32 %35, !dbg !93`
+   * Destination
+      * Source Line: `41: int sz = encrypt(text, strlen(text));`
+      * IR Line: `174:  %21 = call i32 @encrypt(i8* %17, i32 %20), !dbg !126`
+
+**CONTROLDEP_ENTRY**
+Description: Connects the FUNCTIONENTRY node with every INST_[TYPE] node that would be unconditionally executed inside a function body.
+
+* Example:
+   * Source 
+      * Source Line: `9: 	void greeter (char *str, int* s) {`
+      * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+   * Destination
+      * Source Line: `10:  char* p = str;`
+      * IR Line: `27:    %3 = alloca i8*, align 8`
+
+**CONTROLDEP_BR**
+Description: Connects an INST_BR node to every INST_[TYPE] node of the control-dependent basic block(s)'s.
+
+* Example:
+   In the example label %12 corresponds to line 108
+   * Source 
+      * Source Line: `25: for (i=0; i<sz; i++)`
+      * IR Line: `108:  br i1 %11, label %12, label %34, !dbg !79`
+   * Destination
+      * Source Line: `26:  ciphertext[i]=plaintext[i] ^ key[i];`
+      * IR Line: `111:   %13 = load i8*, i8** %3, align 8, !dbg !80`
+
+**CONTROLDEP_OTHER**
+Description: Captures control dependencies not captured by the above.
+
+
+### Data Dependency Edges
+***
+* Description: Data dependency edges are used to indicate that the source node refers to data used by the destination node and have type: \<DATADEP\>_. Each type of DATADEP edge is disjoint and the union of each type is the universe of possible DATADEP edges. 
+***
+**DATADEP_DEFUSE**
+Description: DATADEP_DEFUSE edge connects a def node (Either an INST_[Type] or VAR_[Type]) and use node (INST_[Type]). It is directly computed from the LLVM def-use chain.
+
+* Example:
+   * Source 
+      * Source Line: `40: initkey(strlen(text));`
+      * IR Line: `166:  %15 = call i64 @strlen(i8* %14) #7, !dbg !119`
+   * Destination
+      * Source Line: `40: initkey(strlen(text));`
+      * IR Line: `167:   %16 = trunc i64 %15 to i32, !dbg !119`
+
+**DATADEP_RAW**
+Description: DATA_RAW connects two INST_[Type] nodes with read-after-write dependence. This is flow-sensitive. We use memory dependency LLVM pass to compute this information.
+
+* Example:
+   * Source 
+      * Source Line: `24: ciphertext = (char *) (malloc (sz));`
+      * IR Line: `95: store i32 %1, i32* %4, align 4`
+   * Destination
+      * Source Line: `24: ciphertext = (char *) (malloc (sz));`
+      * IR Line: `97: %5 = load i32, i32* %4, align 4, !dbg !69`
+
+
+**DATADEP_RET**
+Description: DATA_RET edge connects the return value from an Inst_RET node to the corresponding INST_FUNCALL node in the caller function. It indicates the data flow from the return instruction to the call instruction
+
+* Example:
+   * Source 
+      * Source Line: `27:  return sz;`
+      * IR Line: `140:    ret i32 %35, !dbg !93`
+   * Destination
+      * Source Line: `41: int sz = encrypt(text, strlen(text));`
+      * IR Line: `174:  %21 = call i32 @encrypt(i8* %17, i32 %20), !dbg !126`
+
+**DATADEP_ALIAS**
+Description: DATA_ALIAS edge connects two nodes that have may-alias relations, meaning the source and destination node might (not must) refer to the same memory location. Note that if two nodes n1 and n2 have may-alias relation, then there are two DATA_ALIAS edges exist between them, one from n1 to n2 and one from n2 to n1. This is because the alias relation is bidirectional.
+
+* Example:
+   * Source 
+      * Source Line: `10: char* p = str;`
+      * IR Line: `35:  %6 = load i8*, i8** %3, align 8, !dbg !31`
+   * Destination
+      * Source Line: `12:  printf("%s\n", p);`
+      * IR Line: `37: %7 = load i8*, i8** %5, align 8, !dbg !32`
+
+### Parameter Tree Edges
+***
+* Description: Parameter tree edges show data flow from the caller to callee and vice versa denoted with type: \<PARAMETER\>_. Each type of PARAMETER edge is disjoint and the union of each type is the universe of possible PARAMETER edges. 
+***
+
+**PARAMETER_IN**
+Description: PARAMETER_IN edge represents interprocedural data flow from caller to the callee. It connects 
+
+1. actual_parameter_in_tree node and formal_in tree nodes
+
+2. formal_in_tree node and the IR variables that correspond to these formal_in_tree nodes in the callee.
+
+* Example:
+   * Source 
+      * Source Line: `26: 	greeter(username, &age);`
+      * IR Line: `161:  call void @greeter(i8* %10, i32* %2), !dbg !114`
+   * Destination
+      * Source Line: `9: 	void greeter (char *str, int* s) {`
+      * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+
+**PARAMETER_OUT**
+Description: edge represents data flow from callee to caller. It connects
+
+1. arguments modified in callee to formal_out_tree node.
+
+2. formal_out_tree node to actual_out_tree node. 
+
+3. actual_out_tree node to the modified variable in the caller.
+
+
+* Example:
+   * Source 
+      * Source Line: `9: 	void greeter (char *str, int* s) {`
+      * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+   * Destination
+      * Source Line: `26: 	greeter(username, &age);`
+      * IR Line: `151:  call void @greeter(i8* %10, i32* %2), !dbg !114`
+
+
+
+**PARAMETER_FIELD**
+Description: PARAMETER_FIELD edge connects a parent parameter tree node to a child parameter tree node. 
+
+* Example:
+   * Source 
+      * Source Line: `9: 	void greeter (char *str, int* s) {`
+      * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+   * Destination
+      * Source Line: `9: 	void greeter (char *str, int* s) {`
+      * IR Line: `26:  define dso_local void @greeter(i8* %0, i32* %1) #0 !dbg !2 {`
+
+### Annotations
+***
+* Description: Annotation Nodes are connected to other nodes with \<ANNO\>_ edge type. Each type of ANNO edge is disjoint and the union of each type is the universe of possible ANNO edges.
+***
+
+**ANNO_GLOBAL**
+Description: Connects FUNCTIONENTRY nodes or VAR_STATIC* nodes to  ANNOTATION_GLOBAL nodes.
+
+* Example:
+   * Source 
+      * Source Line: `23: int __attribute__((annotate("sensitive"))) encrypt (char *plaintext, int sz) {`
+      * IR Line: `90:   define dso_local i32 @encrypt(i8* %0, i32 %1) #0 !dbg !62 {`
+   * Destination
+      * Source Line: `23: int __attribute__((annotate("sensitive"))) encrypt (char *plaintext, int sz) {`
+      * IR Line: `12: @.str.2 = private unnamed_addr constant [10 x i8] c"sensitive\00", section "llvm.metadata"`
+      * IR Line: `23: @llvm.global.annotations = appending global [2 x { i8*, i8*, i8*, i32 }] [{ i8*, i8*, i8*, i32 } { i8* bitcast (i32 (i8*, i32)* @encrypt to i8*), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.3, i32 0, i32 0), i32 23 }, { i8*, i8*, i8*, i32 } { i8* bitcast (i8** @key to i8*), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.12, i32 0, i32 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.3, i32 0, i32 0), i32 5 }], section "llvm.metadata"`
+      
+
+**ANNO_VAR**
+Description: Connects INST nodes or VAR_OTHER nodes to ANNOTATION_VAR nodes.
+
+* Example:
+   * Source 
+      * Source Line: `32: char __attribute__((annotate("confidential")))username[20];`
+      * IR Line: `145:   %3 = alloca [20 x i8], align 16`
+   * Destination
+      * Source Line: `32: 32: char __attribute__((annotate("confidential")))username[20];`
+      * IR Line: `14: @.str.4 = private unnamed_addr constant [13 x i8] c"confidential\00", section "llvm.metadata""`
+      * IR Line: `call void @llvm.var.annotation(i8* %6, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.3, i32 0, i32 0), i32 32), !dbg !104`
+
+
+**ANNO_OTHER**
+Description: Connects a PDG node to an annotation type not captured by the above.
+
+### Class Edges
+
+**CLS_MTH**: 
+
+Description: Connects CLASS nodes to FUNC_ENTRY nodes.
+
+Example: testClassMethod.cpp
+* Source:
+  * Source Line: `6 class Person {`
+  * IR Line: `11: %class.Person = type <{ %"class.std::__1::basic_string", i32, [4 x i8] }>`
+* Destinations:
+  * Source Line: `8:  Person(std::string n, int h) {`
+  * IR Line: `158: define linkonce_odr %class.Person* @_ZN6PersonC1ENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEi(%class.Person* nonnull returned dereferenceable(28)       %0, %"class.std::__1::basic_string"* %1, i32 %2) unnamed_addr #3 align 2 {`
+  * Source Line: `void changeName(std::string new_name) {`
+  * IR Line: `179: @_ZN6Person10changeNameENSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE(%class.Person* nonnull dereferenceable(28) %0,             %"class.std::__1::basic_string"* %1)`
+  * Source Line: `void printInfo() {`
+  * IR Line: `191: define linkonce_odr void @_ZN6Person9printInfoEv(%class.Person* nonnull dereferenceable(28) %0) #6 align 2 {`
+
+**CLS_INH [TBD]**
+Description: Connects a CLASS node with CLASS nodes that inherit from it.
+
+Example: testInheritanceRelations.cpp
+* Source:
+  * Source Line: ``
+
+* Description: CLS_INH edge connects a class with the classes that directly derived from it. 
+
+* Destinations: 
+
+
+## Edge Type Properties
+
+Listed below are useful properties of PDG edge types and subtypes.
+
+***  
+   * Every instruction node inside a function body is reachable from the FUNC_ENTRY node through CONTROLDEP_* edges.
+   * From the FUNC_ENTRY node for the main function, every other function is reachable unless the function dead code (never called).
+   * Universe(CONTROLDEP_CALLINV, CONTROLDEP_CALLRET, CONTROLDEP_ENTRY, CONTROLDEP_BR, CONTROLDEP_OTHER) = CONTROLDEP
+   * Universe(DATADEP_DEFUSE, DATADEP_RAW, DATADEP_READ, DATADEP_RET, DATADEP_ALIAS) = DATADEP
+   * Universe(ANNO_FUNC, ANNO_VAR, ANNO_OTHER) = ANNO
+   * Universe(VARDEP_STATIC, VARDEP_OTHER) = VARDEP
+   * Universe(PARAMETER_IN, PARAMETER_OUT, PARAMETER_FIELD) = PARAMETER
+   * Universe(CONTROLDEP, DATADEP, ANNO, VARDEP, PARAMETER) = PDGEDGES
+   * AllDisjoint(CONTROLDEP_CALLINV, CONTROLDEP_CALLRET, CONTROLDEP_ENTRY, CONTROLDEP_BR, CONTROLDEP_OTHER) 
+   * AllDisjoint(DATADEP_DEFUSE, DATADEP_RAW, DATADEP_READ, DATADEP_RET, DATADEP_ALIAS) 
+   * AllDisjoint(ANNO_FUNC, ANNO_VAR, ANNO_OTHER)
+   * AllDisjoint(VARDEP_STATIC, VARDEP_OTHER)
+   * AllDisjoint(PARAMETER_IN, PARAMETER_OUT, PARAMETER_FIELD)
+   * AllDisjoint(CONTROLDEP, DATADEP, ANNO, VARDEP, PARAMETER)
+***
+
+
+## C++ Features
+### C++ Class
+The PDG construct node representations for C++ Class. For each class in the program, the PDG creates a class node for the class. A class node can be connected with other class nodes to represent inheritance hierarchy or connected with functions to represent the class method.
+
+* Example:
+* Source file: 
+
+### Class Method
+PDG allows developers to query which class a method belongs to. The function entry of a class method is connected to the corresponding class node. For example, the Person class has three class methods: constructor, changeName, and printInfo. 
+
+In the constructed PDG, a class node that represents the Person class is created. It is then connected with the function entry nodes with the class methods functions. 
+
+* Example:
+* Source file: testClassMethod.cpp
+
+### Represent Class Hierarchy
+The PDG represents class hierarchy between classes. A parent class node is connected with class nodes that derived from the parent node with edge CLS_INH.
+* Example: 
+* Source file: testClassHierarchy.cpp
+
+### Handle Class Template
+Class template allows programmers to define fields using generic types passed as template parameters. A developer can define fields of the template types. 
+When building parameter trees for classes that use a class template, it's important to use the correct type for representing the field node. This doesn't affect how the current PDG is constructed. This is because the template type is known at compile time.
+Thus, when handling interprocedural dependencies, the actual and formal parameter tree can be correctly built and connected. 
+
+* Example: 
+* Source file: testTemplate.cpp
+
+
+## Limitations
+
+
+

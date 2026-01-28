@@ -1,0 +1,14 @@
+llvm-16.0.4.obj/
+SVF-3.1/Z3.zip
+SVF-3.1/z3.obj/
+SVF-3.1/Debug-build/
+SVF-3.1/Release-build/
+**/build/
+*.zip
+uppaal-5.0.0-linux64/
+KLEE/llvm-160*/
+KLEE/libc++*/
+# boost_1_74_0/
+# llvm-16.0.4/
+# yaml-cpp/
+# binutils/

@@ -1,0 +1,457 @@
+[
+    {
+        "id": "4-11-0",
+        "property_specification": "The system can be in AUTO_LOITER mode.",
+        "uppaal_formula": "E<> (mode == AUTO_LOITER)"
+    },
+    {
+        "id": "5-11-3",
+        "property_specification": "When in AUTO_RTL mode, the aircraft eventually returns to home and loiters.",
+        "uppaal_formula": "(mode == AUTO_RTL) --> (at_home and loitering)"
+    },
+    {
+        "id": "7-49-0",
+        "property_specification": "The device health is set to Warning if gnss.solution_dimension is less than gnss.warn_dimens.",
+        "uppaal_formula": "gnss.solution_dimension < gnss.warn_dimens --> device_health == WARNING"
+    },
+    {
+        "id": "8-50-0",
+        "property_specification": "If the number of satellites is below the threshold gnss.warn_sats, then the device health will eventually be set to Warning.",
+        "uppaal_formula": "(num_sats < gnss.warn_sats) --> (device_health == Warning)"
+    },
+    {
+        "id": "9-65-1",
+        "property_specification": "It is possible that non-motor outputs are active when the system is in the prearm state and COM_PREARM_MODE is true.",
+        "uppaal_formula": "E<> (state == prearm && COM_PREARM_MODE && non_motor_active)"
+    },
+    {
+        "id": "16-154-2",
+        "property_specification": "It is possible that when the system is in the prearm state and COM_PREARM_MODE is true, PWM_AUX_DIS11 is not equal to 1000.",
+        "uppaal_formula": "E<> (prearm && COM_PREARM_MODE && PWM_AUX_DIS11 != 1000)"
+    },
+    {
+        "id": "17-157-1",
+        "property_specification": "Possibly, when COM_PREARM_MODE is set and the system is in prearm state, PWM_AUX_DIS4 is greater than 0.",
+        "uppaal_formula": "E<>(com_prearm_mode_set and prearm and pwm_aux4 > 0)"
+    },
+    {
+        "id": "35-415-1",
+        "property_specification": "It is possible that in prearm state with COM_PREARM_MODE set, the output value is greater than 0.",
+        "uppaal_formula": "E<> (prearm and com_prearm_mode and output > 0)"
+    },
+    {
+        "id": "51-531-1",
+        "property_specification": "Whenever ASPD_FALLBACK_GW is enabled, airspeed checks are enabled, and no other airspeed sensor is available, the system eventually uses sensor-less airspeed estimation.",
+        "uppaal_formula": "(ASPD_FALLBACK_GW == 1 && airspeed_checks_enabled && no_sensor_available) --> use_sensor_less_estimation"
+    },
+    {
+        "id": "52-532-0",
+        "property_specification": "When the airspeed innovation exceeds the threshold ASPD_FS_INNOV, a failsafe is eventually triggered.",
+        "uppaal_formula": "innovation > ASPD_FS_INNOV --> failsafe_triggered"
+    },
+    {
+        "id": "53-540-0",
+        "property_specification": "If ASPD_SCALE_APPLY is 0, then the estimated scale is not automatically applied.",
+        "uppaal_formula": "ASPD_SCALE_APPLY == 0 --> !apply_estimated_scale"
+    },
+    {
+        "id": "54-540-1",
+        "property_specification": "If ASPD_SCALE_APPLY is 1, then the estimated scale is applied after disarm.",
+        "uppaal_formula": "ASPD_SCALE_APPLY == 1 --> disarmed && apply_estimated_scale"
+    },
+    {
+        "id": "55-540-2",
+        "property_specification": "If ASPD_SCALE_APPLY is 2, then in air leads to scale application.",
+        "uppaal_formula": "(ASPD_SCALE_APPLY == 2 and inAir) --> scaleApplied"
+    },
+    {
+        "id": "56-544-0",
+        "property_specification": "The synthetic airspeed estimate is valid whenever the horizontal wind uncertainty is below the threshold ASPD_WERR_THR.",
+        "uppaal_formula": "A[] (H_wind_uncertainty <= ASPD_WERR_THR imply synthetic_airspeed_valid)"
+    },
+    {
+        "id": "336-548-0",
+        "property_specification": "The attitude estimator is disabled when ATT_EN is 0.",
+        "uppaal_formula": "ATT_EN == 0 --> attitude_estimator_disabled"
+    },
+    {
+        "id": "58-565-2",
+        "property_specification": "If MC_AT_APPLY is 1, then after disarm, gains are applied.",
+        "uppaal_formula": "(MC_AT_APPLY == 1 && disarmed) --> gainsApplied"
+    },
+    {
+        "id": "59-602-0",
+        "property_specification": "When the battery level is below the emergency threshold, landing is eventually triggered.",
+        "uppaal_formula": "bat_level < EMERGEN_THR --> landing_triggered"
+    },
+    {
+        "id": "66-653-0",
+        "property_specification": "If a landing situation is detected and the time-out period is positive, then the vehicle will be automatically disarmed after the time-out period elapses.",
+        "uppaal_formula": "(landing_detected and timeout > 0) --> (disarmed and t >= timeout)"
+    },
+    {
+        "id": "67-656-0",
+        "property_specification": "Whenever the system is without datalink for COM_DL_LOSS_T seconds, the GCS connection lost mode will eventually be triggered.",
+        "uppaal_formula": "(no_datalink && x >= COM_DL_LOSS_T) --> lost_mode"
+    },
+    {
+        "id": "68-657-2",
+        "property_specification": "When the system is in Hold mode and the time since entering Hold is at least COM_FAIL_ACT_T seconds, it eventually enters the failsafe action.",
+        "uppaal_formula": "(in_hold and x >= COM_FAIL_ACT_T) --> fs_action"
+    },
+    {
+        "id": "70-667-0",
+        "property_specification": "If the time since takeoff is greater than COM_FLT_TIME_MAX and COM_FLT_TIME_MAX is not -1, then the mode will eventually be RTL or Land.",
+        "uppaal_formula": "(t > COM_FLT_TIME_MAX && COM_FLT_TIME_MAX != -1) --> (mode == rtl || mode == land)"
+    },
+    {
+        "id": "349-667-3",
+        "property_specification": "Starting from 90% of the maximum flight time, a warning message will be sent.",
+        "uppaal_formula": "t_takeoff >= 0.9 * COM_FLT_TIME_MAX --> Vehicle.WarningMessageSent"
+    },
+    {
+        "id": "71-669-0",
+        "property_specification": "If the datalink is absent for at least 120 seconds, then the system eventually enters data link lost mode.",
+        "uppaal_formula": "(no_datalink && x >= 120) --> lost_mode"
+    },
+    {
+        "id": "72-670-0",
+        "property_specification": "When the datalink has been healthy for at least COM_HLDL_REG_T seconds, the datalink loss flag is false.",
+        "uppaal_formula": "A[]( (healthy && x >= COM_HLDL_REG_T) -> !datalink_loss )"
+    },
+    {
+        "id": "73-676-1",
+        "property_specification": "When the battery is critical and COM_LOW_BAT_ACT is 2, the system eventually enters land mode.",
+        "uppaal_formula": "(battery_critical && com_low_bat_act == 2) --> land_mode"
+    },
+    {
+        "id": "73-676-3",
+        "property_specification": "When the battery is emergency and COM_LOW_BAT_ACT is 3, the system eventually enters land mode.",
+        "uppaal_formula": "(battery_emergency && com_low_bat_act == 3) --> land_mode"
+    },
+    {
+        "id": "350-687-1",
+        "property_specification": "The offboard loss failsafe will only be entered after a timeout, set by COM_OF_LOSS_T in seconds.",
+        "uppaal_formula": "UAV.offboard_loss_failsafe_pending && UAV.failsafe_timer >= COM_OF_LOSS_T --> UAV.offboard_loss_failsafe_entered"
+    },
+    {
+        "id": "74-691-2",
+        "property_specification": "When navigation loss occurs and COM_POSCTL_NAVL is 0 and height estimate is not available, the system eventually enters Manual mode.",
+        "uppaal_formula": "(nav_loss && com_posctl_navl == 0 && !height_avail) --> mode == Manual"
+    },
+    {
+        "id": "74-691-4",
+        "property_specification": "When navigation loss occurs and COM_POSCTL_NAVL is 1 and height estimate is not available, the system eventually enters Descend mode.",
+        "uppaal_formula": "(nav_loss && com_posctl_navl == 1 && !height_avail) --> mode == Descend"
+    },
+    {
+        "id": "75-692-0",
+        "property_specification": "If position checks are failed for COM_POS_FS_DELAY seconds, then the failsafe will eventually activate.",
+        "uppaal_formula": "(pos_failed && x >= COM_POS_FS_DELAY) --> failsafe_activated"
+    },
+    {
+        "id": "77-702-0",
+        "property_specification": "If the system is in auto mode, RC override for auto is enabled (COM_RC_OVERRIDE bit 0 set and not critical battery), and RC stick movement exceeds COM_RC_STICK_OV, then eventually the mode will be position or altitude.",
+        "uppaal_formula": "(mode == auto && (COM_RC_OVERRIDE & 1) != 0 && !critical_battery && stick_movement > COM_RC_STICK_OV) --> (mode == position || mode == altitude)"
+    },
+    {
+        "id": "77-702-1",
+        "property_specification": "If the system is in offboard mode, RC override for offboard is enabled (COM_RC_OVERRIDE bit 1 set), and RC stick movement exceeds COM_RC_STICK_OV, then eventually the mode will be position or altitude.",
+        "uppaal_formula": "(mode == offboard && (COM_RC_OVERRIDE & 2) != 0 && stick_movement > COM_RC_STICK_OV) --> (mode == position || mode == altitude)"
+    },
+    {
+        "id": "78-705-1",
+        "property_specification": "If TAKEOFF is completed and Mission is not valid, then the system will eventually transition to Hold mode.",
+        "uppaal_formula": "(takeoff_completed && !mission_valid) --> hold_mode"
+    },
+    {
+        "id": "79-708-0",
+        "property_specification": "The failsafe is triggered when the horizontal velocity error exceeds COM_VEL_FS_EVH.",
+        "uppaal_formula": "velocity_error > COM_VEL_FS_EVH --> failsafe_triggered"
+    },
+    {
+        "id": "79-708-1",
+        "property_specification": "If the previous velocity error was below COM_VEL_FS_EVH, the failsafe is triggered when the error exceeds 2.5 * COM_VEL_FS_EVH.",
+        "uppaal_formula": "(previous_error_below and velocity_error > 2.5 * COM_VEL_FS_EVH) --> failsafe_triggered"
+    },
+    {
+        "id": "80-709-0",
+        "property_specification": "If the wind speed exceeds the COM_WIND_MAX threshold, then the failsafe action is eventually triggered.",
+        "uppaal_formula": "(wind_speed > COM_WIND_MAX) --> failsafe_triggered"
+    },
+    {
+        "id": "81-710-1",
+        "property_specification": "When wind speed is above threshold and COM_WIND_MAX_ACT is not None, the system cannot be in auto modes other than RTL or Land.",
+        "uppaal_formula": "A[] (wind_high && COM_WIND_MAX_ACT != 0 imply (mode == RTL || mode == LAND || mode != AUTO))"
+    },
+    {
+        "id": "82-712-1",
+        "property_specification": "If the GCS connection is lost for at least COM_DL_LOSS_T seconds and the failsafe is not disabled (NAV_DLL_ACT != 0), then the system will eventually enter the failsafe mode corresponding to NAV_DLL_ACT.",
+        "uppaal_formula": "( lost && t >= COM_DL_LOSS_T && NAV_DLL_ACT != 0 ) --> ( current_mode == NAV_DLL_ACT )"
+    },
+    {
+        "id": "95-805-0",
+        "property_specification": "The heading is assumed to be observable when the body acceleration is greater than EKF2_MAG_ACCLIM when a global position/velocity aiding source is active.",
+        "uppaal_formula": "global_position_velocity_aiding_source_active && body_acceleration > EKF2_MAG_ACCLIM --> heading_observable"
+    },
+    {
+        "id": "99-821-1",
+        "property_specification": "If EKF2_MULTI_MAG is greater than 0, then SENS_MAG_MODE must be 0.",
+        "uppaal_formula": "A[](EKF2_MULTI_MAG > 0 imply SENS_MAG_MODE == 0)"
+    },
+    {
+        "id": "101-867-0",
+        "property_specification": "Whenever the accumulated velocity error exceeds 2.0 m/s, the sensor is eventually declared faulty.",
+        "uppaal_formula": "(vel_error > 2.0) --> sensor_faulty"
+    },
+    {
+        "id": "110-1012-0",
+        "property_specification": "If the vehicle is armed, the failure detector is enabled, no acknowledgement is received from ESCs, and more than 0.3 seconds have passed (assuming a clock reset at the start of the check), then the vehicle will be disarmed.",
+        "uppaal_formula": "(armed && fd_enabled && !ack_received && t > 0.3) --> !armed"
+    },
+    {
+        "id": "111-1015-0",
+        "property_specification": "When the pitch angle exceeds FD_FAIL_P, the attitude_failure flag is triggered.",
+        "uppaal_formula": "(pitch > FD_FAIL_P) --> attitude_failure"
+    },
+    {
+        "id": "115-1019-0",
+        "property_specification": "When the imbalanced propeller metric is greater than or equal to FD_IMB_PROP_THR, a failure is triggered eventually.",
+        "uppaal_formula": "(imbalanced_propeller_metric >= FD_IMB_PROP_THR) --> failure_triggered"
+    },
+    {
+        "id": "119-1044-0",
+        "property_specification": "Whenever the vertical distance exceeds GF_MAX_VER_DIST and GF_MAX_VER_DIST is greater than 0, a geofence action is eventually triggered.",
+        "uppaal_formula": "(vertical_distance > GF_MAX_VER_DIST && GF_MAX_VER_DIST > 0) --> geofence_action_triggered"
+    },
+    {
+        "id": "124-1067-0",
+        "property_specification": "When the motor signal is at 1, the elapsed time since it was at 0 is at least the slew rate value CA_R1_SLEW.",
+        "uppaal_formula": "A[] (motor_signal == 1 imply t >= CA_R1_SLEW)"
+    },
+    {
+        "id": "132-1287-0",
+        "property_specification": "The maximum airspeed allowed in the landed state is 6.00 m/s.",
+        "uppaal_formula": "A[] (landed_state_active imply airspeed <= 6.00)"
+    },
+    {
+        "id": "133-1290-0",
+        "property_specification": "Whenever the system is in the landed state, the vertical velocity is at most LNDFW_VEL_Z_MAX.",
+        "uppaal_formula": "A[](!landed or vel_z <= LNDFW_VEL_Z_MAX)"
+    },
+    {
+        "id": "134-1295-0",
+        "property_specification": "When the multicopter is in the landed state, its horizontal velocity is always at most 1.5 m/s.",
+        "uppaal_formula": "A[] (landed imply velocity <= 1.5)"
+    },
+    {
+        "id": "148-1394-0",
+        "property_specification": "After an abort landing occurs, the vehicle eventually reaches an altitude of at least the minimum abort altitude.",
+        "uppaal_formula": "abort_landing --> (altitude >= MIS_LND_ABRT_ALT)"
+    },
+    {
+        "id": "387-1408-0",
+        "property_specification": "The system will always obey the minimum loiter altitude in Loiter (Hold) mode when switched into this mode without specifying an altitude.",
+        "uppaal_formula": "A[] (system.LoiterMode && !altitude_specified) imply (current_altitude >= NAV_MIN_LTR_ALT)"
+    },
+    {
+        "id": "150-1437-0",
+        "property_specification": "In Acro mode, whenever the stick is fully deflected, the roll rate eventually reaches MC_ACRO_R_MAX.",
+        "uppaal_formula": "(acro_mode && stick_deflection == max_stick_deflection) --> (roll_rate == MC_ACRO_R_MAX)"
+    },
+    {
+        "id": "151-1451-0",
+        "property_specification": "Collision avoidance is disabled when CP_DIST is negative and enabled otherwise.",
+        "uppaal_formula": "CP_DIST < 0 --> !collision_avoidance_enabled"
+    },
+    {
+        "id": "152-1460-2",
+        "property_specification": "When MPC_ALT_MODE is 2 and speed is below MPC_HOLD_MAX_XY, the altitude reference is always terrain hold (mode 2).",
+        "uppaal_formula": "A[] ((mode == 2 && speed < max_xy) -> (alt_ref == 2))"
+    },
+    {
+        "id": "153-1467-1",
+        "property_specification": "MPC_LAND_ALT2 is always less than MPC_LAND_ALT1.",
+        "uppaal_formula": "A[] MPC_LAND_ALT2 < MPC_LAND_ALT1"
+    },
+    {
+        "id": "154-1473-0",
+        "property_specification": "In Stabilized mode, if the collective thrust is below MPC_MANTHR_MIN, it eventually leads to loss of roll, pitch, and yaw torque control authority.",
+        "uppaal_formula": "(thrust < MPC_MANTHR_MIN && stabilized_mode) --> control_lost"
+    },
+    {
+        "id": "155-1493-0",
+        "property_specification": "Whenever the horizontal position tracking error exceeds MPC_XY_ERR_MAX, the integration of the trajectory setpoint is halted.",
+        "uppaal_formula": "(horizontal_error > MPC_XY_ERR_MAX) --> (integration_halted)"
+    },
+    {
+        "id": "164-1705-2",
+        "property_specification": "If autolanding is allowed, the system eventually lands after the delay has passed.",
+        "uppaal_formula": "(autolanding_allowed and delay_clock >= RTL_LAND_DELAY) --> landing"
+    },
+    {
+        "id": "207-2504-0",
+        "property_specification": "If the groundspeed drops below MPC_XY_CRUISE, the transition is declared over.",
+        "uppaal_formula": "groundspeed < MPC_XY_CRUISE --> transition_over"
+    },
+    {
+        "id": "213-2539-0",
+        "property_specification": "If COM_DISARM_LAND is non-negative, the vehicle is disarmed within COM_DISARM_LAND seconds after landing.",
+        "uppaal_formula": "A[] (landed and x >= COM_DISARM_LAND imply disarmed)"
+    },
+    {
+        "id": "217-2544-1",
+        "property_specification": "If the vehicle has low thrust and no rotation for 8.0 seconds, it will eventually transition to the next state.",
+        "uppaal_formula": "(low_thrust and !rotating and c >= 8.0) --> in_next_state"
+    },
+    {
+        "id": "222-2556-0",
+        "property_specification": "The vehicle cannot be armed unless the safety switch is engaged.",
+        "uppaal_formula": "A[] (armed imply safety_on)"
+    },
+    {
+        "id": "223-2558-0",
+        "property_specification": "When throttle is at minimum and yaw is at maximum for at least 1 second, the vehicle will eventually be armed.",
+        "uppaal_formula": "(throttle_min and yaw_max and t >= 1) --> armed"
+    },
+    {
+        "id": "225-2561-0",
+        "property_specification": "If the system is disarmed and the arming button is pressed for at least one second, then the system will eventually become armed.",
+        "uppaal_formula": "(!armed && button_pressed && hold_time >= 1) --> armed"
+    },
+    {
+        "id": "227-2565-1",
+        "property_specification": "Arming is prevented when the safety switch is not engaged.",
+        "uppaal_formula": "A[] (safety_switch_not_engaged -> !armed)"
+    },
+    {
+        "id": "234-2596-1",
+        "property_specification": "If the vehicle is flying and does not have a valid local position, it will eventually enter failsafe mode.",
+        "uppaal_formula": "(flying && !valid_local_position) --> failsafe"
+    },
+    {
+        "id": "235-2596-4",
+        "property_specification": "If RC stick is moved and not in critical battery failsafe, then the mode will eventually be Position mode.",
+        "uppaal_formula": "(rc_stick_moved && !critical_battery_failsafe) --> (mode == POSITION)"
+    },
+    {
+        "id": "237-2600-0",
+        "property_specification": "When COM_RC_OVERRIDE is enabled and stick movement exceeds COM_RC_STICK_OV, the system eventually transitions to Position mode.",
+        "uppaal_formula": "(COM_RC_OVERRIDE_enabled && stick_movement > COM_RC_STICK_OV) --> in_position_mode"
+    },
+    {
+        "id": "239-2611-0",
+        "property_specification": "In Altitude mode, if the control sticks are released, the vehicle will eventually maintain altitude.",
+        "uppaal_formula": "(in_altitude_mode && sticks_released) --> maintaining_altitude"
+    },
+    {
+        "id": "240-2611-2",
+        "property_specification": "In Manual/Stabilized mode, if the control sticks are released, the vehicle will eventually maintain horizontal posture.",
+        "uppaal_formula": "(in_manual_mode && sticks_released) --> maintaining_horizontal_posture"
+    },
+    {
+        "id": "241-2612-0",
+        "property_specification": "The vehicle in Takeoff mode eventually enters Hold mode.",
+        "uppaal_formula": "mode == Takeoff --> mode == Hold"
+    },
+    {
+        "id": "243-2617-1",
+        "property_specification": "If no mission is stored, or mission execution is finished, or mission is not feasible, and the vehicle is flying, it will eventually hold.",
+        "uppaal_formula": "(no_mission or mission_finished or mission_not_feasible) and flying --> hold"
+    },
+    {
+        "id": "244-2618-0",
+        "property_specification": "If a mission is stored and PX4 is flying, it will eventually execute the mission.",
+        "uppaal_formula": "(mission_stored && flying) --> executing_mission"
+    },
+    {
+        "id": "245-2618-2",
+        "property_specification": "If there is no mission stored or the mission is finished, and PX4 is flying, it will eventually hold.",
+        "uppaal_formula": "((!mission_stored || mission_finished) && flying) --> holding"
+    },
+    {
+        "id": "147-2627-0",
+        "property_specification": "Mission start is prevented if the distance to waypoint exceeds MIS_DIST_1WP and MIS_DIST_1WP is greater than 0.",
+        "uppaal_formula": "A[] ( (distance > mis_dist_1wp && mis_dist_1wp > 0) imply !mission_started )"
+    },
+    {
+        "id": "252-2639-0",
+        "property_specification": "If the vehicle is in landed state and the throttle stick percentage is greater than 62.5, then the vehicle will eventually be in flying state.",
+        "uppaal_formula": "(state == landed and throttle > 62.5) --> state == flying"
+    },
+    {
+        "id": "253-2640-3",
+        "property_specification": "Manual input for yaw leads to autopilot assistance for stabilizing attitude rate.",
+        "uppaal_formula": "input_yaw --> autopilot_assist_yaw"
+    },
+    {
+        "id": "255-2650-0",
+        "property_specification": "Always, when the throttle stick is centered and MPC_THR_CURVE is set to default, the hover throttle is output.",
+        "uppaal_formula": "A[] ( (throttle_centered && mpc_thr_curve_default) imply (output == MPC_THR_HOVER) )"
+    },
+    {
+        "id": "256-2661-1",
+        "property_specification": "Always, if the altitude is less than or equal to MPC_LAND_ALT2, then the velocity is at most MPC_LAND_SPEED.",
+        "uppaal_formula": "A[] (alt <= MPC_LAND_ALT2 imply vel <= MPC_LAND_SPEED)"
+    },
+    {
+        "id": "259-2676-0",
+        "property_specification": "When the system is in Position slow mode and external limits are not provided, the horizontal velocity limit is 3 m/s.",
+        "uppaal_formula": "A[] ( (mode == POSITION_SLOW and not external_input) imply h_limit == 3 )"
+    },
+    {
+        "id": "165-2690-2",
+        "property_specification": "If RTL_LAND_DELAY is set to -1, the system will loiter at RTL_DESCEND_ALT.",
+        "uppaal_formula": "A[] (RTL_LAND_DELAY == -1 && current_altitude == RTL_DESCEND_ALT imply loitering)"
+    },
+    {
+        "id": "166-2690-1",
+        "property_specification": "The system will eventually land if RTL_LAND_DELAY is not -1 and it is at RTL_DESCEND_ALT.",
+        "uppaal_formula": "RTL_LAND_DELAY != -1 && current_altitude == RTL_DESCEND_ALT --> landed"
+    },
+    {
+        "id": "457-2691-0",
+        "property_specification": "If the vehicle is horizontally closer than RTL_MIN_DIST to home, it will return at its current altitude or RTL_DESCEND_ALT (whichever is higher).",
+        "uppaal_formula": "horizontal_distance < RTL_MIN_DIST --> (return_at_current_altitude || return_at_RTL_DESCEND_ALT)"
+    },
+    {
+        "id": "262-2694-0",
+        "property_specification": "If the vehicle is a flying vehicle and does not have a global position estimate, then it cannot switch to Hold mode.",
+        "uppaal_formula": "A[] (flying_vehicle && !global_position_estimate) imply !can_switch_to_hold_mode"
+    },
+    {
+        "id": "263-2696-0",
+        "property_specification": "If the hover mode is engaged and the altitude is below NAV_MIN_LTR_ALT, then the vehicle will eventually reach an altitude of at least NAV_MIN_LTR_ALT.",
+        "uppaal_formula": "(current_mode == hover_mode && altitude < NAV_MIN_LTR_ALT) --> (altitude >= NAV_MIN_LTR_ALT)"
+    },
+    {
+        "id": "268-2722-2",
+        "property_specification": "When the vehicle is at search altitude and the search timeout has elapsed with no target visible, a normal landing is eventually initiated.",
+        "uppaal_formula": "(at_search_alt && t >= PLD_SRCH_TOUT && !target_visible) --> normal_landing"
+    },
+    {
+        "id": "269-2724-1",
+        "property_specification": "If the target is not visible for more than PLD_BTOUT seconds while in the horizontal approach phase, then eventually the vehicle will enter either the search procedure state or the normal landing state.",
+        "uppaal_formula": "(state == horizontal_approach && !target_visible && c > PLD_BTOUT) --> (state == search_procedure || state == normal_landing)"
+    },
+    {
+        "id": "272-2733-0",
+        "property_specification": "The vehicle starts descending when the horizontal distance is within the acceptance radius.",
+        "uppaal_formula": "(horizontal_distance <= HACC_RAD) --> descending"
+    },
+    {
+        "id": "273-2740-2",
+        "property_specification": "It is possible for the vehicle to activate motors after detecting it has reached the apex of a throw.",
+        "uppaal_formula": "E<> (vehicle_detects_apex_of_throw && vehicle_activates_motors)"
+    },
+    {
+        "id": "277-2765-1",
+        "property_specification": "When the heading parameter is not set (param4 is NaN) and the vehicle type is multi-rotor, the vehicle eventually has its yaw heading equal to the target specified by MPC_YAW_MODE.",
+        "uppaal_formula": "(param4 == NaN && vehicle_type == multi_rotor) --> (yaw_heading == mpc_yaw_mode)"
+    },
+    {
+        "id": "281-2772-0",
+        "property_specification": "Setting the parameter RTL_TYPE to 3 leads to safety points being enabled.",
+        "uppaal_formula": "RTL_TYPE == 3 --> safety_enabled"
+    }
+]

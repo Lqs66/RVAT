@@ -1,0 +1,80 @@
+总共有 401 个 heapAllocType
+总共 18 + 12 + 7 + 326 + 48 = 411 个 DMA
+
+无法识别出具体内容的 new 操作符的caller：
+    1.  _ZN9__gnu_cxx13new_allocatorIN8AP_Param21defaults_table_structEE8allocateEmPKv -- %"struct.AP_Param::defaults_table_struct.62239"
+    2.  _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN8picojson5valueEEEE8allocateEmPKv -- %"struct.std::_Rb_tree_node"
+    3.  _ZN9__gnu_cxx13new_allocatorIN8picojson5valueEE8allocateEmPKv -- %"class.picojson::value"
+
+无法识别出具体内容的 calloc 的caller：
+    1.  通过 _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE 调用 calloc 分配内存
+
+        考虑修改 _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE 和 _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE 的函数签名，增加一个参数为当前分配类型的 hash值然后传入 calloc_hook
+        尝试将类型的 hash 绑定到 _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE 和 _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE 的调用点
+
+        _ZN7NavEKF216InitialiseFilterEv
+            _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE = AP::dal().malloc_type(sizeof(NavEKF2_core)*num_cores, AP_DAL::MEM_FAST) -- %class.NavEKF2_core
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+                    calloc
+        _ZN7NavEKF316InitialiseFilterEv
+            _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE = AP::dal().malloc_type(sizeof(NavEKF3_core)*num_cores, AP::dal().MEM_FAST) -- %class.NavEKF3_core
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+                    calloc
+
+            _ZN15AP_Logger_Block4InitEv
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (uint8_t *)hal.util->malloc_type(df_PageSize, AP_HAL::Util::MEM_DMA_SAFE)
+                    calloc
+
+            _ZN6AP_HAL3DSP14FFTWindowStateC2Etth
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * _window_size, DSP_MEM_REGION)
+                    calloc
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * _num_stored_freqs, DSP_MEM_REGION)
+                    calloc
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * _window_size, DSP_MEM_REGION)
+                    calloc
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * (_window_size + 2), DSP_MEM_REGION)
+                    calloc
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * _num_stored_freqs * _sliding_window_size, DSP_MEM_REGION)
+                    calloc
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * _num_stored_freqs, DSP_MEM_REGION)
+                    calloc
+
+            _ZN6AP_HAL3DSP16fft_init_averageEPNS0_14FFTWindowStateE
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE -- float
+                    calloc
+
+            _ZN6AP_HAL3DSP16fft_stop_averageEPNS0_14FFTWindowStateEttPf
+                _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE = (float*)hal.util->malloc_type(sizeof(float) * fft->_num_stored_freqs, DSP_MEM_REGION)
+                    calloc
+
+                _ZN6AP_HAL4Util9free_typeEPvmNS0_11Memory_TypeE
+                    free
+
+    2.  _ZN10ByteBuffer8set_sizeEj
+            (uint8_t*)calloc(1, _size)
+
+    3.  _ZN15ekf_ring_buffer4initEh
+            void* buffer = calloc(_size, elsize) -- void* == i8*
+
+    4.  _ZN14ekf_imu_buffer4initEj
+            void* buffer = calloc(size, elsize) -- void* == i8*
+
+无法识别出具体内容的 malloc 的caller：
+    1.  _ZN21AP_Filesystem_Backend9load_fileEPKc
+            void *data = malloc(st.st_size)
+            fd->data = (const uint8_t *)data -- i8*
+
+    2.  _ZN4SITL12InvensenseV39add_blockEPKchhNS_12I2CRegisters7RegModeE
+            block_values[addr] = (char*)malloc(len) -- i8*
+
+无法识别出具体内容的 realloc 的caller：
+    1.  
+        _ZN6AP_HAL4Util11std_reallocEPvm 的 caller
+
+        _ZN24AP_ExpandingArrayGeneric6expandEt
+            typedef uint8_t* chunk_ptr_t
+            _ZN6AP_HAL4Util11std_reallocEPvm = (chunk_ptr_t*)hal.util->std_realloc((void*)chunk_ptrs, chunk_ptr_size * sizeof(chunk_ptr_t)) -- i8*
+
+        _ZN15ExpandingString6expandEj
+            _ZN6AP_HAL4Util11std_reallocEPvm = hal.util->std_realloc(buf, newsize+1) -- i8*
+            buf = (char *)newbuf

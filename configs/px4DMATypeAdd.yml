@@ -1,0 +1,37 @@
+DMATypeAdd:
+  DMAType:
+    SimpleCase:
+     - Caller: _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPFiiPPcEEEE8allocateEmPKv
+       callsites:
+          - ID: 0 # denote the index of all dma callsites in the caller
+            DMAType: "struct.std::_Rb_tree_node"
+            isBaseType: false
+     - Caller: _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE8allocateEmPKv
+       callsites:
+          - ID: 0
+            DMAType: "class.std::__cxx11::basic_string"
+            isBaseType: false
+     - Caller: _ZN9__gnu_cxx13new_allocatorIP8_IO_FILEE8allocateEmPKv
+       callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+     - Caller: _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKimEEE8allocateEmPKv
+       callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+     - Caller: _ZN9__gnu_cxx13new_allocatorI6pollfdE8allocateEmPKv
+       callsites:
+          - ID: 0
+            DMAType: struct.pollfd
+            isBaseType: false
+     - Caller: _ZL9read_testiP10sdb_configPhi
+       callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+       callsites:
+          - ID: 1
+            DMAType: i8
+            isBaseType: true

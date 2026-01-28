@@ -1,0 +1,632 @@
+id,text
+0,Platforms Using ArduPilot
+1,Ground Control Stations
+2,Information for Developers
+3,Get the firmware
+4,Additional Information
+5,ArduPilot is open source software that runs on a wide range of hardware.
+6,Success with ArduPilot requires that the 'First Time Setup' and 'First Flight/Drive and Tuning' sections of the vehicle's documentation be read and followed!
+7,"ArduPilot enables the creation and use of trusted, autonomous, unmanned vehicle systems for the peaceful benefit of all. ArduPilot provides a comprehensive suite of tools suitable for almost any vehicle and application. As an open source project, it is constantly evolving based on rapid feedback from a large community of users. The Development Team works with the community and commercial partners to add functionality to ArduPilot that benefits everyone. Although ArduPilot does not manufacture any hardware, ArduPilot firmware works on a wide variety of different hardware to control unmanned vehicles of all types. Coupled with ground control software, unmanned vehicles running ArduPilot can have advanced functionality including real-time communication with operators. ArduPilot has a huge online community dedicated to helping users with questions, problems, and solutions"
+8,"Hardware  is the peripheral sensors, controller, and output devices that act as the vehicle’s eyes, ears, brain and arms."
+9,"Almost any mobile machine can be transformed into an autonomous vehicle, by simply integrating a small hardware package into it. Hardware packages begin with a controller."
+10,"Using inputs from sensors, the controller is able to send outputs to devices such as ESC’s, servos, gimbals and other peripherals."
+11,"Firmware is the code running on the controller. You choose the firmware to match your vehicle and mission: Copter, Plane, Rover, Sub, or Antenna Tracker."
+12,The choice is yours – one autopilot for any mission.
+13,"Ground Control Station (GCS) is your interface to the controller. Various versions of GCS software are available for Window’s, Linux, and Android platforms."
+14,"A GCS allows users to set-up, configure, test, and tune the vehicle. Advanced packages allow autonomous mission planning, operation, and post-mission analysis."
+15,"Mission Planner is a full-featured GCS supported by ArduPilot. It offers point-and-click interaction with your hardware, custom scripting, and simulation."
+16,See sidebar for links to ArduPilot documents.
+17,Select your vehicle type to the left
+18,Select your “AutoPilot Hardware” and “Peripheral Hardware” for your application
+19,"Follow vehicle’s “First Time Setup”  for installing the firmware and Ground Station software, connecting the components, and calibration steps"
+20,Prepare for “First Flight(/Drive)” completing setup prior to first flight/drive
+21,Advanced Configuration offers setup of more advanced features of the firmware and hardware peripherals
+22,"Every country has different regulations governing the operation of remote controlled and/or autonomous vehicles. This database  has country specific information, but it is every operator’s responsibility to be seek out and be aware of local, regional, and federal regulations."
+23,Tip
+24,Keep up with the latest ArduPilot related blogs on ArduPilot.org!
+25,Community is what really sets ArduPilot apart from many other offerings in the market. Here are some of the places you can find ArduPilot users and developers:
+26,Discussion Forum:
+27,Facebook ArduPilot group
+28,Developers Chat Working on the code?  Ask questions of the team in Discord.
+29,Developers Guide All things for those who want to get into the nuts and bolts of ArduPilot development can be found in the Developer Guide.
+30,We have weekly meeting times.
+31,We also have forums
+32,"The DIYDrones community provided an initial home for ArduPilot. From those hobbyist beginnings, ArduPilot led the professionalisation of the Open Source drone community by creating DroneCode. Since leaving DroneCode in 2016 ArduPilot has grown further to stand as an independent, open, global project. The comprehensive and ever growing list of ArduPilot features are continually born from the needs of the community - be they hobbyists, commercial users, academics, or the largest of enterprises. See the History of ArduPilot for more information."
+33,Thorough documentation of the available features backed by a community to help you set up any vehicle to fit your needs
+34,"Many command modes to fit every type of vehicle: Acro, Stabilize, Loiter, Alt-hold, Return To Launch, Land, Follow Me, GeoFence, etc."
+35,Autonomous flight modes that execute fully scripted missions with advanced features.
+36,"Advanced failsafe options bring peace of mind in the event of lost control signal, low battery conditions, or other system failures."
+37,"Three Axis camera control and stabilization, shutter control, live video link with programmable on-screen-display"
+38,"Real-time two-way communication between your GCS and controller, including GPS position, battery status, and other live information."
+39,"Full data logging for comprehensive post mission analysis, with graphing and Google Earth mapping tools"
+40,"Industry leading control algorithms for vehicles of all types, with robust sensor compensation algorithms, filtering and tuning capabilities"
+41,No dead ends – Advanced users will find endless options for customization and expanded mission capabilities
+42,ArduPilot is capable of controlling many vehicles.
+43,This document attempts to enumerate these options.  It is a work in progress and is nowhere near complete.
+44,Note
+45,R/W is “Real World”
+46,"QuadCopter (X, Plus, H, V)"
+47,Desc
+48,Four fixed equidistant motors
+49,Sim
+50,Yes
+51,R/W
+52,Code
+53,Copter
+54,Info
+55,HexaCopter
+56,Six fixed equidistant motors
+57,Dodeca-HexaCopter
+58,Six fixed equidistant pairs of coaxial motors
+59,OctaCopter
+60,Eight fixed equidistant motors
+61,QuadX8
+62,4 fixed equidistant pairs of coaxial motors
+63,Y6
+64,"3 fixed pairs of coaxial motors arranged in a Y, tail of the Y rear-wards; yaw via diff. thrust"
+65,TriCopter
+66,"3 lift motors in a Y, rear-wards motor tilting to provide yaw"
+67,Petrol-Boosted TriCopter
+68,"3 lift motors in a Y, rear-wards motor tilting to provide yaw, petrol motor providing lift"
+69,Bicopter
+70,"Dual, thrust vectored motors"
+71,SingleCopter
+72,CoaxCopter
+73,CoaxCopter - Thrust-Vectored
+74,Pitch and roll control by independent thrust vectoring of the coaxial props
+75,No
+76,https://discuss.ardupilot.org/t/design-and-build-of-a-coaxial-drone/55521
+77,6-DOF Multicopter
+78,Full 6-Degrees of Freedom via 6 specially-angled motors
+79,Yes: Realflight
+80,Copter/Scripting
+81,https://hackaday.com/2021/01/09/six-degrees-of-freedom-omnicopter-with-ardupilot/
+82,HeliQuad
+83,Four variable pitch propellors with a single throttle value
+84,https://discuss.ardupilot.org/t/collective-pitch-quad-support/21678
+85,Helicopter
+86,Traditional Helicopter
+87,Tandem Helicopter
+88,Two counter-rotating rotors instead of one main rotor and one tail rotor
+89,Synchropter
+90,Dual-disk helicopter with inter-meshing blades
+91,AETR Plane - Tractor
+92,Traditional Aeleron/Elevator/Throttle/Rudder Tractor
+93,Plane
+94,Plank Flying Wing
+95,"Flying Plank, differential thrust for yaw"
+96,AETR Plane - Pusher
+97,Traditional Aeleron/Elevator/Throttle/Rudder Pusher
+98,ETR Plane - Tractor
+99,Elevator/Throttle/Rudder (“Rudder-only”)
+100,QuadPlane X4 Elevon Pusher
+101,Four fixed lifting motors; elevon+rudder control surfaces
+102,Tilt-tricopter-vectored-yaw-QuadPlane
+103,"Pulling, tilting motors used for lift, thrust and yaw"
+104,QuadPlane
+105,"Four lifting motors, lifting an elevator/ailieron/rudder plane"
+106,Tri-Tilt-Wing QuadPlane
+107,Multiple motors fixed to wings which pivot;single rear motor for stability. Ail/Rud/Elev
+108,QuadPlane X8
+109,"Four pairs of coaxial lifting motors, lifting an elevator/ailieron/rudder plane"
+110,QuadPlane Delta Y6
+111,"3 pairs of coaxial motors in Y6 arrangement lifting an elevon plane, fronts tilting for fwd flight"
+112,e.g. FireFly Y6
+113,QuadPlane Delta Y3
+114,"3 motors in Y3 arrangement lifting an elevon plane, all motors tilting for fwd flight"
+115,Elevon Tail-Sitter
+116,Fixed fwd thrust with elevon surfaces providing attitude control in both copter and plane modes
+117,Thrust-Vectored Tail-Sitter
+118,"Two pulling, tilting motors on a wing, copter/plane mode transitions"
+119,Thrust-Vectored belly-Sitter
+120,Quad Motor Tailsitter
+121,"Four motors on a wing, copter/plane mode transitions"
+122,X frame biwing
+123,X frame biwing QACRO demo
+124,Plus frame
+125,Tri/Hex/Octo also supported
+126,GyroCopter
+127,"Unpowered main rotor disc (tilts laterally), pusher prop, rudder and elevator"
+128,Ornithopter
+129,Ornithopter - flapping wings +rudder
+130,Ackerman Steering Rover
+131,Pivotting steering wheels
+132,Rover
+133,Skid-Steer Rover
+134,Tank-tread driven
+135,Skid-Steer Legged Rover
+136,Strandbeast
+137,Skid-Steer Boat
+138,Two fixed props
+139,Yes: Gazebo
+140,Air-Boat
+141,Vectored thrust fan
+142,Fan-Car
+143,Vectored thrust painting dolly
+144,https://discuss.ardupilot.org/t/fan-car-a-vectored-thrust-rover/70036
+145,Boat
+146,"Single-prop thrust, rudder for yaw"
+147,Sailboat
+148,Boat with rudder and sail controlled via main sheet
+149,Balance Bot
+150,Fundamentally unstable wheeled platform actively kept balanced by the autopilot
+151,Vectored Sub
+152,Thrusters with 6-DOF
+153,Sub
+154,AntennaTracker
+155,Pan/Tilt PWM-driven continuous actuators
+156,Tracker
+157,Blimp (flapping fin)
+158,Flapping Fin Blimps
+159,Blimp
+160,[copywiki destination=”ardupilot”]
+161,The latest firmware for all of the vehicles is available from the firmware server. This includes:
+162,"This page provides additional links to a number of specific builds that are considered “significant” - for example, the last builds of Copter to fit on the APM2.x board."
+163,The firmware server additionally hosts GCS installers and other tools:
+164,Mission Planner
+165,APM Planner 2.0
+166,RadioSiK
+167,Developer Builds
+168,Build and Development Tools
+169,Companion Computers and associated example code
+170,AP Peripherals
+171,ArduPilot also provides a Custom Firmware Build Server that allows creating customized firmware builds including only the features desired. This is useful for 1MB autopilots which have their standard firmware builds limited in some features in order to fit the code into available flash space on these autopilots.
+172,The following firmware is “special” in that it represents some significant milestone - e.g. “the last version of a build for a particular autopilot”.
+173,ArduCopter v3.2.1 firmware for APM 2.x. This is the last build of ArduCopter that still fits on the APM 2.x boards.
+174,ArduCopter_APM_2.0_Firmware_3.2.1.zip
+175,ArduCopter v3.2.1 firmware for APM 1.0. This is the last build of ArduCopter that still fits on the APM 1.0 boards.
+176,ArduCopter_APM_1.0_Firmware_3.2.1.zip
+177,Bootloaders for various electronics created by ArduPilot Group
+178,Bootloader for APM2.x autopilot series
+179,Bootloader for: 32u2 MCU
+180,Bootloader for: 2560 MCU
+181,You need AVR programmer with ISP connector to burn these boot loaders.
+182,"This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
+183,"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details."
+184,"Operating a powered vehicle of any kind can be a lot of fun. However, nothing will ruin your day at the park more quickly than an accident or running afoul of the law. Since we want you to have a great experience, please make sure that you do all of the following:"
+185,"Operate within all local laws and regulations. For example, in the United States, current regulations require you to operate most UAVs under 400 foot above ground level, within line of site, and away from obstructions and populated areas. Since these regulations vary from place to place, even within the same country, ensure that you understand what you need to do to stay compliant."
+186,"Never operate the vehicle or software in a way that could be dangerous to you, other people, or property. Propellers, while rotating, could easily cut you; if a UAV fell on a person or object, it could cause injury; a UAV caught in power lines could cause an outage. As Ben Franklin said, “An ounce of prevention is worth a pound of cure.”"
+187,"Always keep in mind that software and hardware failures happen. Although we design our products to minimize such issues, you should always operate with the understanding that a failure could occur at any point of time and without warning. As such, you should take the appropriate precautions to minimize danger in case of failure."
+188,Never use the software or hardware for manned vehicles. The software and hardware we provide is only for use in unmanned vehicles.
+189,"[copywiki destination=”copter,plane,rover,blimp,planner,planner2,antennatracker,dev,ardupilot,mavproxy”]"
+190,Hundreds of people have contributed to the ArduPilot project in many ways large and small. It is impossible to list them all but if you wish to see at least some of the people who have contributed code and/or are helping other users please see the following links:
+191,Maintainers who hold responsibility for specific areas of the code
+192,ArduPilot flight code contributors
+193,Wiki contributors
+194,Most active Support Forum users
+195,Mission Planner GCS contributors
+196,AP Planner 2.0 GCS contributors
+197,Partners who contribute financially
+198,"The ArduPilot dev team is also fortunate to benefit from collaboration with some related projects, including:"
+199,The MatrixPilot team
+200,"The ArduPilot Project is the result of an immense amount of effort from software and hardware engineers, beta testers, web developers, documenters, researchers and many others.  A vast number of individuals, institutions and companies use and contribute to ArduPilot - in the spirit of Free and Open Source Software we freely and openly welcome their involvement in the project.  There is no cost to use, or contribute to, any software provided by ArduPilot. The Project does incur costs though, so this page explains our Partners Program for corporate sponsors."
+201,ArduPilot is a free and open-source software project that includes:
+202,"Embedded firmware that is designed to serve as the control system for autonomous vehicles, and supports many different hardware targets listed on the Supported Hardware page"
+203,"A number of Ground Control Station software applications that allow management of vehicles running ArduPilot firmware, e.g. more convenient settings editing on an often more comfortable interface, firmware download and transfer, upgrading and conversion of settings between different devices and versions, fleet management, operations monitoring and more"
+204,"The https://ardupilot.org website, https://discuss.ardupilot.org forum and this wiki"
+205,"Server infrastructure dedicated to distributing software and firmware, and testing/building/distributing of the different variants for all the different supported platforms and options"
+206,A global community of users with an enormous variety of goals and expectations
+207,A global team of developers with deep technical knowledge of the project’s code and of its management
+208,"In order to continue providing, maintaining and improving the rich ArduPilot ecosystem, the Project relies heavily on generous donations of time from many people - but we also incur financial costs that must be covered.  Simplistically, meeting these costs is what the Partners Program achieves."
+209,"The partnerships we have with companies also help to guide the development of ArduPilot. We look to the partners to help us choose what features to prioritise, what documentation we need to work on and how we can best use the funds we have available to continue to make ArduPilot the best autopilot available."
+210,"One of the biggest benefits to a company of joining the partners program is the deep level of technical support that we can provide. For each partner we create a private discussion channel where the partner can ask questions, post logs for review or discuss features. We also have a shared channel that all partners can access to facilitate discussions between partners."
+211,"The partners program funds 4 highly qualified support engineers to help support the needs of partners. These support engineers are not full time, but we do strive to provide very timely support for partners and we’re proud of our track record of providing top quality support and technical advice."
+212,For more complex development tasks we may refer the partner to a dev team member who can provide more extensive paid consulting in a specialist area.
+213,"In addition to the private partner support channel, we also hold a monthly meeting that all partners are invited to where the core development team presents an update on the development of ArduPilot and discusses priorities with partners. We use this meeting to hold in-depth technical discussions with partners on any topic of interest, plus it gives an opportunity for partners to announce new products."
+214,The first step in becoming a partner is to email the partners program coordinator at partners@ardupilot.org to start the application process.
+215,You will receive a reply within a couple of days. After that the steps are:
+216,you will receive a link to a form to fill in giving details of your application
+217,you will need to agree to abide by the ArduPilot Code of Conduct
+218,"you will need to make a payment of a minimum of US$1000. For larger companies we strongly encourage larger contributions, with typical amounts of $5000 to $10000 for companies that rely on ArduPilot for their business. Details of payment methods are given below"
+219,"you will need to send a logo to put on our website, unless you specifically ask not to be included in the public list of partners"
+220,once payment is received we will create the private support channel for your company (on discord or skype) and add you to the partners list
+221,the partners coordinator will setup a time to have an onboarding call to get to know you and to learn how we can best support your use of ArduPilot
+222,you can then add the ArduPilot Partner logo on your website to show your support for the ArduPilot project
+223,you will be added to the partners mailing list and partners discord channel
+224,you will receive an invitation to the monthly partners development call
+225,"If you have not received a reply from the Partners Program Coordinator in 2 business days, please check the SPAM folder of your inbox. Otherwise, fill out this form and the Coordinator will reach out to you shortly."
+226,After you have filled in the partner application form the partners coordinator will ask you to make your payment. We can accept payments in a number of ways.
+227,the simplest and preferred method is via paypal to the ArduPilot Foundation
+228,you can do a bank transfer directly to the ArduPilot Foundation Australian bank account. The partners coordinator can give you the bank account details on request
+229,"if neither of the first two options are suitable, you can donate via the SPI click and pledge system at Click&Pledge"
+230,finally we can give you bank details for donating directly to our SPI US bank account
+231,"Funds are first used to cover fixed costs including servers to host the wiki, forum, autotest and build servers and other running expenses. We also fund 3 part time highly qualified support engineers to help partners with support, a Wiki documentation maintainer, and the partners coordinator position to ensure the partners program runs smoothly."
+232,A Funding Committee of 3 members is voted on annually from within the Development Team to oversee and control financial matters.
+233,"Please see our more general, how-to-donate page but in short, we accept donations of any amount from individuals as well.  Also please consider helping out with documentation, beta testing or code development.  Tell your friends and post videos of your successes with ArduPilot!"
+234,"No.  ArduPilot is, and always will be, open source.  Contributions to the code base, wherever they come from, are accepted based on their technical merits.  If you’re not in a position to make the changes yourself, please add it to the Issues list or consider contracting one of the companies listed on the Commercial Support page to make the change."
+235,"The following is a list of individuals and companies that can provide commercial (i.e. paid) support for ArduPilot including vehicle design, tuning, log analysis, bug fixes and enhancements."
+236,This is for commercial support.  For unpaid support by volunteers please visit the forums
+237,"If you or your company wants to be listed here please email partners@ardupilot.org. To be added to this page we request the applicant has made a contribution to ArduPilot or a related project in some way. This includes code, documentation or helping people on the forums. The intention with this policy is to ensure that companies listed here will be active participants in the community."
+238,Autrik
+239,AVCRM (AUS/NZ)
+240,Drone LogBook
+241,flyfreely
+242,"The following stores are known to stock quality versions of the controllers, telemetry radios, cables etc. recommended for use with ArduPilot (in alphabetical order).  You may also want to check the list of Ready-to-Use vehicles."
+243,ADTi
+244,AION ROBOTICS
+245,Air-Supply Aerial
+246,AltiGator
+247,ArduSimple
+248,ARK Electronics
+249,Bask Aerospace
+250,Benewake
+251,Blicube
+252,BlueRobotics
+253,BZB UAS
+254,"Craft & Theory (FrSky telemetry, MAUCH power modules)"
+255,CUAV
+256,CubePilot
+257,DATAGNSS
+258,DH Research
+259,Drone Engr
+260,Drotek
+261,Emlid
+262,EAMS Robotics
+263,Event38
+264,Foxtech
+265,Harris Aerial
+266,Holybro
+267,JapanDrones
+268,Lightware
+269,mRobotics
+270,Qiotek
+271,RF Design
+272,Rotoye (Smart Batteries)
+273,SD Model
+274,Sky-Drones
+275,Topotek
+276,UnmannedTech UK
+277,uAvionix
+278,UAV Systems International
+279,3DXR
+280,The ArduPilot Swag store is here.
+281,"The project is the result of an immense amount of effort from software and hardware engineers, testers, web developers, documenters and many others."
+282,"These days ArduPilot is financially supported by our Partners and individuals but in the early days when ArduPilot was still growing up it was primarily 3DR (a.k.a. “3DRobotics”) that provided support.  This sponsorship paid the salaries of some of the core development team, hosting infrastructure for the project websites, and provided hardware as needed.  Thanks 3DR!"
+283,We also want to acknowledge Helpmonks for providing their Bliss plan free of cost. Managing e-mail in ArduPilot’s team is now easier.
+284,"It is possible to directly communicate with members of the ArduPilot community, including developers, through the following channels:"
+285,User support requests should be posted to the Discuss Forums (staffed by volunteers)
+286,Flight code enhancement requests and known bugs should be added to the ArduPilot Issues list
+287,Mission Planner Issues list
+288,APM Planner 2.0 Issues list
+289,MAVProxy Issues list
+290,Request for professional paid support should be directed to one of the commercial support companies
+291,Mon/Tue Weekly Meetings on Discord
+292,ArduPilot Discord (live chat) live chat for ArduPilot developers (not for support questions)
+293,ArduPilot Facebook group
+294,The Cube Facebook group
+295,ArduPilot Japan Facebook group
+296,ArduPilot YouTube channel
+297,Randy’s YouTube channel
+298,Tridge’s YouTube channel
+299,DroneKit for Android Gitter chat
+300,DroneKit for Python Gitter chat
+301,"This section contains topics related to documentation, using the site, archived articles, and any topics that “don’t fit” in the main part of the wiki."
+302,ACC
+303,Accelerometer
+304,AHRS
+305,Attitude Heading Reference System
+306,ALT
+307,Altitude
+308,ATC
+309,Attitude Control
+310,AP
+311,ArduPilot
+312,APM
+313,ArduPilot autopilot
+314,ARSPD
+315,AirSpeed
+316,ATT
+317,Attitude
+318,BATT
+319,Battery
+320,CTUN
+321,Control Tuning
+322,DCM
+323,Discrete Cosine Matrix (first generation position/attitude estimator)
+324,EKF
+325,Extended Kalman Filter (a predictive filter subsystem)
+326,EK2/3
+327,EKF2/EKF3 (ArduPilot has two generations of EKF based position/attitude estimators in the firmware)
+328,GCS
+329,Ground Control Station
+330,GPS
+331,Global Positioning System
+332,GYRO
+333,Gyroscope
+334,IMU
+335,Inertial Measurement Unit
+336,INS
+337,Inertial Navigation System
+338,PCS
+339,Position Control System
+340,PM
+341,Power Module
+342,RC
+343,Radio Control
+344,TECS
+345,Total Energy Control System (altitude/speed controller for Plane)
+346,WP
+347,Waypoint
+348,"[copywiki destination=”copter,plane,rover,blimp,planner,planner2,dev,antennatracker,mavproxy,ardupilot”]"
+349,The advanced users tools can be downloaded from here.
+350,"Not all of these tools are “up to date”. For example, vehicle binaries and GCS software should be downloaded from their respective locations in the firmware server."
+351,The rest of the article provides an overview of some of the files and the tool licensing.
+352,Tarot Gimbal firmware and configuration UI for Windows.
+353,ZYX-BMGC-EN_V1.5.zip (v1.5)
+354,ZYX-BMGC-EN_V1.4.zip (v1.4)
+355,Warning
+356,Not necessarily the latest!
+357,APMrover2-2.45.zip
+358,APMrover2-2.46.zip
+359,APMrover2-2.47.zip
+360,PPM-Encoder-V3-Manual.pdf
+361,"VERSION 1 DATE POSTED     January 29, 2014"
+362,User manual for the third version of the 3DR PPM Encoder module
+363,px4_win_drivers.zip
+364,"Drivers for Pixhawk Boards Date Posted: May 15, 2013"
+365,3DR-Ublox.txt
+366,"DATE POSTED     November 24, 2013"
+367,This file is an extract of : ArduPlane-2.73/libraries/AP_GPS/config You can use it for configuring CRIUS CN-06 V2 for example.
+368,GPS_UBLOX_passthrough_APM2.hex
+369,"VERSION 1.0 DATE POSTED     November 24, 2013"
+370,This executable allows the APM2.x to be used as a pass through to the GPS so that U-Center can be used to examine and change the UBlox’s configuration
+371,Config_OSD_20.zip
+372,"DATE POSTED     April 29, 2013"
+373,Important NOTE: After install the “ArduCAM OSD Config Tool” remember that you need to update the Character Set. A new one is available on the install folder. From now on it will be always there as “OSD_Charset.mcm”.
+374,"VERSION 3.2.1 DATE POSTED     March 18, 2015"
+375,PPM-Encoder-3DR-Manual-v2.3.16.pdf
+376,"VERSION 2.3.16 DATE POSTED     April 26, 2013"
+377,Manual for the standalone PPM Encoder by 3DR. This manual covers firmware version 2.3.16.
+378,ArduPPM_v2.3.16_ATMega32U2.hex_.zip
+379,Recommended for all APM 2.x users
+380,– New interrupt system that handles certain Futaba receivers better (simultaneous changes on groups of R/C channels in fast intervals) – Adapted behaviour in case of channel loss:
+381,"ch1, roll: set to center (1500us)"
+382,"ch2, pitch: set to center (1500us)"
+383,"ch3, throttle: set to low (900us)"
+384,"ch4, yaw: set to center (1500us)"
+385,ch5-ch8: retain last value
+386,RX – OFF = No input signal detected
+387,RX – SLOW TOGGLE = Input signal OK
+388,RX – FAST TOGGLE = Invalid input signal(s) detected
+389,RX – ON = Input signal(s) lost during flight and fail-safe activated
+390,TX – OFF= PPM output disabled
+391,TX – FAST TOGGLE = PPM output enabled
+392,TX – SLOW TOGGLE = PPM pass-trough mode
+393,– PPM output will not be enabled unless a input signal has been detected and verified
+394,– Verified inputs are lost during operation (lose servo wire or receiver malfunction):
+395,The last known value of the lost input channel is kept for ~1 second
+396,"If the lost input channel is not restored within ~1 second, it will be set to the default fail-safe value (for channel 1-4) or kept at the last value (for channel 5-8)"
+397,– Lost channel signal is restored:
+398,Normal channel operation is restored using the valid input signal
+399,– PPM output will not be enabled unless a input signal has been detected
+400,– Active signal on input channel 1 has been detected:
+401,Any input level changes will be passed directly to the PPM output (PPM pass-trough)
+402,If no input level changes are detected within 250ms:
+403,PPM output is enabled and default fail-safe values for all eight channels transmitted
+404,"Input level change detected again, PPM fail-safe output is terminated and normal PPM pass-through operation is restored"
+405,ArduPPM_v2.3.16_ATMega328p_for_ArduCopter.hex_.zip
+406,Do not use with APM 2.x
+407,"DATE POSTED April 29, 2013"
+408,This version is dedicated to ArduCopter (CH8 radio passthrough mode disabled).
+409,"ch1, roll: set to center (1500μs)"
+410,"ch2, pitch: set to center (1500μs)"
+411,"ch3, throttle: set to low (900μs)"
+412,"ch4, yaw: set to center (1500μs)"
+413,Normal mode:
+414,– Error condition (All channels lost or throttle channel lost): blue LED blinks very fast – Normal behaviour: blue LED blinks according to throttle position
+415,ArduPPM_v2.3.16_ATMega328p_for_ArduPlane.hex_.zip
+416,This version is dedicated to ArduPlane (or ArduRover / Arduboat) (CH8 radio passthrough mode). For ArduCopter it is better to use the dedicated version so that CH8 can be fully used without risk to trig radio passthrough mode.
+417,– New interrupt system that handles certain Futaba receivers better (simultaneous changes on groups of R/C channels in fast intervals)
+418,– Adapted behaviour in case of channel loss:
+419,"ch1, roll: set to center (1500μs) ch2, pitch: set to center (1500μs) ch3, throttle: set to low (900μs) ch4, yaw: set to center (1500μs)"
+420,Radio Passthrough mode (for ArduPlane only):
+421,"– If throttle position < 1200 μs, status LED is off - If throttle position > 1200 μs, status LED is on"
+422,ArduPPM v2.3.16 ATMega32U2 firmware for APM 2.x
+423,"– PPM output will not be enabled unless a input signal has been detected and verified – Verified inputs are lost during operation (lose servo wire or receiver malfunction): + The last known value of the lost input channel is kept for ~1 second + If the lost input channel is not restored within ~1 second, it will be set to the default fail-safe value (for channel 1-4) or kept at the last value (for channel 5-8) – Lost channel signal is restored: + Normal channel operation is restored using the valid input signal"
+424,MTK_DIYdrones.zip
+425,MinimOSD_20.hex_.zip
+426,Firmware 2.0 for MinimOSD. More powerful than ever!
+427,Important NOTE: You need to install the newest “ArduCAM OSD Config Tool” and also update the Character Set. A new one is available on the Config Tool’s install folder. From now on it will be always there as “OSD_Charset.mcm”.
+428,MinimOSD_22_hex.zip
+429,"DATE POSTED     May 8, 2014"
+430,Firmware 2.2 for MinimOSD. New Flight-modes added for APM Plane and APM Copter.
+431,"Important NOTE: If you were using a firmware older than 2.0, remember of installing the newest “ArduCAM OSD Config Tool” and also update the Character Set. A new one is available on the Config Tool’s install folder. From now on it will be always there as “OSD_Charset.mcm”."
+432,AP_OpticalFlow_test.hex
+433,"VERSION 1.0 DATE POSTED     December 5, 2013"
+434,Optical Flow test sketch for APM2
+435,px4flow-klt-06Dec2014.zip
+436,"VERSION Beta-06Dec2014 DATE POSTED     December 6, 2014"
+437,PX4Flow sensor firmware using Lucas-Kanade method for use with ArduPilot
+438,APM_Arduino_Drivers.zip
+439,"DATE POSTED     April 25, 2013"
+440,Arduino USB driver for the Atmega32u2 USB interface chip on APM 2
+441,"[copywiki destination=”copter,plane,rover,blimp,planner,planner2,antennatracker,dev,mavproxy,ardupilot”]"
+442,The developer tools can be downloaded from here.
+443,hostapd_OdroidU3_Ubuntu1404.zip
+444,"VERSION dev DATE POSTED     January 20, 2015"
+445,This replaces the hostapd distributed with the Odroid U3 board’s Ubuntu 14.04. This newer version resolves issues creating a wifi access point.
+446,Airspeed_test.zip
+447,Airspeed_test1.zip
+448,Arduino code to test an airspeed sensor
+449,‘ArduPilot-Arduino-1.0.3-Mac.zip
+450,"DATE POSTED     May 1, 2013"
+451,ArduPilot-Arduino-1.0.3-windows.zip
+452,"VERSION 1.0.3 DATE POSTED     May 1, 2013"
+453,Arduino 1.0.3 with modifications required for ArduPilot
+454,CrossTrack.swf
+455,AttitudesThree.zip
+456,Data dump of 3 attitude solutions running in parallel. Includes README file.
+457,– DCM – Madgwick filter_mag – MPU6000 sensor fusion
+458,DeclinationLookup_CompressedEMM-1.zip
+459,This is a small zip file that contains 1 executable that is meant to be executed via the command line. When you run it you will see a menu with 4 options. The only option that will work is the declination lookup option. It is using the exact same lookup method as the AP_Declination library I wrote except that the lookup tables were generated using the EMM (Enhanced) instead of the WMM.
+460,mavproxybeta1.msi
+461,mavproxyBetaNoNeworkTest.msi
+462,MultiSerialMega.zip
+463,A little program that shows that Port 0 (USB) and Port 3 (Xbee) are working
+464,"There are several ways of donating to ArduPilot and all donations large and small help us keep things running smoothly. The preferred method is a paypal donation to the ArduPilot Foundation, which is an Australian non-profit incorporated association."
+465,Direct PayPal Donation to the ArduPilot Foundation
+466,Bank transfer to the ArduPilot Foundation bank account. Account details available on request to partners@ardupilot.org
+467,Direct PayPal Donation via SPI
+468,"By Credit Card using ClickAndPledge.  Be sure to enter the amount in the ArduPilot section, other sections are for other SPI projects.  Other methods can be found on the SPI donations page."
+469,Become a Corporate Partner
+470,How are donations spent?
+471,The glossary is not indexed. It is in alphabetical order so just scroll down to find the topic of interest.
+472,"2.4 Ghz: The frequency used by digital (spread spectrum) radio communications in our applications, including 2.4Ghz RC, Bluetooth and some video transmission equipment. This is a different band than the older 72 Mhz band that is used for analog RC communications. To avoid radio frequency conflict is it often a good idea to use 72 Mhz radio equipment when you are using 2.4 Ghz onboard video transmitters, or use 900 Mhz video when using 2.4 Ghz RC equipment."
+473,AGL: Altitude above ground level
+474,AHRS: Attitude Heading Reference System. An IMU (see below) plus the code to interpret the output from its sensors to establish a plane’s XYZ and heading orientation.
+475,APM: ArduPilotMega.
+476,"AMA: Academy of Model Aeronautics. The main US model aircraft association. The AMA works closely with the Federal Aviation Administration (FAA) to establishreasonable rulesfor the use of amateur UAVs. Each AMA chapter and field may have slightly different policies, but it’s possible to fly and test air frames and some technology on AMA fields without violating the association’s (or FAA/NAS) rules."
+477,"Arduino: An open source embedded processor project. Includes a hardware standard currently based on the Atmel Atmega168 microprocessor and necessary supporting hardware, and a software programming environment based on the C-like Processing language. Official site is here."
+478,"APM (AutoPilot Mega): Autopilot providing capabilities for stabilized flight, position maintenance and automated mission (waypoint) path following."
+479,ATC: This could be the Atitude Control library in Copter with params starting with “ATC_” or it could mean Air Traffic Control. Usually located at an airport control tower but can also be an app or service such as AirMap or Altitude Angel.
+480,Copter: Rotary-wing autopilot software variant of the ArduPilot project.
+481,Plane: Fixed-wing autopilot software variant of the ArduPilot project.
+482,Rover: Ground and water autopilot software variant of the ArduPilot project.
+483,"BEC: Battery Elimination Circuit. A voltage regulator found in ESCs (see below) and as a stand-alone product. Designed to provide constant 5v voltage for RC equipment, autopilots and other onboard electronics."
+484,Bootloader: Special software code stored in non-volatile memory in a microprocessor that can interface with a PC to download a user’s program. Also see Firmware.
+485,COA: Certificate of Authorization. A FAA approval for a UAV flight. See the faa.gov web site for more details and the DIY Drones Regulatory FAQ.
+486,DCM: Direction Cosine Matrix. A algorithm that is a less processing intensive equivalent of the Kalman Filter. See this for more.
+487,"Eagle file: The schematic and PCB design files (and related files that tell PCB fabs how to create the boards) generated by the free Cadsoft Eagle program. This is the most common standard used in the open source hardware world, although, ironically, it’s not open source software itself. Needless to say, this is not optimal, and the Eagle software is clumsy and hard to learn. One hopes that an open source alternative will someday emerge."
+488,"ESC: Electronic Speed Control. Device to control the motor in an electric aircraft. Serves as the connection between the main battery and the RC receiver. Usually includes a BEC, or Battery Elimination Circuit, which provides power for the RC system and other onboard electronics, such as an autopilot."
+489,"Firmware: The software or sketch that is loaded into the non-volatile memory of microprocessor based products. It is called ‘firmware’ because it stays in the non-volatile memory even if power is removed - thus ‘non’ - volatile. In the case of the autopilots, it is the ‘program’ or application (App to smart phone users) that determines what the auto pilot does, and how."
+490,FPV: First-person view. A technique that uses an onboard video camera and wireless connection to the ground allow a pilot on the ground with video goggles to fly with a cockpit view.
+491,"FTDI: A standard to convert USB to serial communications. Available as a chip for boards that have a USB connector, or as an adapter to connected to breakout pins. FTDI stands for Future Technology Devices International, which is the name of the company that makes the chips."
+492,"GCS: Ground Control Station. Software running on a computer on the ground that receives telemetry information from an airborne UAV and displays its progress and status, often including video and other sensor data. Can also be used to transmit in-flight commands to the UAV."
+493,Hard Iron magnetic distortion: distortions that arise from magnets or magnetized metals on the airframe that affect the compass. These distortions remain in the same location relative to the compass for all heading orientations. These distortions can be mostly compensated for by adding constant offsets to the values returned from the 3d magnetometer (compass).
+494,"HIL (Hardware-in-the-loop simulation): Doing a simulation where software running on another computer generates data that simulates the data that would be coming from an autopilot’s sensors. The autopilot is running and doesn’t “know” that the data is simulated, so it responds just as it would to real sensor data. Hardware-in-the-loop uses the physical autopilot hardware connected to a simulator, as opposed to simulating the autopilot in software, too. In an “open loop” simulation, the software simulator feeds data to the hardware autopilot; in a “closed loop” simulation, the hardware feeds data back to the software simulator, too."
+495,"I2C: A serial bus that allows multiple low speed peripherals, such as sensors, to be connected to a microprocessor. See this for more."
+496,"IDE: An integrated development environment, such as the Arduino editor/downloader/serial monitor software. Often includes a debugger."
+497,"IMU: An inertial measurement unit such as the ArduPilot OilPan. Usually has at least three accelerometers (measuring the gravity vector in the x,y and z dimensions) and two gyros (measuring rotation around the tilt and pitch axis). Neither are sufficient by themselves, since accelerometers are thrown off by movement (ie, they are “noisy” over short periods of time), while gyros drift over time. The data from both types of sensors must be combined in software to determine true aircraft attitude and movement to create an AHRS (see above). One technique for doing this is the Kalman filter (see below). Now superseded by Autopilots which include CPU and sensors in one unit."
+498,"Inner loop/Outer loop: Usually used to refer to the stabilization and navigation functions of an autopilot. The stabilization function must run in real-time and as often as 100 times a second (“inner loop”), while the navigation function can run as infrequently as once per second and can tolerate delays and interruptions (“outer loop”)."
+499,INS: Inertial Navigation System. A way to calculate position based on an initial GPS reading followed by readings from motion and speed sensors using dead reckoning. Useful when GPS is not available or has temporarily lost its signal.
+500,"ICSP: In Circuit Serial Programmer. A way to load code to a microprocessor. Usually seen as a six-pin (two rows of three) connector on a PCB. To use this, you need a programmer, such as this one, that uses the SPI (Serial Peripheral Interface) standard."
+501,"Kalman Filter: A relatively complicated algorithm that, in our applications, is primarily used to combine accelerometer and gyro data to provide an accurate description of aircraft attitude and movement in real time. See this for more."
+502,LOS: Line of Sight. See VLOS below.
+503,"LiPo: Lithium Polymer battery, aka LiPoly. Variants include Lithium Ion (Li-Ion) battery. This battery chemistry offers more power and lighter weight than NiMh and NiCad batteries."
+504,MAVLink. The Micro Air Vehicle communications protocol used by the Copter and Plane line of autopilots. See here for more info on MAVLink.
+505,MAV: Micro Air Vehicle. A small UAV. More here.
+506,"NMEA: National Marine Electronics Association standard for GPS information. When we refer to “NMEA sentences”, we’re talking about ASCII strings from a GPS module that look like this: $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,47"
+507,"Oilpan: An arduino style shield meant to be paired with the ArduPilotMega. Contained the majority of the sensors (gyos, accelerometers, barometer, etc) that allow the ArduPilotMega to function as an autopilot, now superseded by subsequent Autopilots that incorporate CPU and sensors in one board."
+508,OSD: On-screen display. A way to integrate data (often telemetry information) into the real-time video stream the aircraft is sending to the ground.
+509,"PCB: Printed circuit board. In our use, a specialized board designed and “fabbed” for a dedicated purpose, as opposed to a breadboard or prototype board, which can be used and resused for many projects."
+510,"PCM: Pulse Code Modulation: The technique some modern RC transmitters/receivers communicate the RC channels information. It is transmitted digitally using a digital code to represent the channel number, position of the transmitter stick or switch, and sometimes other information. Some modern RC systems also provide digital signals to control digital servos - typically specific to each manufacturer."
+511,PDB: Power Distribution Board. A board used in multicopters to distribute power to multiple ESCs.
+512,PIC: Pilot in Command. Refers to a FAA requirement that UAVs stay under a pilot’s direct control if they are flying under the recreational exemption to COA approval. See Line of Sight above. (Not to be confused with the PIC processor series by Microchip)
+513,PID: Proportional/Integral/Derivative control method. A machine control algorithm that allows for more accurate sensor-motion control loops and less overcontrol. See this for more.
+514,POI: Point of Interest. Designates a spot that a UAV should keep a camera pointed towards.
+515,PPM: Pulse Position Modulation. The square-wave pulse train used to transmit multiple channels of information between some RC transmitters and receivers. Some RC receivers provide a PPM output (sometimes referred to as the PPM Sum) which can be used on Pixhawk-series boards. Other receivers convert the PPM signal and only provide PWM signals for each channel.
+516,"PWM: Pulse Width Modulation. The square-wave signals used in RC control to drive servos and speed controllers. There is one PWM signal for each channel. The width varies from 1000 to 2000 microseconds, depending on the RC manufacturer."
+517,PX4FMU/PX4IO: First version of Pixhawk-series autopilots (FMUv1). Discontinued.
+518,RTL: Return to Launch. Fly back to the “home” location where the aircraft took off.
+519,"SiRF III: The standard used by most modern GPS modules. Includes !SiRF III binary mode, which is an alternative to the ASCII-based NMEA standard described above."
+520,"Sketch: The program files, drivers and other code generated by the Arduinio IDE for a single project."
+521,SVN: Short for the Subversion version-control repository used by the DIY Drones and other teams for source code.
+522,"Telemetry System: A two way radio system to allow flight data to be sent from your aircraft and also to allow control or adjustment information to be sent back to it from a “ground station”, commonly a laptop computer. See the telemetry landing page for options."
+523,"Thermopile: An infrared detector. Often used in pairs in UAVs to measure tilt and pitch by looking at differences in the infrared signature of the horizon fore and aft and on both sides. This is based on the fact that there is always an infrared gradient between earth and sky, and that you can keep a plane flying level by ensuring that the readings are the same from both sensors in each pair, each looking in opposite directions. These have been largely displaced by electronic gyros and are no longer in common use."
+524,"UAV: Unmanned Aerial Vehicle. In the military, these are increasingly called Unmanned Aerial Systems (UAS), to reflect that the aircraft is just part of a complex system in the air and on the ground. Ground-based autonomous robots are called Unmanned Ground Vehicles (UGVs) and robot submersibles are called Autonomous Underwater Vehicles (AUVs). Robot boats are called Unmanned Surface Vehicles (USVs)."
+525,"VLOS: Visual Line of Sight. The pilot’s ability to see an aircraft from the ground well enough to control it, without the use of artificial visual aids (aside from glasses). Required by FAA regs."
+526,"WAAS: Wide Area Augmentation System. A system of satellites and ground stations that provide GPS signal corrections, giving up to five times better position accuracy than uncorrected GPS. See this for more."
+527,Xbee: The commercial name of the recommend ZigBee-compatible radio modems commonly used by amateur UAVs. They can be found at sparkfun although remember you also need a board to mount it on like this one from sparkfun.
+528,"ZigBee: A wireless communications standard, which has longer range than Bluetooth but lower power consumption than WiFi."
+529,May 2007 - Chris Anderson starts DIYDrones.com while building his Lego mindstorm base UAV.
+530,Sep 2008 - Jordi builds traditional helicopter UAV able to fly autonomously and wins the first Sparkfun AVC competition.
+531,Jordi’s traditional helicopter¶
+532,2009 - Chris Anderson & Jordi Munoz found 3D Robotics
+533,May 2009 - First ArduPilot board (using thermopiles) released by Jordi/3DRobotics
+534,Nov 2009 - ArduPilot code repository created by Jordi
+535,"Nov 2009 - First version of ArduIMU written by Jordi, Doug Weibel, Jose Julio using DCM from William Premerlani"
+536,"Nov 2009 - Feb 2010 – ArduPilot rewritten from scratch (v2.5) by Jason and includes interrupt driven RC input, RC throttle failsafe, RTL, Loiter, Circle, Crosstrack correction, decent stabilization, Fly-By-Wire, system events, 4 channel RC output, and 2-way telemetry. (Post)"
+537,Dec 2009 - First IMU based autonomous plane mission flown by Doug with modified ArduPilot v2.4.
+538,2010 - APM1 released by 3d Robotics
+539,"Early 2010 - ArduPilot 2.6 released by Doug and Jason with improved throttle control, and ArduIMU support."
+540,Summer 2010 - APM Code development:
+541,"Jason - Mission scripting, Flight modes, Navigation"
+542,"Jose - Code Libraries, DCM, and HW sensor support"
+543,"Doug - Advanced flight control, logging, DCM"
+544,"MikeS - Parameters, CLI, Fast Serial, advanced hardware optimizations"
+545,May 2010 - ArduPilot merges with AeroQuad (including Jani Hirvinen) and begins work on CopterNG
+546,June 2010 - APM 1 flies first autonomous and scripted mission in SW (post)
+547,June 2010 - APM 1 takes first autonomous Plane flights
+548,July 2010 - Perl based Hardware-in-the-loop developed by Jason for Xplane for testing new APM mission scripting commands in (later integrated into Mavlink)(Post)
+549,Aug 2010 - Jani/jDrones ships first DIY quad frames which were adopted as the original standard
+550,"Oct 2010 - CopterNG (AeroQuad/ArduCopter merged code) project abandoned by ArduPilot team and handed over, with encouragement, to the ArduPirates team for further development. Jason restarts Copter with alternative control logic based on Plane making Copter autonomous. Adds Loiter, Circle, RTL, Mission scripting, failsafe, takeoff, landing, etc."
+551,Aug 2010 - the Mission Planner is released by Michael Oborne
+552,Aug 2010 - TradHeli support added by Randy
+553,Dec 2010 - First successful fork of ArduPilot code as MegaPirates group extends original CopterNG code
+554,April 2011 – First fully autonomous Copter mission flown by Jason at Sparkfun AVC
+555,April 2011 - Laser Navigation made the first piece of 32 bit hardware capable of running the ArduCopter software
+556,2011 - APM2 released by 3D Robotics
+557,Nov 2011 - AutoTester is created by Tridge
+558,2012 - APM2.5/2.6 released by 3D Robotics
+559,"Feb 2012 - Jason asks Randy to take over and be lead developer of Copter, Doug goes off to get his PhD and Tridge takes over Plane"
+560,Feb 2012 - Marco Robustini joins as lead Copter tester
+561,"July 2012 - PX4 released by ETH (Lorenz Meier,MikeS) / 3D Robotics"
+562,Aug 2012 - Hardware Abstraction Layer (AP_HAL) by Pat Hickey simplifies adding support for other boards
+563,Oct 2012 - First TradHeli autonomous mission by Rob Lefebvre
+564,Oct 2012 - Tridge and CanberraUAV win Outback Challenge with APM2 & Pandaboard
+565,Nov 2012 - first APM2.5 clone appears
+566,Dec 2012 - Successfully prototype of 3rd order complementary filter by Jonathan Challinger leads to Copter’s inertial based altitude hold by Randy and Leonard (AC2.9).
+567,Jan 2013 - ArduPilot code moved from google code to github
+568,"Jan/Feb 2013 - Android GCSs appear (DroidPlanner from Arthur, AndroPilot from Kevin Hester)"
+569,"Apr 2013 - Plane L1 waypoint following by Paul Riseborough, Brandon Jones, Tridge"
+570,May 2013 - Copter inertial navigation support for waypoint navigation by Leonard and Randy (AC3.0)
+571,"Jul 2013 - Plane integrated speed and height control by Paul Riseborough, Tridge"
+572,"Sep 2013 - Flymaple board support by Mike McCauley, Tridge"
+573,"Nov 2013 - Pixhawk released by ETH (Lorenz Meier,MikeS)/ 3D Robotics"
+574,"Dec 2013 - BeaglePilot project created by Víctor Mayoral Vilches and Siddharth Bharat Purohit to port APM codebase to Linux. The project was by Andrew Tridgell, Philip Rowse and others and funded by 3DR, Google (through the Google Summer of Code) and BeagleBoard."
+575,"Jan 2014 - Extended Kalman Filter added for more reliable attitude and position information by Paul Riseborough, Tridge"
+576,Mar 2014 - VRBrain boards support added by Emile Castelnuovo and Tridge
+577,"Mar 2014 - Emlid presented Navio, first Raspberry Pi autopilot shield that allows to run ArduPilot directly on Raspberry Pi."
+578,Aug 2014 - First Plane flight on Linux board (Pixhawk Fire cape)
+579,Sep 2014 - Tridge & Canberra UAV win the Outback Challenge with an ArduPilot based UAV plane (Tridge’s debrief ).
+580,Sep 2014 - First Copter flight on Linux +board (Pixhawk Fire cape)
+581,Oct 2014 - DroneCode foundation is formed (announcement)
+582,Oct 2014 - First report of Plane being successfully used in search & rescue including finding a missing light plane in Florida.
+583,Feb 2015 - Erle Robotics launches DIY kits for Linux drones based on APM.
+584,"May 2015 - First documented multi-vehicle flight using only a single ground station (first three, then fifty!)."
+585,"June 2015 - 3DR ships Solo, the first RTF copter with built in companion computer"
+586,June 2015 - Parrot Bebop port’s first successful flights
+587,Aug 2015 - Michael Clement & Michael Day fly 50 arduplanes in a multi-vehicle environment
+588,Sep 2015 - First major news event involving a misbehaving pilot of an ArduPilot vehicle (a Solo)
+589,March 2016 - 3DR ceases direct funding of ArduPilot community as it cuts jobs.
+590,March 2016 - Formation of the ardupilot.org non profit organisation and new website.
+591,May 2016 - Flirtey delivery drone (using ArduPilot) is entered into Smithsonian Air and Space Museum.
+592,"Sep 2016 - Flymaple board support removed (not actively tested or used, also lacks a maintainer see PR #4191)."
+593,"Sep 2016 - Relationship with 3DR, Chris Anderson and PX4 team lead sours as DroneCode Platinum board members outvote Silver board members to remove GPLv3 projects including ArduPilot from DroneCode."
+594,Sep 2016 - ArduPilot begins ArduPilot Partners group.
+595,Sep 2016 - Canberra UAV places 1st in Medical Express 2016 competition (aka Outback Challenge) (debrief)
+596,Oct 2016 - Copter-3.4 release including object avoidance.
+597,Feb 2017 - ArduSub officially joins ArduPilot and merges back to master
+598,"Feb 2017 - ArduPilot developer unconference in Canberra Australia (Tridge, PaulR, MichaelO)"
+599,May 2017 - Google Summer of Code funds 4 developers for the summer (see SafeRTL)
+600,"July 2017 - Copter-3.5 release including Visual Odometry and Pozyx support for non-GPS navigation, AutoTune gets position hold, Solo support"
+601,Aug 2017 - SkyRocket announces release of ArduPilot based SkyViper GPS Streaming drone (blog)
+602,"Aug 2017 - Rover-3.2.0 released “onion” architecture, new layered rate and speed controllers, skid-steering vehicle support, SmartRTL"
+603,May 2018 - Google Summer of Code funds 5 developers for the summer.  Successful projects include Balance Bot support.
+604,"May 2018 - Rover-3.3.0 released including circle and polygon fences, simple object avoidance, boats"
+605,"Jun 2018 - Rover-3.4.0 released including “Lane based speed control”, Loiter for boats, omni rovers, vision based position estimates from ROS"
+606,"Aug 2018 - Plane 3.9.0 released with ChibiOS support, support for many smaller autopilot, better VTOL support"
+607,"Oct 2018 - Copter-3.6.0 released with ChibiOS support, support for many smaller autopilots, DShot ESCS, Follow mode"
+608,"Feb 2019 - Rover-3.5.0 released including Sailboat support, Follow and Simple modes"
+609,"Aug 2019 - ArduPilot flies over the North Pole, Video"
+610,Sep 2019 - Plane 4.0.0 released with many DroneCAN enhancements and AP_Periph firmware system
+611,"Nov 2019 - Rover 4.0.0 released with Boat and Sailboat improvements, OSD support, new Object Avoidance modes"
+612,"Dec 2019 - Copter 4.0.0 with RCx_OPTION support, LUA Scripting support, new modes, up to ten battery monitors"
+613,The above list includes many of the major milestones for the project.  Please see the Copter.cpp or the GitHub contributors graph for a more complete list of contributors to the project.
+614,The ArduPilot Project is greatly appreciative of our Corporate Partners. Details on the Partners Program and how to join can be found on the Partners Program page.
+615,Ready-To-Use vehicles <common-rtf>
+616,[/site] [site wiki=”plane”]
+617,Records <records>
+618,[/site] [site wiki=”copter”]
+619,[/site] [site wiki=”rover”]
+620,Stores <common-stores> Top Contributors <common-team>
+621,Training Centers <common-training-centers>
+622,Wiki Editing Guide <common-wiki_editing_guide>
+623,Archived - Recording and Playing Back Missions<common-recording-and-playing-back-missions> Archived - Loading ChiBios Firmware Onto Pixhawk<common-loading-chibios-firmware-onto-pixhawk>
+624,[/site]
+625,Common Airframe Builds <common-common-airframe-builds> Release Notes <project-news>
+626,project-news
+627,trademark
+628,Archived Topics <common-archived-topics>
+629,"last build Dec 13, 2024"
+630,"© Copyright 2024, ArduPilot Dev Team."

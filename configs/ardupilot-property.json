@@ -1,0 +1,206 @@
+[
+    {
+        "id": 0,
+        "name": "A_RTL_P1",
+        "sentence": "When RTL mode is selected, if the current altitude is less than RTL_ALT, then altitude must be increased until the altitude is greater or equal to the RTL_ALT.", 
+        "CTL_formula": "AG((mode = RTL) and (current_alt < RTL_ALT) -> AF(return_alt >= RTL_ALT))"
+    },
+    {
+        "id": 1,
+        "name": "A_RTL_P2",
+        "sentence": "When RTL mode is selected, if the current altitude is greater or equal to RTL_ALT, current flight mode is RTL, and the current vehicle is not at home position, then the vehicle must move to the home position while maintaining the current altitude.",
+        "CTL_formula": "AG((mode = RTL) and (current_alt >= RTL_ALT) and (has_arrived_home = false) -> AF((return_alt = current_alt)))"
+    },
+    {
+        "id": 2,
+        "name": "A_RTL_P3",
+        "sentence": "When RTL mode is selected, if current altitude is greater or equal to RTL_ALT and the current vehicle has arrived home, then UAV must be LAND.",
+        "CTL_formula": "AG((mode = RTL) and (current_alt >= RTL_ALT) and (has_arrived_home = true) -> AF(landed = true))"
+    },
+    {
+        "id": 3,
+        "name": "A_RTL_P4",
+        "sentence": "When RTL mode is selected, if the vehicle touches the ground, then the vehicle must disarm motors.",
+        "CTL_formula": "AG((mode = RTL) and (landed = true) -> AF(armed = false))"
+    },
+    {
+        "id": 4,
+        "name": "A_FLIP_P1",
+        "sentence": "If and only if roll is less than 45 degree, throttle is greater or equal to 1,500, altitude is more than 10 meters, and the current flight mode is one of ACRO and ALT_HOLD, then the flight mode can be changed to FLIP.",
+        "CTL_formula": "AG((mode = FLIP) -> AF(lastmode = ACRO) or (lastmode = ALT_HOLD) and (roll <= 45) and (throttle >= 1500) and (current_alt > 10))"
+    },
+    {
+        "id": 5,
+        "name": "A_FLIP_P2",
+        "sentence": "If the current flight mode is FLIP and roll is between -90 and 45 degree, then rolling right at 400 degree per second.",
+        "CTL_formula": "AG((mode = FLIP) and (-90 <= roll <= 45) -> AF(roll_rate = 400) and (roll_direction = right))"
+    },
+    {
+        "id": 6,
+        "name": "A_FLIP_P3",
+        "sentence": "The vehicle should complete the rolling (A.FLIP2) within 2.5 seconds and must return to the original flight mode.",
+        "CTL_formula": "AG((mode = FLIP) -> AF_[0,2.5](mode = lastmode))"
+    },
+    {
+        "id": 7,
+        "name": "A_ALTHOLD_P1",
+        "sentence": "If the altitude source is the barometer, the vehicle must follow the altitude computed by this source, rather than the GPS.",
+        "CTL_formula": "AG((alt_source = baro) -> AF((curr_alt = baro_alt) and (curr_alt != GPS_alt)))"
+    },
+    {
+        "id": 8,
+        "name": "A_ALTHOLD_P2",
+        "sentence": "When alt hold mode is selected, if the throttle stick is in the middle (i.e., 1,500) the vehicle must maintain the current altitude.",
+        "CTL_formula": "AG((mode = ALT_HOLD) and (throttle = 1500) -> AF(ALT = current_alt))"
+    },
+    {
+        "id": 9,
+        "name": "A_CIRCLE_P1",
+        "sentence": "When circle mode is selected, pitch stick up must reduce the radius until it reaches zero.",
+        "CTL_formula": "AG((mode = CIRCLE) and (RC_Pitch < 1500) and (Circle_radius > 0) -> AF(Circle_radius_change_rate < 0))"
+    },
+    {
+        "id": 10,
+        "name": "A_CIRCLE_P2",
+        "sentence": "When circle mode is selected, pitch stick down must increase the radius.",
+        "CTL_formula": "AG((mode = CIRCLE) and (RC_Pitch > 1500) and (Circle_radius > 0) -> AF(Circle_radius_change_rate > 0))"
+    },
+    {
+        "id": 11,
+        "name": "A_CIRCLE_P3",
+        "sentence": "When circle mode is selected, Roll stick right (think clockwise) must increase the speed while moving clockwise.",
+        "CTL_formula": "AG((mode = CIRCLE) and (RC_Roll > 1500) and (Circle_direction = clockwise) -> AF(Circle_speed_change_rate > 0))"
+    },
+    {
+        "id": 12,
+        "name": "A_CIRCLE_P4",
+        "sentence": "When circle mode is selected, Roll stick right (think clockwise) must decrease the speed while moving counterclockwise.",
+        "CTL_formula": "AG((mode = CIRCLE) and (RC_Roll > 1500) and (Circle_direction = counterclockwise) -> AF(Circle_speed_change_rate < 0))"
+    },
+    {
+        "id": 13,
+        "name": "A_CIRCLE_P5",
+        "sentence": "When circle mode is selected, Roll stick left (think counterclockwise) must increase the speed while moving counterclockwise.",
+        "CTL_formula": "AG((mode = CIRCLE) and (RC_Roll < 1500) and (Circle_direction = counterclockwise) -> AF(Circle_speed_change_rate > 0))"
+    },
+    {
+        "id": 14,
+        "name": "A_CIRCLE_P6",
+        "sentence": "When circle mode is selected, Roll stick left (think counterclockwise) must decrease the speed while moving clockwise.",
+        "CTL_formula": "AG((mode = CIRCLE) and (RC_Roll < 1500) and (Circle_direction = clockwise) -> AF(Circle_speed_change_rate < 0))"
+    },
+    {
+        "id": 15,
+        "name": "A_LAND_P1",
+        "sentence": "Above 10 meters the vehicle must descend at the rate specified in the LAND_SPEED_HIGH parameter.",
+        "CTL_formula": "AG((current_alt >= 10) and (mode = LAND) -> AF(speed_z = LAND_SPEED_HIGH))"
+    },
+    {
+        "id": 16,
+        "name": "A_LAND_P2",
+        "sentence": "Below 10 meters the vehicle must descend at the rate specified in the LAND_SPEED parameter.",
+        "CTL_formula": "AG((current_alt < 10) and (mode = LAND) -> AF(speed_z = LAND_SPEED))"
+    },
+    {
+        "id": 17,
+        "name": "A_BRAKE_P1",
+        "sentence": "When the vehicle is in BRAKE mode, it must stop within k seconds.",
+        "CTL_formula": "AG((mode = BRAKE) -> AF_[0,k](speed_x = 0) and (speed_y = 0) and (speed_z = 0))"
+    },
+    {
+        "id": 18,
+        "name": "A_DRIFT_P1",
+        "sentence": "If the vehicle loses GPS signals in flight while in DRIFT mode, the vehicle must either LAND or enter ALT_HOLD mode based on FS_EKF_ACTION parameter.",
+        "CTL_formula": "AG((mode = DRIFT) and (GPS_fail = ON) -> AF_[0,k]((mode = FS_EKF_ACTION)))"
+    },
+    {
+        "id": 19,
+        "name": "A_LOITER_P1",
+        "sentence": "The vehicle must maintain a constant location, heading, and altitude.",
+        "CTL_formula": "AG((mode = LOITER) -> AF((pos = current_pos) and (yaw = current_yaw) and (alt = current_alt)))"
+    },
+    {
+        "id": 20,
+        "name": "A_GUIDED_P1",
+        "sentence": "If there is no more way point, the vehicle must stay at the same location, heading, and altitude.",
+        "CTL_formula": "AG((mode = GUIDED) and (waypoint = 0) -> AF((pos = current_pos) and (yaw = current_yaw) and (alt = current_alt)))"
+    },
+    {
+        "id": 21,
+        "name": "A_SPORT_P1",
+        "sentence": "In SPORT mode, the vehicle must climb as indicated by the PILOT_SPEED_UP parameter.",
+        "CTL_formula": "AG((mode = SPORT) -> AF(speed_z = PILOT_SPEED_UP))"
+    },
+    {
+        "id": 22,
+        "name": "A_RCFS_P1",
+        "sentence": "If and only if the vehicle is armed in ACRO mode and the throttle input is less than the minimum (FS_THR_VALUE parameter), the vehicle must immediately disarm.",
+        "CTL_formula": "AG((mode = ACRO) and (throttle < FS_THR_VALUE) -> AF(disarmed = true))"
+    },
+    {
+        "id": 23,
+        "name": "A_RCFS_P2",
+        "sentence": "If the throttle input is less than FS_THR_VALUE parameter, it must change the current mode to the RC fail-safe mode.",
+        "CTL_formula": "AG((throttle < FS_THR_VALUE) -> AF(mode = RC_failsafe))"
+    },
+    {
+        "id": 24,
+        "name": "A_CHUTE_P1",
+        "sentence": "Deploying a parachute requires following conditions: (1) the motors must be armed, (2) the vehicle must not be in the FLIP or ACRO flight modes, (3) the barometer must show that the vehicle is not climbing, and (4) the vehicle’s current altitude must be above the CHUTE_ALT_MIN parameter value.",
+        "CTL_formula": "AG((Parachute = ON) -> AF((armed = true) and (mode != FLIP) and (mode != ACRO) and (current_alt >= CHUTE_ALT_MIN)))"
+    },
+    {
+        "id": 25,
+        "name": "A_GPSFS_P1",
+        "sentence": "When the number of detected GPS satellites is less than four, the vehicle must trigger the GPS fail-safe mode.",
+        "CTL_formula": "AG((GPS_sat < 4) -> AF(mode = GPS_failsafe))"
+    },
+    {
+        "id": 26,
+        "name": "A_GPSFS_P2",
+        "sentence": "When the GPS fail-safe mode is triggered and there is a secondary altitude sensor, the vehicle must change the current primary altitude source to the secondary sensor.",
+        "CTL_formula": "AG((mode = GPS_failsafe) and (Baro = ON) -> AF(alt_source = Baro))"
+    },
+    {
+        "id": 27,
+        "name": "A_LIVENESS_P1",
+        "sentence": "it should be possible to enable the failsafe flight mode.",
+        "CTL_formula": "EF(failsafe = ON)"
+    },
+    {
+        "id": 28,
+        "name": "A_SAFETY_P1",
+        "sentence": "the worst-case execution time of fast loop should be at most Tw, not to impact the resulting rate of control loop execution.",
+        "CTL_formula": "AG_[0,T_w](fast_loop_end)"
+    },
+    {
+        "id": 29,
+        "name": "A_SAFETY_P2",
+        "sentence": "the time that fast loop takes to enable the failsafe mode should never exceed Tf.",
+        "CTL_formula": "AG_[0,T_f](mode = failsafe)"
+    },
+    {
+        "id": 30,
+        "name": "A_FS_P1",
+        "sentence": "after the failsafe mode is enabled, re-gaining a signal from the telemetry radio or the remote controller eventually disables it.",
+        "CTL_formula": "AG((mode = failsafe) and (RC=ON) -> AF(mode != failsafe))"
+    },
+    {
+        "id": 31,
+        "name": "A_RCFS_P1",
+        "sentence": "If enabled and set-up correctly the radio failsafe will trigger if any of these conditions occur for more than RC_FS_TIMEOUT seconds.",
+        "CTL_formula": "AG((RC = OFF) -> AF_[>=RC_FS_TIMEOUT](mode = RC_failsafe))"
+    },
+    {
+        "id": 32,
+        "name": "A_BATTFS_P1",
+        "sentence": "If enabled and set-up correctly the battery failsafe will trigger if the main battery’s voltage drops below the voltage held in the BATT_LOW_VOLT parameter (or FS_BATT_VOLTAGE in older versions) for more than 10 seconds.",
+        "CTL_formula": "AG((V < BATT_LOW_VOLT) -> AF_[>=10](mode = BATT_failsafe))"
+    },
+    {
+        "id": 33,
+        "name": "A_GCSFS_P1",
+        "sentence": "The following situations can cause a loss of GCS MAVLink heartbeat, triggering a GCS failsafe event after FS_GCS_TIMEOUT seconds.",
+        "CTL_formula": "AG((GCS = OFF) -> AF_[>=FS_GCS_TIMEOUT](mode = GCS_failsafe))"
+    }
+]

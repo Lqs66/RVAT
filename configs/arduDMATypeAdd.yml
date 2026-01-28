@@ -1,0 +1,114 @@
+DMATypeAdd:
+  DMAType:
+    SimpleCase:
+      - Caller: _ZN9__gnu_cxx13new_allocatorIN8AP_Param21defaults_table_structEE8allocateEmPKv
+        callsites:
+          - ID: 0 # denote the index of all dma callsites in the caller
+            DMAType: struct.AP_Param::defaults_table_struct
+            isBaseType: false
+      - Caller: _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEN8picojson5valueEEEE8allocateEmPKv
+        callsites:
+          - ID: 0
+            DMAType: struct.std::_Rb_tree_node
+            isBaseType: false
+      - Caller: _ZN9__gnu_cxx13new_allocatorIN8picojson5valueEE8allocateEmPKv
+        callsites:
+          - ID: 0
+            DMAType: class.picojson::value
+            isBaseType: false
+      - Caller: _ZN10ByteBuffer8set_sizeEj
+        callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+      - Caller: _ZN15ekf_ring_buffer4initEh
+        callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+      - Caller: _ZN14ekf_imu_buffer4initEj
+        callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+      - Caller: _ZN21AP_Filesystem_Backend9load_fileEPKc
+        callsites:
+          - ID: 1
+            DMAType: i8
+            isBaseType: true
+      - Caller: _ZN4SITL12InvensenseV39add_blockEPKchhNS_12I2CRegisters7RegModeE
+        callsites:
+          - ID: 0
+            DMAType: i8
+            isBaseType: true
+    ComplexCase:
+      EncapsulatedDMAFuncs: # Encapsulated DMA functions, each with a single, branchless call chain.
+        - _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE
+          - _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+            - calloc
+        - _ZN6AP_HAL4Util11std_reallocEPvm
+          - realloc
+      InnerSimpleCase:
+        - Caller: _ZN7NavEKF216InitialiseFilterEv
+          Callee: _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE
+          callsites:
+            - ID: 0
+              DMAType: class.NavEKF2_core
+              isBaseType: false
+        - Caller: _ZN7NavEKF316InitialiseFilterEv
+          Callee: _ZNK6AP_DAL11malloc_typeEmNS_11Memory_TypeE
+          callsites:
+            - ID: 0
+              DMAType: class.NavEKF3_core
+              isBaseType: false
+        - Caller: _ZN15AP_Logger_Block4InitEv
+          Callee: _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+          callsites:
+            - ID: 0
+              DMAType: i8
+              isBaseType: true
+        - Caller: _ZN6AP_HAL3DSP14FFTWindowStateC2Etth
+          Callee: _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+          callsites:
+            - ID: 0
+              DMAType: float
+              isBaseType: true
+            - ID: 1
+              DMAType: float
+              isBaseType: true
+            - ID: 2
+              DMAType: float
+              isBaseType: true
+            - ID: 3
+              DMAType: float
+              isBaseType: true
+            - ID: 4
+              DMAType: float
+              isBaseType: true
+            - ID: 5
+              DMAType: float
+              isBaseType: true  
+        - Caller: _ZN6AP_HAL3DSP16fft_init_averageEPNS0_14FFTWindowStateE
+          Callee: _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+          callsites:
+            - ID: 0
+              DMAType: float
+              isBaseType: true
+        - Caller: _ZN6AP_HAL3DSP16fft_stop_averageEPNS0_14FFTWindowStateEttPf
+          Callee: _ZN6AP_HAL4Util11malloc_typeEmNS0_11Memory_TypeE
+          callsites:
+            - ID: 0
+              DMAType: float
+              isBaseType: true
+        - Caller: _ZN24AP_ExpandingArrayGeneric6expandEt
+          Callee: _ZN6AP_HAL4Util11std_reallocEPvm
+          callsites:
+            - ID: 0
+              DMAType: i8
+              isBaseType: true
+        - Caller: _ZN15ExpandingString6expandEj
+          Callee: _ZN6AP_HAL4Util11std_reallocEPvm
+          callsites:
+            - ID: 0
+              DMAType: i8
+              isBaseType: true

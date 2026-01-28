@@ -1,0 +1,45 @@
+diff --git a/wscript b/wscript
+index f3b18ebb06..35a33bd249 100644
+--- a/wscript
++++ b/wscript
+@@ -392,6 +392,11 @@ configuration in order to save typing.
+                  default=0,
+                  help='zero time on boot in microseconds')
+     
++    g.add_option('--enable-llvm-ir',
++        action='store_true',
++        default=False,
++        help='enable LLVM IR generation')
++
+ def _collect_autoconfig_files(cfg):
+     for m in sys.modules.values():
+         paths = []
+@@ -427,6 +432,10 @@ def configure(cfg):
+     cfg.env.COVERAGE = cfg.options.coverage
+     cfg.env.AUTOCONFIG = cfg.options.autoconfig
+ 
++    # disable UAVCAN for SITL
++    if cfg.options.board == 'sitl':
++        cfg.get_board().with_can = False
++
+     _set_build_context_variant(cfg.env.BOARD)
+     cfg.setenv(cfg.env.BOARD)
+ 
+@@ -574,6 +583,17 @@ def configure(cfg):
+     # add in generated flags
+     cfg.env.CXXFLAGS += ['-include', 'ap_config.h']
+ 
++    if cfg.options.enable_llvm_ir:
++        cfg.msg('LLVM IR generation', 'enabled')
++        cfg.env.prepend_value('CFLAGS', ['-flto'])
++        cfg.env.prepend_value('CFLAGS', ['-fno-discard-value-names','-fembed-bitcode'])
++        cfg.env.prepend_value('CXXFLAGS', ['-flto'])
++        cfg.env.prepend_value('CXXFLAGS', ['-fno-discard-value-names','-fembed-bitcode','-fwhole-program-vtables'])
++        cfg.env.prepend_value('LINKFLAGS','-flto')
++        cfg.env.prepend_value('LINKFLAGS','-fuse-ld=ld.lld')
++    else:
++        cfg.msg('LLVM IR generation', 'disabled', color='YELLOW')
++
+     _collect_autoconfig_files(cfg)
+ 
+ def collect_dirs_to_recurse(bld, globs, **kw):

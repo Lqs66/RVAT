@@ -1,0 +1,1097 @@
+[
+    {
+        "id": 51,
+        "property_specification": "In Loiter Mode the Copter maintains its altitude.",
+        "uppaal_formula": "A[] LoiterMode imply altitude_maintained"
+    },
+    {
+        "id": 53,
+        "property_specification": "Once the copter has landed, the motors will eventually be disarmed.",
+        "uppaal_formula": "landed --> motors_disarmed"
+    },
+    {
+        "id": 105,
+        "property_specification": "If the altitude exceeds the maximum or minimum limit, then a fence breach will eventually be declared in all modes.",
+        "uppaal_formula": "(altitude > max_limit || altitude < min_limit) --> breach_declared"
+    },
+    {
+        "id": 111,
+        "property_specification": "The vehicle must always maintain a distance greater than or equal to FENCE_MARGIN from the fence boundary to prevent a breach.",
+        "uppaal_formula": "A[] vehicle.distance >= FENCE_MARGIN"
+    },
+    {
+        "id": 127,
+        "property_specification": "FENCE_RADIUS must be larger than FENCE_MARGIN.",
+        "uppaal_formula": "FENCE_RADIUS > FENCE_MARGIN"
+    },
+    {
+        "id": 131,
+        "property_specification": "If either the GPS arming check or the EKF failsafe is disabled, the fence must be disabled.",
+        "uppaal_formula": "gpsArmingCheckDisabled || ekfFailsafeDisabled --> !fenceEnabled"
+    },
+    {
+        "id": 133,
+        "property_specification": "If the fence is enabled, arming the vehicle eventually requires GPS lock to be acquired first.",
+        "uppaal_formula": "fence_enabled --> (armed imply gps_lock)"
+    },
+    {
+        "id": 134,
+        "property_specification": "If EKF failsafe occurs and the Fence is enabled and you lose GPS lock while flying, then the Fence will eventually be disabled.",
+        "uppaal_formula": "EKFFailsafeOccurred && FenceEnabled && GPSLostWhileFlying --> FenceDisabled"
+    },
+    {
+        "id": 135,
+        "property_specification": "If EKF failsafe occurs and the Fence is enabled and the vehicle is in an autonomous mode, the vehicle will eventually switch to LAND mode.",
+        "uppaal_formula": "EKFFailsafeOccurs && FenceEnabled && AutonomousMode --> LAND"
+    },
+    {
+        "id": 137,
+        "property_specification": "Assuming that the FENCE_ACTION is not set to RTL, if the vehicle breaches an exclusion fence in Loiter mode for Copter and Object Avoidance is setup, then eventually the vehicle will stop.",
+        "uppaal_formula": "breaches_exclusion_fence && loiter_mode && object_avoidance --> vehicle_stopped"
+    },
+    {
+        "id": 150,
+        "property_specification": "If the vehicle reaches either the polygon fence or cylindrical fence, then the failsafe behavior (stop or RTL) will eventually trigger",
+        "uppaal_formula": "(vehicle_reach_polygon || vehicle_reach_cylindrical) --> failsafe_triggered"
+    },
+    {
+        "id": 171,
+        "property_specification": "If FENCE_TYPE is 2, inclusion zones overlap, a boundary is crossed, and FENCE_OPTIONS bit 1 is not set, then a fence breach will eventually occur.",
+        "uppaal_formula": "(FENCE_TYPE == 2 && zones_overlap && crossing_boundary && (FENCE_OPTIONS & 1) == 0) --> breach"
+    },
+    {
+        "id": 174,
+        "property_specification": "Whenever the copter is in Loiter, PosHold, or AltHold modes and altitude reaches FENCE_ALT_MAX, it does not increase altitude further.",
+        "uppaal_formula": "A[] ((mode == Loiter || mode == PosHold || mode == AltHold) && altitude >= FENCE_ALT_MAX) imply (!increasing_altitude)"
+    },
+    {
+        "id": 175,
+        "property_specification": "Whenever the system is in Loiter mode and exceeds the boundary, a breach is eventually declared.",
+        "uppaal_formula": "(loiter_mode && boundary_exceeded) --> breach_declared"
+    },
+    {
+        "id": 176,
+        "property_specification": "If the system is in a mode other than the Loiter mode and either the altitude is reached or the boundary is reached, then it will eventually execute FENCE_ACTION.",
+        "uppaal_formula": "(!Loiter && (altitude_reached || boundary_reached)) --> FENCE_ACTION"
+    },
+    {
+        "id": 194,
+        "property_specification": "Whenever Object Avoidance is enabled and RTL is active, the system eventually avoids fences.",
+        "uppaal_formula": "(ObjectAvoidanceSetup && RTL_in_progress) --> AvoidsFences"
+    },
+    {
+        "id": 196,
+        "property_specification": "If the vehicle's distance exceeds 100 meters, it will eventually switch to LAND/HOLD mode.",
+        "uppaal_formula": "vehicle.distance > 100 --> vehicle.mode == LAND"
+    },
+    {
+        "id": 204,
+        "property_specification": "If FENCE_ACTION is 6 or 7, FENCE_RET_ALT is zero, and altitude limits are non-zero, altitude equals midway between limits.",
+        "uppaal_formula": "A[] ((FENCE_ACTION == 6 || FENCE_ACTION == 7) && FENCE_RET_ALT == 0 && (min_alt != 0 || max_alt != 0)) --> (altitude == (min_alt + max_alt)/2)"
+    },
+    {
+        "id": 204,
+        "property_specification": "If FENCE_ACTION is set to a guided return mode (6 or 7), then the altitude at which it returns is determined by FENCE_RET_ALT.",
+        "uppaal_formula": "FENCE_ACTION == 6 || FENCE_ACTION == 7 --> return_altitude == FENCE_RET_ALT"
+    },
+    {
+        "id": 207,
+        "property_specification": "Mode changes cannot be executed after the fence breach unless the FENCE_OPTIONS bit 0 is set to \u201c0\u201d.",
+        "uppaal_formula": "fence_breach && FENCE_OPTIONS == 1 --> A[] !mode_change"
+    },
+    {
+        "id": 211,
+        "property_specification": "Whenever the PWM value is greater than 1800, all configured fences are enabled.",
+        "uppaal_formula": "RC7_OPTION = 11 && RC7_OPTION_PWM > 1800 --> fences_enabled"
+    },
+    {
+        "id": 212,
+        "property_specification": "If the system is on the ground, disarmed, and the Minimum Altitude fence is enabled, then a pre-arm failure will eventually occur.",
+        "uppaal_formula": "(on_ground && disarmed && min_alt_enabled) --> pre_arm_failure"
+    },
+    {
+        "id": 215,
+        "property_specification": "In Loiter mode, Copter always maintains an altitude less than or equal to FENCE_ALT_MAX.",
+        "uppaal_formula": "A[] Loiter imply altitude <= FENCE_ALT_MAX"
+    },
+    {
+        "id": 227,
+        "property_specification": "If the system is inside the fence, the breach_status field is 0.",
+        "uppaal_formula": "breach_status == 0"
+    },
+    {
+        "id": 232,
+        "property_specification": "The system can eventually perform a failsafe action.",
+        "uppaal_formula": "E<> failsafe"
+    },
+    {
+        "id": 249,
+        "property_specification": "If the copter is in ALTHOLD or LOITER mode and objects are detected in any quadrant, it will eventually move away from the threat or stop.",
+        "uppaal_formula": "(mode == ALTHOLD || mode == LOITER) && objects_detected --> (moving_away || stopped)"
+    },
+    {
+        "id": 263,
+        "property_specification": "If PRX1_TYPE is set to 4, the proximity sensor is enabled.",
+        "uppaal_formula": "PRX1_TYPE == 4 --> ProximityEnabled"
+    },
+    {
+        "id": 264,
+        "property_specification": "The system can possibly be in the Loiter state.",
+        "uppaal_formula": "E<> Loiter"
+    },
+    {
+        "id": 270,
+        "property_specification": "Whenever an obstacle approaches and the sensor detects it, the vehicle will eventually back away.",
+        "uppaal_formula": "(obstacle_approaching && sensor_detected) --> backing_away"
+    },
+    {
+        "id": 287,
+        "property_specification": "The vehicle always maintains a distance of at least OA_MARGIN_MAX (2m) from obstacles.",
+        "uppaal_formula": "A[] vehicle.distance >= OA_MARGIN_MAX"
+    },
+    {
+        "id": 297,
+        "property_specification": "Whenever the vehicle's altitude above home is below OA_DB_ALT_MIN within a 3-meter radius around home, obstacles are rejected.",
+        "uppaal_formula": "A[] ((vehicle_altitude < OA_DB_ALT_MIN && radius <= 3) --> ObstacleRejected)"
+    },
+    {
+        "id": 312,
+        "property_specification": "Surface Tracking is possible when the system is in Loiter, PosHold, or AltHold modes.",
+        "uppaal_formula": "E<> (SurfaceTracking && (Loiter || PosHold || AltHold))"
+    },
+    {
+        "id": 314,
+        "property_specification": "If the system is using GCS provided terrain data, the TERRAIN_ENABLE parameter is set to 1.",
+        "uppaal_formula": "GCS_terrain_data --> TERRAIN_ENABLE == 1"
+    },
+    {
+        "id": 316,
+        "property_specification": "Whenever the system is in AUTO mode, the mission will eventually be executed",
+        "uppaal_formula": "(mode == AUTO) --> mission_executed"
+    },
+    {
+        "id": 318,
+        "property_specification": "The parameter EK3_RNG_USE_HGT must always be -1.",
+        "uppaal_formula": "A[] (EK3_RNG_USE_HGT == -1)"
+    },
+    {
+        "id": 335,
+        "property_specification": "If terrain data is unavailable during RTL with TERRAIN_FOLLOW enabled, altitude interpretation defaults to home.",
+        "uppaal_formula": "A[] ((TERRAIN_FOLLOW == 1 && RTL_mode && !terrain_data_available) imply (altitude_source == home))"
+    },
+    {
+        "id": 336,
+        "property_specification": "If during RTL, WPNAV_RFND_USE is 1, RTL_ALT is within the rangefinder's operating range, and the rangefinder is healthy, then the rangefinder is used instead of the terrain database.",
+        "uppaal_formula": "(RTL_active && WPNAV_RFND_USE == 1 && RTL_ALT <= RFND_MAX && rangefinder_healthy) --> use_rangefinder"
+    },
+    {
+        "id": 337,
+        "property_specification": "If the vehicle is executing a mission requiring terrain data, unable to retrieve terrain data for two seconds, and is flying, it will eventually switch to RTL mode.",
+        "uppaal_formula": "(executing_mission && terrain_data_failed && x >= 2 && flying) --> rtl_mode"
+    },
+    {
+        "id": 337,
+        "property_specification": "If the vehicle is executing a mission requiring terrain data, unable to retrieve terrain data for two seconds, and is landed, it will eventually disarm.",
+        "uppaal_formula": "(executing_mission && terrain_data_failed && x >= 2 && landed) --> disarmed"
+    },
+    {
+        "id": 353,
+        "property_specification": "Whenever the vehicle climbs out of the rangefinder\u2019s range, the pilot\u2019s stick returns to directly controlling the vehicle\u2019s target climb rate.",
+        "uppaal_formula": "outOfRange --> stickControlsClimbRate"
+    },
+    {
+        "id": 357,
+        "property_specification": "Whenever inverted flight is enabled (RCx_OPTION switch 43 activated), the vehicle eventually stabilizes with a roll of 180 degrees.",
+        "uppaal_formula": "invert_enabled --> (roll == 180)"
+    },
+    {
+        "id": 358,
+        "property_specification": "Eventually, in extreme cases, EKF failsafes might occur.",
+        "uppaal_formula": "E<> ekf_failsafe"
+    },
+    {
+        "id": 395,
+        "property_specification": "If INS_HNTCH_OPTS does not has bit 1 set, then the average frequency of all motors will set the center frequency.",
+        "uppaal_formula": "(INS_HNTCH_OPTS & 1 == 0) --> center_frequency_set"
+    },
+    {
+        "id": 410,
+        "property_specification": "If the system is in ESC Telemetry Mode, then each motor will eventually have a notch assigned at its RPM.",
+        "uppaal_formula": "ESC_Telemetry_Mode --> motor_notch_RPM"
+    },
+    {
+        "id": 410,
+        "property_specification": "If the system is in Throttle Mode, then each motor will eventually have a notch assigned at its throttle input.",
+        "uppaal_formula": "Throttle_Mode --> motor_notch_throttle"
+    },
+    {
+        "id": 414,
+        "property_specification": "If any RPM source (Sensor, ESC telem, FFT) fails, the system will eventually use the minimum frequency (FFT_MINHZ, INS_HNTCH_FREQ, or INS_HNTC2_FREQ) for the notch center frequency.",
+        "uppaal_formula": "rpm_source_failed --> min_freq_used"
+    },
+    {
+        "id": 420,
+        "property_specification": "If the autopilot is capable of running FFT (CapableFFT), and FFT_ENABLE is enabled, and RC Auxiliary function 162 is used (RC_Aux_162_Used) during sustained hover (Hovering), then the parameters (INS_HNTCH_FREQ, INS_HNTCH_ENABLE, INS_HNTCH_MODE) will eventually be automatically set (ParametersSet).",
+        "uppaal_formula": "(CapableFFT && FFT_ENABLE && RC_Aux_162_Used && Hovering) --> ParametersSet"
+    },
+    {
+        "id": 422,
+        "property_specification": "If the harmonic notch is enabled (enabled == 1), then either INS_HNTCH_ENABLE or INS_HNTC2_ENABLE must be set to 1.",
+        "uppaal_formula": "A[] (enabled == 1 imply (INS_HNTCH_ENABLE == 1 || INS_HNTC2_ENABLE == 1))"
+    },
+    {
+        "id": 433,
+        "property_specification": "Setting INS_HNTCH_MODE or INS_HNTC2_MODE to 2 or 5 leads to using an RPM sensor to set the harmonic notch frequency.",
+        "uppaal_formula": "(INS_HNTCH_MODE == 2 || INS_HNTCH_MODE == 5 || INS_HNTC2_MODE == 2 || INS_HNTC2_MODE == 5) --> RPM_sensor_used"
+    },
+    {
+        "id": 435,
+        "property_specification": "The notch's center frequency is always greater than or equal to INS_HNTC2_FREQ when set below hover frequency.",
+        "uppaal_formula": "A[] notch_center >= INS_HNTC2_FREQ"
+    },
+    {
+        "id": 440,
+        "property_specification": "If INS_HNTCH_REF or INS_HNTC2_REF is 1, then scaling of the harmonic notch will be disabled.",
+        "uppaal_formula": "INS_HNTCH_REF == 1 || INS_HNTC2_REF == 1 --> harmonic_notch_scaling_disabled"
+    },
+    {
+        "id": 440,
+        "property_specification": "Setting INS_HNTCH_MODE to 3 or INS_HNTC2_MODE to 3 leads to ESC telemetry being selected",
+        "uppaal_formula": "(INS_HNTCH_MODE == 3 || INS_HNTC2_MODE == 3) --> esc_telemetry_selected"
+    },
+    {
+        "id": 457,
+        "property_specification": "If INS_HNTCH_MODE or INS_HNTC2_MODE is equal to 4, then the system uses the FFT detected frequency for controlling the harmonic notch frequency.",
+        "uppaal_formula": "INS_HNTCH_MODE == 4 || INS_HNTC2_MODE == 4 --> FFT_detected_frequency_used"
+    },
+    {
+        "id": 489,
+        "property_specification": "If FFT_ENABLE is 0, then the FFT engine is disabled.",
+        "uppaal_formula": "FFT_ENABLE == 0 --> FFT_engine_disabled"
+    },
+    {
+        "id": 611,
+        "property_specification": "It is always possible to switch back to Stabilize/Alt-Hold.",
+        "uppaal_formula": "E<> Stabilize || E<> AltHold"
+    },
+    {
+        "id": 651,
+        "property_specification": "Setting GPS1_TYPE to 0 leads to the GPS being disabled.",
+        "uppaal_formula": "GPS1_TYPE == 0 --> gps_disabled"
+    },
+    {
+        "id": 651,
+        "property_specification": "Whenever GPS1_TYPE is 0, the GPS is disabled",
+        "uppaal_formula": "A[] (GPS1_TYPE == 0 -> GPS_disabled)"
+    },
+    {
+        "id": 683,
+        "property_specification": "When RC6_OPTION = 90 and the switch is in the high position (Source3), the EKF will eventually lose its position estimate and trigger an EKF failsafe.",
+        "uppaal_formula": "RC6_OPTION = 90 and (switch_position == Source3) --> EKF_failsafe"
+    },
+    {
+        "id": 700,
+        "property_specification": "If ARMING_CHECK is set to -9, the GPS arming check is disabled.",
+        "uppaal_formula": "ARMING_CHECK == -9 --> GPS_arming_check_disabled"
+    },
+    {
+        "id": 701,
+        "property_specification": "Setting SERIAL1_BAUD to 921 leads to SERIAL1's baud rate eventually becoming 921600",
+        "uppaal_formula": "SERIAL1_BAUD == 921 --> SERIAL1_BAUD_RATE == 921600"
+    },
+    {
+        "id": 702,
+        "property_specification": "If SERIAL1_PROTOCOL is set to 13, the system can read the IndoorLoiter2 protocol.",
+        "uppaal_formula": "SERIAL1_PROTOCOL == 13 --> ReadingIndoorLoiter2"
+    },
+    {
+        "id": 713,
+        "property_specification": "Whenever the system is in GUIDED or AUTO mode and GUID_OPTIONS bit 7 is 1 or AUTO_OPTIONS bit 7 is 1 and WVANE_ENABLE is non-zero, active weathervaning is active.",
+        "uppaal_formula": "(mode == GUIDED || mode == AUTO) && (GUID_OPTIONS bit 7 == 1 || AUTO_OPTIONS bit 7 == 1) && WVANE_ENABLE != 0 --> weathervaning_active"
+    },
+    {
+        "id": 715,
+        "property_specification": "If pilot yaw control is enabled and pilot input ceases, the vehicle will eventually yaw back to the Weathervaning Direction.",
+        "uppaal_formula": "(pilot_yaw_enabled && !pilot_input) --> (vehicle_yaw == weathervaning_direction)"
+    },
+    {
+        "id": 722,
+        "property_specification": "Whenever the ground speed is below WVANE_SPD_MAX, weathervaning is permitted",
+        "uppaal_formula": "ground_speed < WVANE_SPD_MAX --> weathervaning_permitted"
+    },
+    {
+        "id": 1464,
+        "property_specification": "Whenever GPS lock is shown, position has eventually become valid.",
+        "uppaal_formula": "GPS_lock_shown --> position_valid"
+    },
+    {
+        "id": 1468,
+        "property_specification": "When the system is in the Disarmed state, GPS lock is acquired.",
+        "uppaal_formula": "A[] (System.Disarmed imply gps_lock_acquired)"
+    },
+    {
+        "id": 1470,
+        "property_specification": "Eventually, the system is ready to fly when armed and a GPS lock is acquired.",
+        "uppaal_formula": "armed && gps_lock --> ready_to_fly"
+    },
+    {
+        "id": 1478,
+        "property_specification": "When the system is in the Safety state, a pre-arm error condition is generated.",
+        "uppaal_formula": "A[] (Safety -> pre_arm_error)"
+    },
+    {
+        "id": 1478,
+        "property_specification": "When the system is in the Safety state, servo outputs have their PWM disabled.",
+        "uppaal_formula": "A[] (Safety -> servo_pwm_disabled)"
+    },
+    {
+        "id": 1481,
+        "property_specification": "Whenever the safety switch is pressed, the motors and servos are eventually able to move once the vehicle is armed.",
+        "uppaal_formula": "safety_switch_pressed --> (vehicle_armed && motors_and_servos_move)"
+    },
+    {
+        "id": 1483,
+        "property_specification": "The safety button is only active when disarmed, which leads to the system entering the safety on state when disarmed.",
+        "uppaal_formula": "disarmed --> safety_on"
+    },
+    {
+        "id": 2112,
+        "property_specification": "Whenever the external safety switch is activated, the system eventually enters a safe state.",
+        "uppaal_formula": "SafetySwitchOn --> SafeState"
+    },
+    {
+        "id": 2725,
+        "property_specification": "It is possible to arm and operate in ACRO or STABILIZE modes.",
+        "uppaal_formula": "E<> (armed && (mode == ACRO || mode == STABILIZE))"
+    },
+    {
+        "id": 3519,
+        "property_specification": "Operation without an RC system is possible.",
+        "uppaal_formula": "E<> (operational && !RC_system_active)"
+    },
+    {
+        "id": 3622,
+        "property_specification": "There exists a path where a Copter or Rover mode operates without GPS and Compass.",
+        "uppaal_formula": "E<> (CopterModeWithoutGPSCompass || RoverModeWithoutGPSCompass)"
+    },
+    {
+        "id": 4248,
+        "property_specification": "If throttle is held down and rudder is held right for 5 seconds, then the copter becomes armed.",
+        "uppaal_formula": "(throttle_down && rudder_right && x >= 5) --> armed"
+    },
+    {
+        "id": 4249,
+        "property_specification": "If the system fails to Arm with throttle down and to the right and the motors are not spinning, then the Pre-Arm Safety Check has failed.",
+        "uppaal_formula": "(failed_arm && throttle_down_right && !motors_spinning) --> PreArmSafetyCheckFailed"
+    },
+    {
+        "id": 4499,
+        "property_specification": "If an output's function is set to RCPassThru, then it corresponds to an RC input.",
+        "uppaal_formula": "A[] (SERVOx_FUNCTION == RCPassThru imply output_connected)"
+    },
+    {
+        "id": 4512,
+        "property_specification": "The vehicle can potentially reach a state of inverted flight.",
+        "uppaal_formula": "E<> inverted_flight"
+    },
+    {
+        "id": 4529,
+        "property_specification": "The tail servo's PWM value must never exceed SERVO7_MAX to prevent binding. The servo's PWM value must never be less than SERVO1_MIN to avoid physical limits.",
+        "uppaal_formula": "A[] pwm1 >= SERVO1_MIN && Servo.PWM <= SERVO7_MAX"
+    },
+    {
+        "id": 4558,
+        "property_specification": "The vehicle can be armed only when in Stabilize mode.",
+        "uppaal_formula": "A[] (armed imply mode == Stabilize)"
+    },
+    {
+        "id": 4839,
+        "property_specification": "Whenever the vehicle is armed and not flying, the motors spin at MOT_SPIN_ARM speed.",
+        "uppaal_formula": "A[] (armed && !flying imply motor_speed == MOT_SPIN_ARM)"
+    },
+    {
+        "id": 4841,
+        "property_specification": "MOT_SPIN_MIN must always be at least 0.03 higher than MOT_SPIN_ARM",
+        "uppaal_formula": "A[] (MOT_SPIN_MIN >= MOT_SPIN_ARM + 0.03)"
+    },
+    {
+        "id": 4846,
+        "property_specification": "Once the vehicle enters a failsafe mode (Radio/Battery/GCS/Terrain Data Loss) involving a mode change, it remains in that mode until the pilot directly changes the mode.",
+        "uppaal_formula": "FailsafeMode --> (PilotChangeMode || FailsafeMode)"
+    },
+    {
+        "id": 4850,
+        "property_specification": "If the radio failsafe is enabled and set up correctly, then whenever any condition occurs for more than RC_FS_TIMEOUT seconds, the failsafe will eventually trigger.",
+        "uppaal_formula": "(enabled_correctly && (cond1 || cond2 || ...) && t >= RC_FS_TIMEOUT) --> FailsafeTriggered"
+    },
+    {
+        "id": 4857,
+        "property_specification": "After a radio failsafe is triggered, it is possible for the copter to do nothing.",
+        "uppaal_formula": "E<> do_nothing"
+    },
+    {
+        "id": 4857,
+        "property_specification": "After a radio failsafe is triggered, it is possible for the copter to land immediately.",
+        "uppaal_formula": "E<> land"
+    },
+    {
+        "id": 4857,
+        "property_specification": "After a radio failsafe is triggered, it is possible for the copter to execute RTL.",
+        "uppaal_formula": "E<> RTL"
+    },
+    {
+        "id": 4858,
+        "property_specification": "Always, if the copter is disarmed, then failsafe does not occur.",
+        "uppaal_formula": "A[] (disarmed imply !failsafe)"
+    },
+    {
+        "id": 4860,
+        "property_specification": "Whenever the copter is armed and in Stabilize or Acro mode and throttle input is at minimum, it eventually disarms.",
+        "uppaal_formula": "(armed && (mode == Stabilize || mode == Acro) && throttle == min) --> !armed"
+    },
+    {
+        "id": 4862,
+        "property_specification": "When the copter enters RTL mode due to RC falisafe, it remains in RTL when RC falisafe is lifted.",
+        "uppaal_formula": "RC_falisafe and mode==RTL --> (RC_falisafe_lifted imply mode == RTL)"
+    },
+    {
+        "id": 4869,
+        "property_specification": "If RTL is enabled (FS_THR_ENABLE == 1) and GPS is not usable, the copter will eventually enter Land Mode.",
+        "uppaal_formula": "(FS_THR_ENABLE == 1 && !GPS_usable) --> (Mode == Land_Mode)"
+    },
+    {
+        "id": 4871,
+        "property_specification": "Enabling Always Land (FS_THR_ENABLE == 3) leads to the copter eventually switching to Land Mode.",
+        "uppaal_formula": "FS_THR_ENABLE == 3 --> copter_mode == LandMode"
+    },
+    {
+        "id": 4872,
+        "property_specification": "If SmartRTL or RTL is enabled (FS_THR_ENABLE 4) and GPS is not usable, the copter will eventually enter Land mode.",
+        "uppaal_formula": "(FS_THR_ENABLE == 4 && !GPS_usable) --> Land_mode"
+    },
+    {
+        "id": 4872,
+        "property_specification": "If the GPS position is not usable, the copter will change to Land Mode instead.",
+        "uppaal_formula": "GPS_not_usable --> Land_Mode"
+    },
+    {
+        "id": 4873,
+        "property_specification": "If Enabled SmartRTL or Land (FS_THR_ENABLE 5) is active and SmartRTL is not available, the copter will eventually switch to Land Mode.",
+        "uppaal_formula": "(FS_THR_ENABLE == 5 && !SmartRTL_available) --> Land_mode"
+    },
+    {
+        "id": 4873,
+        "property_specification": "If Enabled SmartRTL or Land (FS_THR_ENABLE == 5) is active and SmartRTL is available, the copter will eventually switch to SmartRTL mode.",
+        "uppaal_formula": "(FS_THR_ENABLE == 5 && SmartRTL_available) --> SmartRTL_mode"
+    },
+    {
+        "id": 4875,
+        "property_specification": "Whenever GPS position is not available, the system will eventually transition to BRAKE or LAND state.",
+        "uppaal_formula": "!GPS_available --> (Brake || Land)"
+    },
+    {
+        "id": 4875,
+        "property_specification": "If FS_THR_ENABLE == 7 and GPS position is not available, then eventually either Brake or Land will be in the BRAKE or LAND state.",
+        "uppaal_formula": "FS_THR_ENABLE == 7 && !GPS_position --> Brake || Land"
+    },
+    {
+        "id": 4884,
+        "property_specification": "If none of the above options are set, then FS_THR_ENABLE will eventually be executed.",
+        "uppaal_formula": "FS_OPTIONS == 0 --> FS_THR_ENABLE_executed"
+    },
+    {
+        "id": 4892,
+        "property_specification": "Whenever the system is in STABILIZE or ACRO mode and throttle is zero, the motors eventually disarm.",
+        "uppaal_formula": "(mode == STABILIZE || mode == ACRO) && throttle == 0 --> motors_disarmed"
+    },
+    {
+        "id": 4906,
+        "property_specification": "If the vehicle battery voltage drops below a specified voltage for 10 seconds, the vehicle eventually switches to RTL, SmartRTL, or Land mode.",
+        "uppaal_formula": "(voltage_low && x >= 10) --> (mode == RTL || mode == SmartRTL || mode == Land)"
+    },
+    {
+        "id": 4906,
+        "property_specification": "If the estimated remaining capacity drops below a configurable threshold, the vehicle eventually switches to RTL, SmartRTL, or Land mode.",
+        "uppaal_formula": "capacity_low --> (mode == RTL || mode == SmartRTL || mode == Land)"
+    },
+    {
+        "id": 4911,
+        "property_specification": "If BATT_LOW_MAH is set to zero, the capacity-based trigger is disabled (only voltage is used).",
+        "uppaal_formula": "A[] (BATT_LOW_MAH == 0 imply capacity_trigger_disabled)"
+    },
+    {
+        "id": 4921,
+        "property_specification": "BATT_FS_LOW_ACT == 1 and battery failsafe is triggered then vehicle switches to Land mode.",
+        "uppaal_formula": "BATT_FS_LOW_ACT == 1 and battery_failsafe --> mode == land"
+    },
+    {
+        "id": 4922,
+        "property_specification": "If BATT_FS_LOW_ACT == 2 and battery failsafe and the vehicle has a good position estimate, then switch to Return-to-Launch mode.",
+        "uppaal_formula": "BATT_FS_LOW_ACT == 2 and battery_failsafe and good_position --> Vehicle.RTL"
+    },
+    {
+        "id": 4922,
+        "property_specification": "If BATT_FS_LOW_ACT == 2 and battery failsafe and the vehicle lacks a good position estimate, then switch to land mode.",
+        "uppaal_formula": "BATT_FS_LOW_ACT == 2 and battery_failsafe and !good_position --> Vehicle.Land"
+    },
+    {
+        "id": 4923,
+        "property_specification": "If SmartRTL is not possible (buffer full) and RTL is possible (position estimate good), the vehicle will eventually switch to RTL mode.",
+        "uppaal_formula": "bufferFull && positionGood --> Vehicle.mode == RTL"
+    },
+    {
+        "id": 4923,
+        "property_specification": "If both SmartRTL and RTL are not possible (buffer full and no good position estimate), the vehicle will eventually switch to Land mode.",
+        "uppaal_formula": "bufferFull && !positionGood --> Vehicle.mode == Land"
+    },
+    {
+        "id": 4926,
+        "property_specification": "If the vehicle is in Auto state and a DO_LAND_START mission item exists, it will eventually transition to DO_LAND_START.",
+        "uppaal_formula": "(Auto && DO_LAND_START_available) --> DO_LAND_START"
+    },
+    {
+        "id": 4927,
+        "property_specification": "Changing the flight mode switch to another mode leads to the user re-taking control of the vehicle",
+        "uppaal_formula": "flight_mode_switch_changed --> user_control"
+    },
+    {
+        "id": 4946,
+        "property_specification": "If no MAVLink heartbeat from the GCS is received for FS_GCS_TIMEOUT seconds, the GCS failsafe event will trigger.",
+        "uppaal_formula": "(x >= FS_GCS_TIMEOUT) --> FailsafeTriggered"
+    },
+    {
+        "id": 4946,
+        "property_specification": "If no GCS has ever been connected, the GCS failsafe remains inactive regardless of parameter settings.",
+        "uppaal_formula": "A[] (!GCS_connected --> !FailsafeActive)"
+    },
+    {
+        "id": 4946,
+        "property_specification": "Eventually, the GCS failsafe will trigger if no heartbeat is detected for FS_GCS_TIMEOUT seconds.",
+        "uppaal_formula": "A<>(heartbeat_received == false && time > FS_GCS_TIMEOUT imply GCS_failsafe_triggered)"
+    },
+    {
+        "id": 4947,
+        "property_specification": "It is possible to reach the Radio failsafe state.",
+        "uppaal_formula": "E<> RadioFailsafe"
+    },
+    {
+        "id": 4947,
+        "property_specification": "It is possible to reach the Battery failsafe state.",
+        "uppaal_formula": "E<> BatteryFailsafe"
+    },
+    {
+        "id": 4953,
+        "property_specification": "When a GCS failsafe is triggered, there exists a path where the copter lands immediately.",
+        "uppaal_formula": "E<> (failsafe_triggered && land_immediately)"
+    },
+    {
+        "id": 4953,
+        "property_specification": "When a GCS failsafe is triggered, there exists a path where the copter initiates SmartRTL.",
+        "uppaal_formula": "E<> (failsafe_triggered && SmartRTL)"
+    },
+    {
+        "id": 4953,
+        "property_specification": "When a GCS failsafe is triggered in Auto Mode, there exists a path where the failsafe is bypassed.",
+        "uppaal_formula": "E<> (failsafe_triggered && Auto_Mode && bypass_failsafe)"
+    },
+    {
+        "id": 4953,
+        "property_specification": "If a GCS failsafe is triggered while already in a landing phase, the copter continues landing.",
+        "uppaal_formula": "(failsafe_triggered && landing_phase) --> continue_landing"
+    },
+    {
+        "id": 4958,
+        "property_specification": "If FS_GCS_ENABLE == 3 and  SmartRTL is unavailable, the copter eventually enters RTL mode instead of SmartRTL when SmartRTL/RTL is enabled.",
+        "uppaal_formula": "FS_GCS_ENABLE == 3 && !SmartRTL_available --> CopterMode == RTL"
+    },
+    {
+        "id": 4959,
+        "property_specification": "If the system is in state Value4 and SmartRTL is available, then it will eventually switch to SmartRTL mode.",
+        "uppaal_formula": "(state == Value4 && SmartRTL_available) --> SmartRTL_mode"
+    },
+    {
+        "id": 4962,
+        "property_specification": "If BRAKE is included in the firmware, the system eventually switches to BRAKE mode.",
+        "uppaal_formula": "firmware_has_brake --> BrakeMode"
+    },
+    {
+        "id": 4962,
+        "property_specification": "If BRAKE is not included in the firmware, the system eventually switches to LAND mode.",
+        "uppaal_formula": "!firmware_has_brake --> LandMode"
+    },
+    {
+        "id": 4969,
+        "property_specification": "If any two of the EKF variances (compass, position, velocity) are above FS_EKF_THRESH for 1 second, then the EKF failsafe will trigger.",
+        "uppaal_formula": "((compassHigh && positionHigh) || (compassHigh && velocityHigh) || (positionHigh && velocityHigh)) && x >= 1000 --> FailsafeTriggered"
+    },
+    {
+        "id": 4976,
+        "property_specification": "Whenever the vehicle enters Land mode, it will eventually disarm its motors.",
+        "uppaal_formula": "(mode == Land) --> (motors_disarmed)"
+    },
+    {
+        "id": 4978,
+        "property_specification": "After an EKF failsafe occurs, there exists a path where the system eventually enters AltHold mode and brings the vehicle home.",
+        "uppaal_formula": "EKF_Failsafe --> (AltHold && Home)"
+    },
+    {
+        "id": 4980,
+        "property_specification": "Whenever FS_EKF_THRESH is 0, the EKF failsafe is disabled",
+        "uppaal_formula": "A[] (FS_EKF_THRESH == 0 imply EKF_Failsafe == DISABLED)"
+    },
+    {
+        "id": 4981,
+        "property_specification": "When FS_EKF_THRESH is increased to between 0.8 and 1.0, the EKF failsafe may not activate (reduced chance).",
+        "uppaal_formula": "E<> (!EKF_failsafe && FS_EKF_THRESH >= 0.8 && FS_EKF_THRESH <= 1.0)"
+    },
+    {
+        "id": 4984,
+        "property_specification": "Whenever both velocity and position innovations exceed FS_EKF_THRESH (0.8), the vehicle eventually switches to Land mode.",
+        "uppaal_formula": "(velocity_innov > 0.8 && position_innov > 0.8) --> Vehicle.LandMode"
+    },
+    {
+        "id": 4987,
+        "property_specification": "If Copter is in a mode requiring GPS and (GPS 3D lock is lost or position glitches occur) for at least 5 seconds, then a GPS failsafe event will eventually occur.",
+        "uppaal_formula": "(Copter_mode_requires_GPS && (GPS_3D_lock_lost || Position_Glitches) && x >= 5) --> GPS_failsafe_occurred"
+    },
+    {
+        "id": 4987,
+        "property_specification": "Whenever a GPS failsafe occurs, the system will eventually either Land or switch to AltHold mode.",
+        "uppaal_formula": "GPS_failsafe_occurred --> (Land || AltHold_mode)"
+    },
+    {
+        "id": 4988,
+        "property_specification": "If there are no GPS updates for 10 seconds, the horizontal position becomes invalid.",
+        "uppaal_formula": "A[] (no_gps && x >= 10 --> horizontal_position_invalid)"
+    },
+    {
+        "id": 5001,
+        "property_specification": "If the copter loses position estimate, it will eventually return home or partially return home.",
+        "uppaal_formula": "(lost_position_estimate) --> (copter_return_home || partial_return_home)"
+    },
+    {
+        "id": 5006,
+        "property_specification": "The vehicle cannot maintain control for more than FS_DR_TIMEOUT seconds after losing GPS.",
+        "uppaal_formula": "A[] (InControl && !GPS_available imply x <= FS_DR_TIMEOUT)"
+    },
+    {
+        "id": 5008,
+        "property_specification": "Whenever the vehicle loses GPS, it remains in normal flight for at least 7 seconds.",
+        "uppaal_formula": "A[] (gps_lost && t < 7 --> normal_flight)"
+    },
+    {
+        "id": 5008,
+        "property_specification": "The vehicle cannot stay in normal flight beyond 10 seconds after GPS loss.",
+        "uppaal_formula": "A[] (gps_lost && t >= 10 --> !normal_flight)"
+    },
+    {
+        "id": 5009,
+        "property_specification": "Whenever Dead Reckoning is active, the GCS displays 'Dead Reckoning started' and the vehicle is in RTL mode.",
+        "uppaal_formula": "A[] (DeadReckoningActive imply (GCS_display_DR && vehicle_mode == RTL))"
+    },
+    {
+        "id": 5010,
+        "property_specification": "If the vehicle has not reached home (VehicleMode != Home) and the clock x exceeds FS_DR_TIMEOUT, then eventually EKF failsafe is triggered (EKF_Failsafe_Triggered) and the vehicle is in Land mode (VehicleMode == Land).",
+        "uppaal_formula": "(VehicleMode != Home && x >= FS_DR_TIMEOUT) --> (EKF_Failsafe_Triggered && VehicleMode == Land)"
+    },
+    {
+        "id": 5013,
+        "property_specification": "Setting RC9_OPTION to 65 allows the system to reach a state where GPS is disabled via an auxiliary switch.",
+        "uppaal_formula": "E<> (RC9_OPTION == 65 && GPS_disabled)"
+    },
+    {
+        "id": 5023,
+        "property_specification": "The Vibration Failsafe is disabled if FS_VIBE_ENABLE is set to 0.",
+        "uppaal_formula": "A[] (FS_VIBE_ENABLE == 0 --> !vibration_failsafe_enabled)"
+    },
+    {
+        "id": 5025,
+        "property_specification": "If all required conditions are continuously true for at least one second, the vibration failsafe will eventually trigger.",
+        "uppaal_formula": "(cond && x >= 1000) --> FailsafeTriggered"
+    },
+    {
+        "id": 5034,
+        "property_specification": "Whenever EKF returns to normal, the vibration failsafe will eventually deactivate after 15 seconds.",
+        "uppaal_formula": "EKF_normal --> (failsafe_deactivated && x >= 15)"
+    },
+    {
+        "id": 5046,
+        "property_specification": "The actual lean angle diverges from the desired lean angle by more than 30 degrees.",
+        "uppaal_formula": "E<> (actual_lean - desired_lean > 30 || desired_lean - actual_lean > 30)"
+    },
+    {
+        "id": 5050,
+        "property_specification": "If the vehicle's lean angle error exceeds 30 degrees for at least 1 second, the crash check must eventually be disabled.",
+        "uppaal_formula": "(lean_angle_error > 30 && t >= 1) --> !crash_check_enabled"
+    },
+    {
+        "id": 5052,
+        "property_specification": "Whenever FS_CRASH_CHECK is set to 0, the crash check is disabled.",
+        "uppaal_formula": "A[] (FS_CRASH_CHECK == 0 imply crash_check_disabled)"
+    },
+    {
+        "id": 5067,
+        "property_specification": "Whenever the sink rate equals or exceeds CHUTE_CRT_SINK, the chute release is eventually triggered.",
+        "uppaal_formula": "sink_rate >= CHUTE_CRT_SINK --> chute_released"
+    },
+    {
+        "id": 5079,
+        "property_specification": "The parachute is released only if the RC option is set to 22 or 23, the RC channel is high, the altitude is above CHUTE_ALT_MIN, and the system is armed or flying.",
+        "uppaal_formula": "A[] (ParachuteReleased imply ((RCx_OPTION == 22 || RCx_OPTION == 23) && RC_channel_high && altitude > CHUTE_ALT_MIN && (armed || flying)))"
+    },
+    {
+        "id": 5087,
+        "property_specification": "Whenever FS_LONG_ACTN occurs, the parachute release will eventually occur.",
+        "uppaal_formula": "FS_LONG_ACTN --> parachute_release"
+    },
+    {
+        "id": 5095,
+        "property_specification": "The vehicle is never in FLIP or ACRO flight mode",
+        "uppaal_formula": "A[] !(flight_mode == FLIP || flight_mode == ACRO)"
+    },
+    {
+        "id": 5096,
+        "property_specification": "The roll angle of the vehicle is 30 degrees off from the target lean angle.",
+        "uppaal_formula": "roll_angle_off == 30"
+    },
+    {
+        "id": 5182,
+        "property_specification": "Setting bit 1 of ACRO_OPTIONS to 1 leads to pure rate mode stabilization being active.",
+        "uppaal_formula": "ACRO_OPTIONS_1_SET --> pure_rate_mode"
+    },
+    {
+        "id": 5191,
+        "property_specification": "When the pilot releases the sticks, the vehicle eventually returns to the level state.",
+        "uppaal_formula": "sticks_released --> level"
+    },
+    {
+        "id": 5232,
+        "property_specification": "If the transmitter switch is armed using RCx_OPTION ARM/DISARM with Airmode (option 154), then stabilization at idle throttle (AIRMODE) is always active.",
+        "uppaal_formula": "(armed && option154_enabled) --> AIRMODE_active"
+    },
+    {
+        "id": 5234,
+        "property_specification": "When RCx_OPTION is set to 84, AIRMODE can be enabled in ACRO or STABILIZE modes.",
+        "uppaal_formula": "E<> (mode == ACRO || mode == STABILIZE) && AIRMODE_active && RCx_OPTION == 84"
+    },
+    {
+        "id": 5234,
+        "property_specification": "If ACRO_OPTIONS bit 0 is set, AIRMODE is always active in ACRO mode unless overridden by the switch.",
+        "uppaal_formula": "A[] ((ACRO_OPTIONS & 1) && mode == ACRO && !override imply AIRMODE_active)"
+    },
+    {
+        "id": 5236,
+        "property_specification": "If the RCx_OPTION switch is enabled for arming and rudder-arming is used, then airmode is not active.",
+        "uppaal_formula": "A[] (EnableSwitch && UseRudderArming --> !AirmodeActive)"
+    },
+    {
+        "id": 5239,
+        "property_specification": "If the lateral acceleration exceeds WPNAV_ACCEL_C, the speed will eventually be reduced below WPNAV_SPEED.",
+        "uppaal_formula": "(lateral_accel > WPNAV_ACCEL_C) --> (speed < WPNAV_SPEED)"
+    },
+    {
+        "id": 5246,
+        "property_specification": "If the first command is a take-off command and the vehicle's altitude is already above the required altitude, the take-off command is completed and the next waypoint is activated.",
+        "uppaal_formula": "(current_command == takeoff && altitude >= takeoff_altitude) --> (command_completed && next_waypoint)"
+    },
+    {
+        "id": 5251,
+        "property_specification": "Whenever RTL is activated, the copter eventually reaches the home position (armed location).",
+        "uppaal_formula": "RTL_activated --> pos == home_pos"
+    },
+    {
+        "id": 5260,
+        "property_specification": "When Brake mode is switched on, the vehicle will eventually stop.",
+        "uppaal_formula": "BrakeOn --> VehicleStopped"
+    },
+    {
+        "id": 5261,
+        "property_specification": "Whenever the vehicle is landed and in Brake mode, it eventually disarms.",
+        "uppaal_formula": "(vehicle_landed && brake_mode) --> disarmed"
+    },
+    {
+        "id": 5265,
+        "property_specification": "Whenever CIRCLE_RADIUS is zero, the copter is in place and rotating slowly.",
+        "uppaal_formula": "A[] (CIRCLE_RADIUS == 0 imply (in_place && rotating_slowly))"
+    },
+    {
+        "id": 5269,
+        "property_specification": "When bit 0 of CIRCLE_OPTIONS is set, there exists a path where the pilot can eventually adjust the circle's radius or angular velocity.",
+        "uppaal_formula": "E<> (CIRCLE_OPTIONS[0] == 1 && (adjusting_radius || adjusting_velocity))"
+    },
+    {
+        "id": 5270,
+        "property_specification": "If the pitch stick is up (reducing RC PWM), the radius will eventually reach zero.",
+        "uppaal_formula": "stick_up --> radius == 0"
+    },
+    {
+        "id": 5271,
+        "property_specification": "Whenever the pitch stick is down (increasing RC PWM), the radius eventually increases.",
+        "uppaal_formula": "PitchStickDown --> RadiusIncreased"
+    },
+    {
+        "id": 5272,
+        "property_specification": "If the system is moving counterclockwise and the stick is rolled right, it will eventually stop.",
+        "uppaal_formula": "(moving_counterclockwise && roll_stick_right) --> stopped"
+    },
+    {
+        "id": 5273,
+        "property_specification": "Whenever the system is stopped (speed 0) and the roll stick is pushed in any direction (left/right), it will eventually start moving in that direction.",
+        "uppaal_formula": "(Stopped && (stick_left || stick_right)) --> (Moving_CCW || Moving_CW)"
+    },
+    {
+        "id": 5274,
+        "property_specification": "Whenever CH6 tuning knob is set for circle rate, roll stick rate changes are inhibited.",
+        "uppaal_formula": "A[] (CH6_Tuning_Knob == CircleRate imply Roll_Stick_Rate_Changes_Inhibited)"
+    },
+    {
+        "id": 5277,
+        "property_specification": "When bit 2 of CIRCLE_OPTIONS is set, circle center is set to current location upon mode entry.",
+        "uppaal_formula": "A[] (Copter.mode == Circle && (CIRCLE_OPTIONS & 2) != 0 imply Center.position == current_location)"
+    },
+    {
+        "id": 5289,
+        "property_specification": "Whenever the right stick is pushed forward or back, the copter will eventually pitch and accelerate in the appropriate direction.",
+        "uppaal_formula": "(stick_forward || stick_back) --> (pitching && accelerate)"
+    },
+    {
+        "id": 5296,
+        "property_specification": "If the throttle is completely down, the motors will eventually enter the MOT_SPIN_ARMED state.",
+        "uppaal_formula": "Throttle == Down --> MotorState == MOT_SPIN_ARMED"
+    },
+    {
+        "id": 5298,
+        "property_specification": "If the copter is in Drift Mode and loses GPS signal, it will eventually land or enter altitude hold based on the failsafe_gps_enabled setting.",
+        "uppaal_formula": "(DriftMode && GPS_lost) --> (Landing || AltitudeHold)"
+    },
+    {
+        "id": 5306,
+        "property_specification": "If the vehicle is rising for at least 1 second, it will eventually flip.",
+        "uppaal_formula": "(rising && x >= 1) --> flipping"
+    },
+    {
+        "id": 5310,
+        "property_specification": "If roll stick is held left, the vehicle will eventually flip left.",
+        "uppaal_formula": "roll_left --> Vehicle.FlippingLeft"
+    },
+    {
+        "id": 5310,
+        "property_specification": "If pitch stick is held forward, the vehicle will eventually flip forward.",
+        "uppaal_formula": "pitch_forward --> Vehicle.FlippingForward"
+    },
+    {
+        "id": 5315,
+        "property_specification": "Whenever the copter's orientation is between -90 degrees and +45 degrees, it must be rolling right at 400 degrees per second and have reduced throttle.",
+        "uppaal_formula": "A[] ((orientation >= -90 && orientation <= 45) imply (roll_right && rate == 400 && throttle_reduced))"
+    },
+    {
+        "id": 5380,
+        "property_specification": "If Bit 0 is set (1), arming in Guided mode via the RC transmitter is allowed.",
+        "uppaal_formula": "bit0_set --> armed_guided"
+    },
+    {
+        "id": 5381,
+        "property_specification": "Whenever Bit2 is active, the pilot cannot change the vehicle's heading via the RC transmitter.",
+        "uppaal_formula": "A[] (Bit2 imply !can_change_heading)"
+    },
+    {
+        "id": 5386,
+        "property_specification": "If Bit 7 is enabled (e.g., set to 128), then weathervaning will eventually be active.",
+        "uppaal_formula": "bit7_enabled --> weathervaning_active"
+    },
+    {
+        "id": 5424,
+        "property_specification": "If the copter is on the ground and the pilot's throttle is at minimum, then the motors will eventually shut down and the copter will disarm.",
+        "uppaal_formula": "(ground_reached && throttle_min) --> (motors_shutdown && disarmed)"
+    },
+    {
+        "id": 5425,
+        "property_specification": "Copter recognizes landing when motors are commanded low, climb rate is between -20cm/s and +20cm/s, no acceleration for 1 second, and altitude <10m (or <2m with rangefinder).",
+        "uppaal_formula": "(motor_low && climb_rate >= -20 && climb_rate <= 20 && !accelerating && t >= 1000 && ((altitude < 10 && !rangefinder) || (altitude < 2 && rangefinder))) --> landed"
+    },
+    {
+        "id": 5435,
+        "property_specification": "Whenever the system is in LoiterMode, it must maintain current location, heading, and altitude.",
+        "uppaal_formula": "A[] (LoiterMode imply (maintain_location && maintain_heading && maintain_altitude))"
+    },
+    {
+        "id": 5459,
+        "property_specification": "It is always true that if the system is armed in PosHold mode, then the GPS has 3D lock and HDOP is 2.0 or lower.",
+        "uppaal_formula": "A[] (armed_in_PosHold imply (GPS_3D_lock && HDOP <= 2.0))"
+    },
+    {
+        "id": 5466,
+        "property_specification": "Eventually, the copter will reach an altitude of at least RTL_CLIMB_MIN.",
+        "uppaal_formula": "A<> copter_altitude >= RTL_CLIMB_MIN"
+    },
+    {
+        "id": 5470,
+        "property_specification": "Whenever copter is armed, the home position is where the copter was when armed.",
+        "uppaal_formula": "armed --> (home_position == copter_location)"
+    },
+    {
+        "id": 5476,
+        "property_specification": "If the copter is in the final stage of Returning to Launch or has completed a Mission, it will eventually move to RTL_ALT_FINAL altitude.",
+        "uppaal_formula": "(RTL_FinalStage || MissionCompleted) --> (altitude == RTL_ALT_FINAL)"
+    },
+    {
+        "id": 5476,
+        "property_specification": "During the final stage of Returning to Launch, the altitude the copter will move to is RTL_ALT_FINAL.",
+        "uppaal_formula": "returning_to_launch_final_stage --> altitude == RTL_ALT_FINAL"
+    },
+    {
+        "id": 5488,
+        "property_specification": "Whenever RTL_SPEED is zero, the vehicle uses WPNAV_SPEED.",
+        "uppaal_formula": "A[] (RTL_SPEED == 0 -> speed == WPNAV_SPEED)"
+    },
+    {
+        "id": 5496,
+        "property_specification": "When the system acquires the lock for the first time while in a flying state, the home location is eventually set to the lock's location.",
+        "uppaal_formula": "(lock_acquired_first_time && flying) --> home_set"
+    },
+    {
+        "id": 5497,
+        "property_specification": "If RTL_ALT is set to a non-zero value, the system will eventually reach and maintain that altitude during the return phase.",
+        "uppaal_formula": "RTL_ALT != 0 --> altitude_reached"
+    },
+    {
+        "id": 5499,
+        "property_specification": "After entering the 'AUTO_LAND' state, the copter will eventually land.",
+        "uppaal_formula": "(Copter.state == AUTO_LAND) --> (Copter.state == landed)"
+    },
+    {
+        "id": 5513,
+        "property_specification": "If the pilot holds full right roll, then the vehicle will eventually fly a clockwise circle around the pilot.",
+        "uppaal_formula": "pilot_holds_full_right_roll --> vehicle_flying_clockwise_circle"
+    },
+    {
+        "id": 5520,
+        "property_specification": "Whenever the vehicle is in Smart RTL mode, it will eventually attempt to return home.",
+        "uppaal_formula": "Smart_RTL --> attempting_return_home"
+    },
+    {
+        "id": 5522,
+        "property_specification": "Whenever the buffer is full, the user cannot switch into SmartRTL mode.",
+        "uppaal_formula": "A[] (buffer_full imply !can_switch_mode)"
+    },
+    {
+        "id": 5522,
+        "property_specification": "The buffer becoming full leads to SmartRTL being deactivated.",
+        "uppaal_formula": "buffer_full --> SmartRTL_deactivated"
+    },
+    {
+        "id": 5525,
+        "property_specification": "When FS_GCS_ENABLE and FS_THR_ENABLE are both set to 4 and conditions allow, the vehicle will eventually switch from SmartRTL to RTL.",
+        "uppaal_formula": "(FS_GCS_ENABLE == 4 && FS_THR_ENABLE == 4 && conditions_met) --> (VehicleMode == RTL)"
+    },
+    {
+        "id": 5528,
+        "property_specification": "If RTL_ALT_FINAL is 0 and return is completed, the system will eventually land at home.",
+        "uppaal_formula": "(return_complete && RTL_ALT_FINAL == 0) --> landing"
+    },
+    {
+        "id": 5531,
+        "property_specification": "Whenever the system is in SmartRTL mode and SRTL_OPTIONS equals 4, pilot yaw commands are ignored.",
+        "uppaal_formula": "A[] ((SmartRTL_active && SRTL_OPTIONS == 4) -> ignore_yaw_commands)"
+    },
+    {
+        "id": 5554,
+        "property_specification": "If SID_AXIS is non-zero, then eventually the associated parameters become visible and mode entry is allowed.",
+        "uppaal_formula": "(SID_AXIS != 0) --> (parameters_visible && entry_allowed)"
+    },
+    {
+        "id": 5701,
+        "property_specification": "Whenever the vehicle has stopped, eventually the flight mode is switched to Loiter or another mode to retake manual control.",
+        "uppaal_formula": "vehicle_stopped --> (flight_mode == Loiter || flight_mode == other_mode)"
+    },
+    {
+        "id": 5703,
+        "property_specification": "Whenever the vehicle is dropped (THROW_TYPE is 1), the height must be at least 10 meters.",
+        "uppaal_formula": "A[] (THROW_TYPE == 1 imply height >= 10)"
+    },
+    {
+        "id": 5714,
+        "property_specification": "Whenever turtle mode is entered, the throttle is zero.",
+        "uppaal_formula": "turtle_mode_entered --> throttle_zero"
+    },
+    {
+        "id": 5715,
+        "property_specification": "When in turtle mode, the motors are disarmed",
+        "uppaal_formula": "A[] (turtle_mode imply motors_disarmed)"
+    },
+    {
+        "id": 5716,
+        "property_specification": "Raising the throttle leads to motors being armed and spinning",
+        "uppaal_formula": "throttle_raised --> (motors_armed && motors_spinning)"
+    },
+    {
+        "id": 5730,
+        "property_specification": "Whenever ZIGZ_AUTO_ENABLE is 1 and parameters are reloaded, eventually parameters become visible and the feature is enabled.",
+        "uppaal_formula": "(ZIGZ_AUTO_ENABLE == 1 && parameters_reloaded) --> (parameters_visible && feature_enabled)"
+    },
+    {
+        "id": 6305,
+        "property_specification": "The vehicle is never armed while in RTL mode",
+        "uppaal_formula": "A[] (RTL_mode imply !armed)"
+    },
+    {
+        "id": 6306,
+        "property_specification": "It is possible to eventually switch to another flight mode.",
+        "uppaal_formula": "E<> another_mode"
+    },
+    {
+        "id": 6416,
+        "property_specification": "If ARMING_CHECK is set to 0, all pre-arm checks are disabled.",
+        "uppaal_formula": "ARMING_CHECK == 0 --> pre_arm_checks_disabled"
+    },
+    {
+        "id": 6432,
+        "property_specification": "Motors cannot disarm unless the throttle is at minimum for 15 seconds in a relevant mode.",
+        "uppaal_formula": "A[] !motors_disarmed || (throttle_min && x >= 15 && relevant_mode)"
+    },
+    {
+        "id": 6433,
+        "property_specification": "It is always the case that if the system is in certain modes, then the system cannot be armed.",
+        "uppaal_formula": "mode --> !armed"
+    },
+    {
+        "id": 6437,
+        "property_specification": "If AUTO_OPTIONS bit 0 is set, then arming in mode is eventually allowed.",
+        "uppaal_formula": "AUTO_OPTIONS_bit0_set --> arming_allowed"
+    },
+    {
+        "id": 6450,
+        "property_specification": "Hold throttle at minimum and rudder to the left leads to holding throttle at minimum and rudder to the left after 2 seconds.",
+        "uppaal_formula": "throttle_minimum && rudder_left --> x >= 2 && throttle_minimum && rudder_left"
+    },
+    {
+        "id": 6848,
+        "property_specification": "In non-manual throttle modes and auto mode, takeoff is prevented until the timer reaches H_RSC_RUNUP_TIME.",
+        "uppaal_formula": "A[] ((mode_non_manual || mode_auto) && timer < H_RSC_RUNUP_TIME imply !takeoff_allowed)"
+    },
+    {
+        "id": 6849,
+        "property_specification": "When the motor interlock is disabled with the rotor at flight rotor speed, the RSC will eventually declare rotor speed below critical based on H_RSC_CRITICAL.",
+        "uppaal_formula": "(MotorInterlockDisabled && RotorSpeed == FlightSpeed) --> RSC_DeclaredBelowCritical"
+    },
+    {
+        "id": 7436,
+        "property_specification": "The low battery failsafe activates when either FS_BATT_VOLTAGE or FS_BATT_MAH thresholds are breached.",
+        "uppaal_formula": "(FS_BATT_VOLTAGE_breached || FS_BATT_MAH_breached) --> Failsafe_Active"
+    },
+    {
+        "id": 7438,
+        "property_specification": "When the battery voltage drops below the low voltage threshold (FS_BATT_VOLTAGE or BATT_LOW_VOLT), the low battery beeper sounds and the action specified by FS_BATT_ENABLE is eventually performed.",
+        "uppaal_formula": "(battery_voltage < FS_BATT_VOLTAGE || battery_voltage < BATT_LOW_VOLT) --> (beeper_on && FS_BATT_ENABLE_triggered)"
+    },
+    {
+        "id": 7441,
+        "property_specification": "If FS_BATT_MAH or BATT_LOW_MAH is set to 0, capacity-based alarms and failsafes are disabled.",
+        "uppaal_formula": "A[] ((FS_BATT_MAH == 0 || BATT_LOW_MAH == 0) --> (!beeper_active && !failsafe_triggered))"
+    },
+    {
+        "id": 7659,
+        "property_specification": "Once in the air, it is possible for the vehicle to switch to AUTO mode.",
+        "uppaal_formula": "E<>(air && vehicle.mode == AUTO)"
+    }
+]

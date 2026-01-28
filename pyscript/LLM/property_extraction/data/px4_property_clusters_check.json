@@ -1,0 +1,3114 @@
+[
+    {
+        "id": 4,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 11,
+                    "sid": 0,
+                    "property_specification": "The system can be in AUTO_LOITER mode.",
+                    "uppaal_formula": "E<> (mode == AUTO_LOITER)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 11,
+                    "sid": 0,
+                    "property_specification": "The system can potentially be in the AUTO_LOITER state.",
+                    "uppaal_formula": "E<> System.AUTO_LOITER",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9592148026674063
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 11,
+                    "sid": 3,
+                    "property_specification": "When in AUTO_RTL mode, the aircraft eventually returns to home and loiters.",
+                    "uppaal_formula": "(mode == AUTO_RTL) --> (at_home and loitering)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 11,
+                    "sid": 1,
+                    "property_specification": "If the aircraft is in AUTO_RTL, it will eventually return to the home position and loiter.",
+                    "uppaal_formula": "System.AUTO_RTL --> System.ReturnedToHomeAndLoitering",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9665992552587517
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 49,
+                    "sid": 0,
+                    "property_specification": "Whenever the GNSS solution dimensionality is less than the warn_dimens value, the device health is in Warning state.",
+                    "uppaal_formula": "A[] (gnss_dimensionality < warn_dimens -> device_health == Warning)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 49,
+                    "sid": 0,
+                    "property_specification": "The device health is set to Warning if gnss.solution_dimension is less than gnss.warn_dimens.",
+                    "uppaal_formula": "gnss.solution_dimension < gnss.warn_dimens --> device_health == WARNING",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.954812951736496,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 50,
+                    "sid": 0,
+                    "property_specification": "If the number of satellites is below the threshold gnss.warn_sats, then the device health will eventually be set to Warning.",
+                    "uppaal_formula": "(num_sats < gnss.warn_sats) --> (device_health == Warning)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 50,
+                    "sid": 0,
+                    "property_specification": "If the number of satellites used in the GNSS solution is below the threshold 'gnss.warn_sats', then the device health is set to 'Warning'.",
+                    "uppaal_formula": "gnss_solution.satellites_used < gnss_warn_sats --> device_health == Warning",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.970717310319196
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 51,
+                    "sid": 0,
+                    "property_specification": "The device's health is set to Warning if the number of satellites used in the GNSS solution is below a certain threshold.",
+                    "uppaal_formula": "satellites_used < uavcan_pubp_pres --> device_health == WARNING",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9428621764059392
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 65,
+                    "sid": 1,
+                    "property_specification": "It is possible that non-motor outputs are active when the system is in the prearm state and COM_PREARM_MODE is true.",
+                    "uppaal_formula": "E<> (state == prearm && COM_PREARM_MODE && non_motor_active)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 71,
+                    "sid": 1,
+                    "property_specification": "It is possible that non-motor outputs are active when the system is in prearm state and COM_PREARM_MODE is set.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE_set && non_motor_output_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9950654161628688
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 73,
+                    "sid": 1,
+                    "property_specification": "It is possible that in prearm state with COM_PREARM_MODE set, non-motor outputs are active.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE_set && non_motor_output_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9787945933678028
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 78,
+                    "sid": 1,
+                    "property_specification": "It is possible that non-motor outputs are active in prearm state when COM_PREARM_MODE is set.",
+                    "uppaal_formula": "E<> (prearm_state && COM_PREARM_MODE && non_motor_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9832369715009288
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 152,
+                    "sid": 0,
+                    "property_specification": "It is possible that in prearm state and when COM_PREARM_MODE is set, non-motor outputs are active.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE && output_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.977260574202838
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 153,
+                    "sid": 1,
+                    "property_specification": "It is possible that non-motor outputs are active when the system is in prearm state and COM_PREARM_MODE is set.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE_set && outputs_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9950654161628688
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 162,
+                    "sid": 2,
+                    "property_specification": "It is possible that non-motor outputs are active in prearm state when COM_PREARM_MODE is set.",
+                    "uppaal_formula": "E<> (prearm_state && COM_PREARM_MODE_set && non_motor_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9832369715009288
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 218,
+                    "sid": 1,
+                    "property_specification": "It is possible that non-motor outputs are active when the system is in prearm state and COM_PREARM_MODE is set.",
+                    "uppaal_formula": "E<> (prearm_state and COM_PREARM_MODE and non_motor_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9950654161628688
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 261,
+                    "sid": 1,
+                    "property_specification": "It is possible that in prearm state with COM_PREARM_MODE set, non-motor outputs are active.",
+                    "uppaal_formula": "E<> (prearm and COM_PREARM_MODE_set and non_motor_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9787945933678028
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 278,
+                    "sid": 1,
+                    "property_specification": "It is possible that in prearm state, if COM_PREARM_MODE is set, non-motor outputs are active.",
+                    "uppaal_formula": "E<> (prearm and COM_PREARM_MODE and outputs_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9770344251027907
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 152,
+                    "sid": 2,
+                    "property_specification": "If COM_PREARM_MODE is set, then non-motor outputs might already be active in the prearm state.",
+                    "uppaal_formula": "COM_PREARM_MODE --> non_motor_outputs_active_in_prearm_state",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9534416445897012
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 313,
+                    "sid": 1,
+                    "property_specification": "non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.",
+                    "uppaal_formula": "E<> (COM_PREARM_MODE && prearm_state && non_motor_outputs_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9439485239149237
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 154,
+                    "sid": 2,
+                    "property_specification": "It is possible that when the system is in the prearm state and COM_PREARM_MODE is true, PWM_AUX_DIS11 is not equal to 1000.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE && PWM_AUX_DIS11 != 1000)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 160,
+                    "sid": 2,
+                    "property_specification": "It is possible that when the system is in prearm state and COM_PREARM_MODE is true, PWM_AUX_DIS7 is not equal to 1000.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE && PWM_AUX_DIS7 != 1000)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9858624816211294
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 161,
+                    "sid": 1,
+                    "property_specification": "There exists a possibility that in prearm state with COM_PREARM_MODE set, PWM_AUX_DIS8 is not equal to 1000.",
+                    "uppaal_formula": "E<>( prearm and COM_PREARM_MODE_set and PWM_AUX_DIS8 != 1000 )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9634188900814165
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 157,
+                    "sid": 1,
+                    "property_specification": "Possibly, when COM_PREARM_MODE is set and the system is in prearm state, PWM_AUX_DIS4 is greater than 0.",
+                    "uppaal_formula": "E<>(com_prearm_mode_set and prearm and pwm_aux4 > 0)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 159,
+                    "sid": 1,
+                    "property_specification": "In prearm state, if COM_PREARM_MODE is set, it is possible that PWM_AUX_DIS6 is active (has a non-zero value).",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE_set && PWM_AUX_DIS6 != 0)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9216826666194073
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 316,
+                    "sid": 1,
+                    "property_specification": "If COM_PREARM_MODE is set, it is possible that the output is greater than 0 in prearm state.",
+                    "uppaal_formula": "E<>(prearm && COM_PREARM_MODE_set && output > 0)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 69,
+                    "sid": 1,
+                    "property_specification": "It is possible that in prearm state with COM_PREARM_MODE set, the output value is not 1000.",
+                    "uppaal_formula": "E<> (system_state == PREARM && com_prearm_mode && output != 1000)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8955040962414915
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 315,
+                    "sid": 2,
+                    "property_specification": "It is possible that when COM_PREARM_MODE is set and the system is in prearm state, the output value is not SIM_GZ_SV_DIS3.",
+                    "uppaal_formula": "E<> (prearm and COM_PREARM_MODE and output != SIM_GZ_SV_DIS3)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8658047902664324
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 415,
+                    "sid": 1,
+                    "property_specification": "It is possible that in prearm state with COM_PREARM_MODE set, the output value is greater than 0.",
+                    "uppaal_formula": "E<> (prearm and com_prearm_mode and output > 0)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9817665195862331,
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 276,
+                    "sid": 1,
+                    "property_specification": "It is possible that when the system is in prearm state and COM_PREARM_MODE is set, SIM_GZ_EC_DIS6 is greater than 0.",
+                    "uppaal_formula": "E<>( prearm && COM_PREARM_MODE && SIM_GZ_EC_DIS6 > 0 )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8928227312044373
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 320,
+                    "sid": 1,
+                    "property_specification": "It is possible that when COM_PREARM_MODE is set and the system is in prearm state, SIM_GZ_SV_DIS8 is active (value not zero).",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE && SIM_GZ_SV_DIS8 != 0)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8346367878205594
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 355,
+                    "sid": 1,
+                    "property_specification": "It is possible that when the system is in prearm state and COM_PREARM_MODE is true, SIM_GZ_WH_DIS1 is greater than 0.",
+                    "uppaal_formula": "E<> (prearm && COM_PREARM_MODE && SIM_GZ_WH_DIS1 > 0)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8990929360530444
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 356,
+                    "sid": 1,
+                    "property_specification": "It is possible that when the system is in prearm state and COM_PREARM_MODE is set, SIM_GZ_WH_DIS2 is greater than 0.",
+                    "uppaal_formula": "E<> (state == Prearm and COM_PREARM_MODE and SIM_GZ_WH_DIS2 > 0)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8943697646247633
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 416,
+                    "sid": 1,
+                    "property_specification": "It is possible that when the system is in prearm state and COM_PREARM_MODE is true, UAVCAN_SV_DIS8 is greater than 0 (active).",
+                    "uppaal_formula": "E<> (arm_state == PREARM and COM_PREARM_MODE and UAVCAN_SV_DIS8 > 0)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8646941527214538
+            }
+        ]
+    },
+    {
+        "id": 51,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 531,
+                    "sid": 1,
+                    "property_specification": "Whenever ASPD_FALLBACK_GW is enabled, airspeed checks are enabled, and no other airspeed sensor is available, the system eventually uses sensor-less airspeed estimation.",
+                    "uppaal_formula": "(ASPD_FALLBACK_GW == 1 && airspeed_checks_enabled && no_sensor_available) --> use_sensor_less_estimation",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 531,
+                    "sid": 0,
+                    "property_specification": "If ASPD_FALLBACK_GW is enabled, then it is potentially always true that sensor-less airspeed estimation is used if no other airspeed sensor is available.",
+                    "uppaal_formula": "E[](ASPD_FALLBACK_GW == 1 imply sensor_less_airspeed_estimation_used and not other_airspeed_sensor_available)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9238021438245623
+            }
+        ]
+    },
+    {
+        "id": 52,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 532,
+                    "sid": 0,
+                    "property_specification": "When the airspeed innovation exceeds the threshold ASPD_FS_INNOV, a failsafe is eventually triggered.",
+                    "uppaal_formula": "innovation > ASPD_FS_INNOV --> failsafe_triggered",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 533,
+                    "sid": 0,
+                    "property_specification": "When the time integral of airspeed innovation exceedance above ASPD_FS_INNOV is greater than ASPD_FS_INTEG, it eventually leads to the failsafe being triggered.",
+                    "uppaal_formula": "integral > ASPD_FS_INTEG --> failsafe_triggered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9310873653832377
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 532,
+                    "sid": 0,
+                    "property_specification": "If the airspeed innovation exceeds the threshold (ASPD_FS_INNOV), a failsafe is triggered.",
+                    "uppaal_formula": "ASPD_FS_INNOV --> trigger_failsafe",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9738512712742622
+            }
+        ]
+    },
+    {
+        "id": 53,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 540,
+                    "sid": 0,
+                    "property_specification": "When ASPD_SCALE_APPLY is 0, the scale is not applied automatically.",
+                    "uppaal_formula": "A[] (ASPD_SCALE_APPLY == 0 imply not scaleApplied)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 540,
+                    "sid": 0,
+                    "property_specification": "If ASPD_SCALE_APPLY is 0, then the estimated scale is not automatically applied.",
+                    "uppaal_formula": "ASPD_SCALE_APPLY == 0 --> !apply_estimated_scale",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9592047006160431,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 54,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 540,
+                    "sid": 1,
+                    "property_specification": "If ASPD_SCALE_APPLY is 1, then disarm leads to scale application.",
+                    "uppaal_formula": "(ASPD_SCALE_APPLY == 1 and disarm) --> scaleApplied",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 540,
+                    "sid": 1,
+                    "property_specification": "If ASPD_SCALE_APPLY is 1, then the estimated scale is applied after disarm.",
+                    "uppaal_formula": "ASPD_SCALE_APPLY == 1 --> disarmed && apply_estimated_scale",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9201390499014217,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 55,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 540,
+                    "sid": 2,
+                    "property_specification": "If ASPD_SCALE_APPLY is 2, then in air leads to scale application.",
+                    "uppaal_formula": "(ASPD_SCALE_APPLY == 2 and inAir) --> scaleApplied",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 540,
+                    "sid": 2,
+                    "property_specification": "If ASPD_SCALE_APPLY is 2, then the estimated scale is applied in air.",
+                    "uppaal_formula": "ASPD_SCALE_APPLY == 2 --> in_air && apply_estimated_scale",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9188328918121974
+            }
+        ]
+    },
+    {
+        "id": 56,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 544,
+                    "sid": 0,
+                    "property_specification": "The synthetic airspeed estimate is valid whenever the horizontal wind uncertainty is below the threshold ASPD_WERR_THR.",
+                    "uppaal_formula": "A[] (H_wind_uncertainty <= ASPD_WERR_THR imply synthetic_airspeed_valid)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 544,
+                    "sid": 0,
+                    "property_specification": "The synthetic airspeed estimate will be declared valid as soon as the horizontal wind uncertainty is below ASPD_WERR_THR.",
+                    "uppaal_formula": "E<> (wind_uncertainty < ASPD_WERR_THR && synthetic_airspeed_valid)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9419405346477655
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 544,
+                    "sid": 1,
+                    "property_specification": "The synthetic airspeed estimate remains valid as long as the horizontal wind uncertainty is below ASPD_WERR_THR.",
+                    "uppaal_formula": "A[] (wind_uncertainty < ASPD_WERR_THR imply synthetic_airspeed_valid)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9244235500713076
+            }
+        ]
+    },
+    {
+        "id": 58,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 565,
+                    "sid": 2,
+                    "property_specification": "If MC_AT_APPLY is 1, then after disarm, gains are applied.",
+                    "uppaal_formula": "(MC_AT_APPLY == 1 && disarmed) --> gainsApplied",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 556,
+                    "sid": 2,
+                    "property_specification": "If FW_AT_APPLY is 1, then the new gains will eventually be applied after disarm.",
+                    "uppaal_formula": "(FW_AT_APPLY == 1 && disarmed) --> new_gains_applied",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.927389253988862
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 565,
+                    "sid": 2,
+                    "property_specification": "It is always true that if MC_AT_APPLY is equal to 1, then the new gains are applied after disarm.",
+                    "uppaal_formula": "A[] (MC_AT_APPLY == 1 imply apply_after_disarm)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9158223870530336
+            }
+        ]
+    },
+    {
+        "id": 59,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 602,
+                    "sid": 0,
+                    "property_specification": "When the battery level is below the emergency threshold, landing is eventually triggered.",
+                    "uppaal_formula": "bat_level < EMERGEN_THR --> landing_triggered",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 602,
+                    "sid": 1,
+                    "property_specification": "When the battery is reported as dangerously low, it potentially leads to triggering a landing.",
+                    "uppaal_formula": "BAT_EMERGEN_THR --> landing_triggered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9236237124695487
+            }
+        ]
+    },
+    {
+        "id": 66,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 653,
+                    "sid": 0,
+                    "property_specification": "If a landing situation is detected and the time-out period is positive, then the vehicle will be automatically disarmed after the time-out period elapses.",
+                    "uppaal_formula": "(landing_detected and timeout > 0) --> (disarmed and t >= timeout)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 653,
+                    "sid": 0,
+                    "property_specification": "If a landing situation is detected, the vehicle will eventually disarm within a specified time-out period.",
+                    "uppaal_formula": "landing_detected --> vehicle_disarmed_within_timeout",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9588106321201879
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 653,
+                    "sid": 1,
+                    "property_specification": "If the time-out value is positive, automatic disarming triggered by landing detection is enabled.",
+                    "uppaal_formula": "timeout_value > 0 --> auto_disarm_enabled",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9208927274723824
+            }
+        ]
+    },
+    {
+        "id": 67,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 656,
+                    "sid": 0,
+                    "property_specification": "Whenever the system is without datalink for COM_DL_LOSS_T seconds, the GCS connection lost mode will eventually be triggered.",
+                    "uppaal_formula": "(no_datalink && x >= COM_DL_LOSS_T) --> lost_mode",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 656,
+                    "sid": 0,
+                    "property_specification": "If the time without datalink exceeds COM_DL_LOSS_T, it leads to the GCS connection lost mode being triggered.",
+                    "uppaal_formula": "U_GCS.no_datalink_time >= COM_DL_LOSS_T --> U_GCS.gcs_connection_lost_mode_triggered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9657231102473329
+            }
+        ]
+    },
+    {
+        "id": 68,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 657,
+                    "sid": 0,
+                    "property_specification": "After the failsafe condition is triggered, the system eventually enters Hold mode.",
+                    "uppaal_formula": "failsafe_triggered --> in_hold",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 657,
+                    "sid": 2,
+                    "property_specification": "When the system is in Hold mode and the time since entering Hold is at least COM_FAIL_ACT_T seconds, it eventually enters the failsafe action.",
+                    "uppaal_formula": "(in_hold and x >= COM_FAIL_ACT_T) --> fs_action",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9216651248526426,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 70,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 667,
+                    "sid": 0,
+                    "property_specification": "If the time since takeoff is greater than COM_FLT_TIME_MAX and COM_FLT_TIME_MAX is not -1, then the mode will eventually be RTL or Land.",
+                    "uppaal_formula": "(t > COM_FLT_TIME_MAX && COM_FLT_TIME_MAX != -1) --> (mode == rtl || mode == land)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 667,
+                    "sid": 1,
+                    "property_specification": "Always, when the time since takeoff is above COM_FLT_TIME_MAX and COM_FLT_TIME_MAX is not -1, the mode is either RTL, Land, or manual.",
+                    "uppaal_formula": "A[] ( (t > COM_FLT_TIME_MAX && COM_FLT_TIME_MAX != -1) imply (mode == rtl || mode == land || mode == manual) )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9223719153733019
+            }
+        ]
+    },
+    {
+        "id": 71,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 669,
+                    "sid": 0,
+                    "property_specification": "If the datalink is absent for at least 120 seconds, then the system eventually enters data link lost mode.",
+                    "uppaal_formula": "(no_datalink && x >= 120) --> lost_mode",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 669,
+                    "sid": 0,
+                    "property_specification": "If the datalink is absent for 120 seconds, then the data link lost mode should trigger.",
+                    "uppaal_formula": "datalink_absent -- > datalink_lost_mode_active",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9356870571436644
+            }
+        ]
+    },
+    {
+        "id": 72,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 670,
+                    "sid": 0,
+                    "property_specification": "When the datalink has been healthy for at least COM_HLDL_REG_T seconds, the datalink loss flag is false.",
+                    "uppaal_formula": "A[]( (healthy && x >= COM_HLDL_REG_T) -> !datalink_loss )",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 670,
+                    "sid": 0,
+                    "property_specification": "If there has been a data link loss and the datalink is healthy for a duration of COM_HLDL_REG_T seconds, then the 'datalink loss' flag will eventually be set back to false.",
+                    "uppaal_formula": "datalinkLost && datalinkHealthy --> !datalinkLost",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9494666035994763
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 670,
+                    "sid": 1,
+                    "property_specification": "It is always true that the 'datalink loss' flag must be set to false if the datalink is healthy for COM_HLDL_REG_T seconds after a loss.",
+                    "uppaal_formula": "A[] (datalinkLost && datalinkHealthy && c > COM_HLDL_REG_T imply !datalinkLost)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9124091589918634
+            }
+        ]
+    },
+    {
+        "id": 73,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 676,
+                    "sid": 1,
+                    "property_specification": "When the battery is critical and COM_LOW_BAT_ACT is 2, the system eventually enters land mode.",
+                    "uppaal_formula": "(battery_critical && com_low_bat_act == 2) --> land_mode",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 676,
+                    "sid": 3,
+                    "property_specification": "When the battery is emergency and COM_LOW_BAT_ACT is 3, the system eventually enters land mode.",
+                    "uppaal_formula": "(battery_emergency && com_low_bat_act == 3) --> land_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9330935069473443,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 74,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 691,
+                    "sid": 2,
+                    "property_specification": "When navigation loss occurs and COM_POSCTL_NAVL is 0 and height estimate is not available, the system eventually enters Manual mode.",
+                    "uppaal_formula": "(nav_loss && com_posctl_navl == 0 && !height_avail) --> mode == Manual",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 691,
+                    "sid": 4,
+                    "property_specification": "When navigation loss occurs and COM_POSCTL_NAVL is 1 and height estimate is not available, the system eventually enters Descend mode.",
+                    "uppaal_formula": "(nav_loss && com_posctl_navl == 1 && !height_avail) --> mode == Descend",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9160011983403855,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 75,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 692,
+                    "sid": 0,
+                    "property_specification": "If position checks are failed for COM_POS_FS_DELAY seconds, then the failsafe will eventually activate.",
+                    "uppaal_formula": "(pos_failed && x >= COM_POS_FS_DELAY) --> failsafe_activated",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 692,
+                    "sid": 0,
+                    "property_specification": "The position failsafe will activate when the position checks have been failed for a duration set by COM_POS_FS_DELAY.",
+                    "uppaal_formula": "No",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9617494176677501
+            }
+        ]
+    },
+    {
+        "id": 77,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 702,
+                    "sid": 0,
+                    "property_specification": "If the system is in auto mode, RC override for auto is enabled (COM_RC_OVERRIDE bit 0 set and not critical battery), and RC stick movement exceeds COM_RC_STICK_OV, then eventually the mode will be position or altitude.",
+                    "uppaal_formula": "(mode == auto && (COM_RC_OVERRIDE & 1) != 0 && !critical_battery && stick_movement > COM_RC_STICK_OV) --> (mode == position || mode == altitude)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 702,
+                    "sid": 1,
+                    "property_specification": "If the system is in offboard mode, RC override for offboard is enabled (COM_RC_OVERRIDE bit 1 set), and RC stick movement exceeds COM_RC_STICK_OV, then eventually the mode will be position or altitude.",
+                    "uppaal_formula": "(mode == offboard && (COM_RC_OVERRIDE & 2) != 0 && stick_movement > COM_RC_STICK_OV) --> (mode == position || mode == altitude)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9407707291506644,
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 702,
+                    "sid": 2,
+                    "property_specification": "If the system cannot switch to Position mode, then it potentially switches to Altitude mode, given RC stick override is enabled and sticks are moved more than COM_RC_STICK_OV.",
+                    "uppaal_formula": "E<>(RC_stick_override_enabled && RC_stick_moved_beyond_threshold && !position_available && system_in_altitude_mode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9098868563626898
+            }
+        ]
+    },
+    {
+        "id": 78,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 705,
+                    "sid": 1,
+                    "property_specification": "If TAKEOFF is completed and Mission is not valid, then the system will eventually transition to Hold mode.",
+                    "uppaal_formula": "(takeoff_completed && !mission_valid) --> hold_mode",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 705,
+                    "sid": 1,
+                    "property_specification": "If TAKEOFF has completed successfully, then the system is in Hold mode or Mission mode if valid.",
+                    "uppaal_formula": "No",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.911647443755998
+            }
+        ]
+    },
+    {
+        "id": 79,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 708,
+                    "sid": 0,
+                    "property_specification": "The failsafe is triggered when the horizontal velocity error exceeds COM_VEL_FS_EVH.",
+                    "uppaal_formula": "velocity_error > COM_VEL_FS_EVH --> failsafe_triggered",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 708,
+                    "sid": 1,
+                    "property_specification": "If the previous velocity error was below COM_VEL_FS_EVH, the failsafe is triggered when the error exceeds 2.5 * COM_VEL_FS_EVH.",
+                    "uppaal_formula": "(previous_error_below and velocity_error > 2.5 * COM_VEL_FS_EVH) --> failsafe_triggered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.910085774653784,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 80,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 709,
+                    "sid": 0,
+                    "property_specification": "If the wind speed exceeds the COM_WIND_MAX threshold, then the failsafe action is eventually triggered.",
+                    "uppaal_formula": "(wind_speed > COM_WIND_MAX) --> failsafe_triggered",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 709,
+                    "sid": 0,
+                    "property_specification": "If the wind speed exceeds the COM_WIND_MAX threshold, then a failsafe action is eventually triggered.",
+                    "uppaal_formula": "wind_speed > COM_WIND_MAX --> failsafe_action_triggered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.998403338032456
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 709,
+                    "sid": 1,
+                    "property_specification": "A failsafe action is potentially always triggered when the wind speed is above the COM_WIND_MAX threshold.",
+                    "uppaal_formula": "E[] (wind_speed > COM_WIND_MAX imply failsafe_action_triggered)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9582326392596017
+            }
+        ]
+    },
+    {
+        "id": 81,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 710,
+                    "sid": 1,
+                    "property_specification": "When wind speed is above threshold and COM_WIND_MAX_ACT is not None, the system cannot be in auto modes other than RTL or Land.",
+                    "uppaal_formula": "A[] (wind_high && COM_WIND_MAX_ACT != 0 imply (mode == RTL || mode == LAND || mode != AUTO))",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 710,
+                    "sid": 1,
+                    "property_specification": "If the wind speed threshold is exceeded, it is not possible to switch to any auto mode other than RTL or Land.",
+                    "uppaal_formula": "A[] (wind_speed_exceeded imply not (auto_mode_switchable && auto_mode != RTL && auto_mode != Land))",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9238804444737029
+            }
+        ]
+    },
+    {
+        "id": 82,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 712,
+                    "sid": 0,
+                    "property_specification": "Whenever the system is in a failsafe mode (current_mode != 0), it must be that the GCS connection is lost and the time since loss is at least COM_DL_LOSS_T seconds.",
+                    "uppaal_formula": "A[] ( current_mode != 0 imply (lost && t >= COM_DL_LOSS_T) )",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 712,
+                    "sid": 1,
+                    "property_specification": "If the GCS connection is lost for at least COM_DL_LOSS_T seconds and the failsafe is not disabled (NAV_DLL_ACT != 0), then the system will eventually enter the failsafe mode corresponding to NAV_DLL_ACT.",
+                    "uppaal_formula": "( lost && t >= COM_DL_LOSS_T && NAV_DLL_ACT != 0 ) --> ( current_mode == NAV_DLL_ACT )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9144406315669547,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 95,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 805,
+                    "sid": 0,
+                    "property_specification": "Always, if the global position/velocity aiding source is active and the body acceleration is greater than the EKF2_MAG_ACCLIM threshold, then the heading is observable.",
+                    "uppaal_formula": "A[] ( (aiding_source_active && acceleration > EKF2_MAG_ACCLIM) imply heading_observable )",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 805,
+                    "sid": 0,
+                    "property_specification": "The heading is assumed to be observable when the body acceleration is greater than EKF2_MAG_ACCLIM when a global position/velocity aiding source is active.",
+                    "uppaal_formula": "global_position_velocity_aiding_source_active && body_acceleration > EKF2_MAG_ACCLIM --> heading_observable",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9424359394336448,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 99,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 821,
+                    "sid": 1,
+                    "property_specification": "If EKF2_MULTI_MAG is greater than 0, then SENS_MAG_MODE must be 0.",
+                    "uppaal_formula": "A[](EKF2_MULTI_MAG > 0 imply SENS_MAG_MODE == 0)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 821,
+                    "sid": 0,
+                    "property_specification": "If Multi-EKF Magnetometers (EKF2_MULTI_MAG) is not 0, then SENS_MAG_MODE must be 0.",
+                    "uppaal_formula": "EKF2_MULTI_MAG != 0 --> SENS_MAG_MODE == 0",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9198635223890591
+            }
+        ]
+    },
+    {
+        "id": 101,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 867,
+                    "sid": 0,
+                    "property_specification": "Whenever the accumulated velocity error exceeds 2.0 m/s, the sensor is eventually declared faulty.",
+                    "uppaal_formula": "(vel_error > 2.0) --> sensor_faulty",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 867,
+                    "sid": 0,
+                    "property_specification": "If the accumulated velocity error (acc_vel_error) becomes larger than 2.0, then the sensor will eventually be declared faulty.",
+                    "uppaal_formula": "acc_vel_error > 2.0 --> sensor_faulty",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9193636435583328
+            }
+        ]
+    },
+    {
+        "id": 110,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1012,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is armed, the failure detector is enabled, no acknowledgement is received from ESCs, and more than 0.3 seconds have passed (assuming a clock reset at the start of the check), then the vehicle will be disarmed.",
+                    "uppaal_formula": "(armed && fd_enabled && !ack_received && t > 0.3) --> !armed",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1012,
+                    "sid": 2,
+                    "property_specification": "If no feedback is received from ESCs within 0.3 seconds after the vehicle enters the armed state, the failure detector will auto-disarm the vehicle.",
+                    "uppaal_formula": "A[] (vehicle.armed && time_since_armed >= 3 && !ESCs_feedback_received imply vehicle.disarmed)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9289044091904566
+            }
+        ]
+    },
+    {
+        "id": 111,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1015,
+                    "sid": 0,
+                    "property_specification": "When the pitch angle exceeds FD_FAIL_P, the attitude_failure flag is triggered.",
+                    "uppaal_formula": "(pitch > FD_FAIL_P) --> attitude_failure",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1017,
+                    "sid": 0,
+                    "property_specification": "If the current roll angle is greater than FD_FAIL_R and FD_FAIL_R is not zero, then the attitude_failure flag will eventually be set.",
+                    "uppaal_formula": "(roll_angle > FD_FAIL_R && FD_FAIL_R != 0) --> attitude_failure",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9107585346302141
+            }
+        ]
+    },
+    {
+        "id": 115,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1019,
+                    "sid": 0,
+                    "property_specification": "When the imbalanced propeller metric is greater than or equal to FD_IMB_PROP_THR, a failure is triggered eventually.",
+                    "uppaal_formula": "(imbalanced_propeller_metric >= FD_IMB_PROP_THR) --> failure_triggered",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1019,
+                    "sid": 1,
+                    "property_specification": "It is always true that the imbalanced propeller metric triggers a failure if it exceeds FD_IMB_PROP_THR.",
+                    "uppaal_formula": "A[](imbalanced_propeller_metric > FD_IMB_PROP_THR imply failure_triggered)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9149874877008755
+            }
+        ]
+    },
+    {
+        "id": 119,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1044,
+                    "sid": 0,
+                    "property_specification": "Whenever the vertical distance exceeds GF_MAX_VER_DIST and GF_MAX_VER_DIST is greater than 0, a geofence action is eventually triggered.",
+                    "uppaal_formula": "(vertical_distance > GF_MAX_VER_DIST && GF_MAX_VER_DIST > 0) --> geofence_action_triggered",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1043,
+                    "sid": 0,
+                    "property_specification": "The geofence action is triggered if the horizontal distance from Home is greater than GF_MAX_HOR_DIST.",
+                    "uppaal_formula": "distance_from_home > GF_MAX_HOR_DIST --> geofence_action_triggered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9220736460297249
+            }
+        ]
+    },
+    {
+        "id": 124,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1067,
+                    "sid": 0,
+                    "property_specification": "When the motor signal is at 1, the elapsed time since it was at 0 is at least the slew rate value CA_R1_SLEW.",
+                    "uppaal_formula": "A[] (motor_signal == 1 imply t >= CA_R1_SLEW)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1074,
+                    "sid": 1,
+                    "property_specification": "When the motor signal is at 1 and slew rate limiting is enabled (CA_R8_SLEW > 0), the time elapsed since the signal began changing from 0 is at least CA_R8_SLEW seconds.",
+                    "uppaal_formula": "A[] ( !(signal == 1 && CA_R8_SLEW > 0) || (t >= CA_R8_SLEW) )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9262343209070587
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1196,
+                    "sid": 1,
+                    "property_specification": "When slew rate limiting is enabled (x > 0), the elapsed time for the servo signal to change from -1 to 1 is at least x seconds.",
+                    "uppaal_formula": "A[] ((change_complete and x > 0) imply t >= x)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8530035949383923
+            }
+        ]
+    },
+    {
+        "id": 132,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1287,
+                    "sid": 0,
+                    "property_specification": "When the system is in the landed state, the airspeed must be at most 6.00 m/s.",
+                    "uppaal_formula": "A[](landed -> airspeed <= 6.00)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1287,
+                    "sid": 0,
+                    "property_specification": "The maximum airspeed allowed in the landed state is 6.00 m/s.",
+                    "uppaal_formula": "A[] (landed_state_active imply airspeed <= 6.00)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9290455751572857,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 133,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1290,
+                    "sid": 0,
+                    "property_specification": "Whenever the system is in the landed state, the vertical velocity is at most LNDFW_VEL_Z_MAX.",
+                    "uppaal_formula": "A[](!landed or vel_z <= LNDFW_VEL_Z_MAX)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1290,
+                    "sid": 0,
+                    "property_specification": "If the system is in a landed state, then the vertical velocity must always be at most LNDFW_VEL_Z_MAX.",
+                    "uppaal_formula": "A[] (landed && vertical_velocity > LNDFW_VEL_Z_MAX imply false)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9149077892578185
+            }
+        ]
+    },
+    {
+        "id": 134,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1295,
+                    "sid": 0,
+                    "property_specification": "When the multicopter is in the landed state, its horizontal velocity is always at most 1.5 m/s.",
+                    "uppaal_formula": "A[] (landed imply velocity <= 1.5)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1295,
+                    "sid": 0,
+                    "property_specification": "The multicopter's horizontal velocity should always be less than or equal to 1.5 m/s when it is in the landed state.",
+                    "uppaal_formula": "A[] (Landed && horizontal_velocity > 1.5) imply false",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9276493356775307
+            }
+        ]
+    },
+    {
+        "id": 147,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1393,
+                    "sid": 0,
+                    "property_specification": "The mission is started only if the distance to the first waypoint is less than or equal to MIS_DIST_1WP.",
+                    "uppaal_formula": "A[] (mission_started -> distance <= MIS_DIST_1WP)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2627,
+                    "sid": 0,
+                    "property_specification": "Mission start is prevented if the distance to waypoint exceeds MIS_DIST_1WP and MIS_DIST_1WP is greater than 0.",
+                    "uppaal_formula": "A[] ( (distance > mis_dist_1wp && mis_dist_1wp > 0) imply !mission_started )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9188413120920703,
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1393,
+                    "sid": 0,
+                    "property_specification": "The mission will not be started if the current waypoint is more distant than MIS_DIST_1WP from the current position.",
+                    "uppaal_formula": "A[] (current_waypoint_distance > MIS_DIST_1WP imply !mission_started)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9091929325158851
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2627,
+                    "sid": 0,
+                    "property_specification": "The mission will not be started if the current waypoint is more distant than MIS_DIST_1WP from the home position.",
+                    "uppaal_formula": "A[] (current_waypoint_distance <= MIS_DIST_1WP implies !mission_started)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9024617120346327
+            }
+        ]
+    },
+    {
+        "id": 148,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1394,
+                    "sid": 0,
+                    "property_specification": "After an abort landing occurs, the vehicle eventually reaches an altitude of at least the minimum abort altitude.",
+                    "uppaal_formula": "abort_landing --> (altitude >= MIS_LND_ABRT_ALT)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1394,
+                    "sid": 0,
+                    "property_specification": "The vehicle will climb to a minimum altitude after an aborted landing.",
+                    "uppaal_formula": "No",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9261061592092206
+            }
+        ]
+    },
+    {
+        "id": 150,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1437,
+                    "sid": 0,
+                    "property_specification": "In Acro mode, whenever the stick is fully deflected, the roll rate eventually reaches MC_ACRO_R_MAX.",
+                    "uppaal_formula": "(acro_mode && stick_deflection == max_stick_deflection) --> (roll_rate == MC_ACRO_R_MAX)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1440,
+                    "sid": 0,
+                    "property_specification": "In acro mode, whenever the stick is fully deflected, the yaw rate will eventually reach MC_ACRO_Y_MAX.",
+                    "uppaal_formula": "(acro_mode && stick_full) --> (yaw_rate == MC_ACRO_Y_MAX)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9176269626474778
+            }
+        ]
+    },
+    {
+        "id": 151,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1451,
+                    "sid": 0,
+                    "property_specification": "Collision avoidance is not enabled when CP_DIST is less than 0.",
+                    "uppaal_formula": "A[] (CP_DIST < 0 -> !collision_avoidance_enabled)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1451,
+                    "sid": 0,
+                    "property_specification": "Collision avoidance is disabled when CP_DIST is negative and enabled otherwise.",
+                    "uppaal_formula": "CP_DIST < 0 --> !collision_avoidance_enabled",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9324965143611614,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 152,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1460,
+                    "sid": 2,
+                    "property_specification": "When MPC_ALT_MODE is 2 and speed is below MPC_HOLD_MAX_XY, the altitude reference is always terrain hold (mode 2).",
+                    "uppaal_formula": "A[] ((mode == 2 && speed < max_xy) -> (alt_ref == 2))",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1460,
+                    "sid": 3,
+                    "property_specification": "When MPC_ALT_MODE is 2 and speed is at least MPC_HOLD_MAX_XY, the altitude reference is always altitude following (mode 0).",
+                    "uppaal_formula": "A[] ((mode == 2 && speed >= max_xy) -> (alt_ref == 0))",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9371314691081203
+            }
+        ]
+    },
+    {
+        "id": 153,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1467,
+                    "sid": 1,
+                    "property_specification": "MPC_LAND_ALT2 is always less than MPC_LAND_ALT1.",
+                    "uppaal_formula": "A[] MPC_LAND_ALT2 < MPC_LAND_ALT1",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2661,
+                    "sid": 0,
+                    "property_specification": "MPC_LAND_ALT1 is always greater than MPC_LAND_ALT2.",
+                    "uppaal_formula": "A[] (MPC_LAND_ALT1 > MPC_LAND_ALT2)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9569206973350199
+            }
+        ]
+    },
+    {
+        "id": 154,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1473,
+                    "sid": 0,
+                    "property_specification": "In Stabilized mode, if the collective thrust is below MPC_MANTHR_MIN, it eventually leads to loss of roll, pitch, and yaw torque control authority.",
+                    "uppaal_formula": "(thrust < MPC_MANTHR_MIN && stabilized_mode) --> control_lost",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1473,
+                    "sid": 0,
+                    "property_specification": "Too low collective thrust leads to loss of roll/pitch/yaw torque control authority.",
+                    "uppaal_formula": "low_collective_thrust --> loss_of_torque_control",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9152437912448845
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1481,
+                    "sid": 0,
+                    "property_specification": "Too low thrust leads to loss of roll/pitch/yaw torque control authority.",
+                    "uppaal_formula": "thrust_low --> loss_of_torque_control",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8953495439933223
+            }
+        ]
+    },
+    {
+        "id": 155,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1493,
+                    "sid": 0,
+                    "property_specification": "Whenever the horizontal position tracking error exceeds MPC_XY_ERR_MAX, the integration of the trajectory setpoint is halted.",
+                    "uppaal_formula": "(horizontal_error > MPC_XY_ERR_MAX) --> (integration_halted)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1493,
+                    "sid": 0,
+                    "property_specification": "The integration of the trajectory is stopped when the error is above MPC_XY_ERR_MAX.",
+                    "uppaal_formula": "error > MPC_XY_ERR_MAX --> trajectory_integration_stopped",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9293960445187965
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1493,
+                    "sid": 1,
+                    "property_specification": "If the error is consistently above MPC_XY_ERR_MAX, then the trajectory integration is always stopped.",
+                    "uppaal_formula": "A[](error > MPC_XY_ERR_MAX imply trajectory_integration_stopped)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8863447487102801
+            }
+        ]
+    },
+    {
+        "id": 164,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1705,
+                    "sid": 2,
+                    "property_specification": "If autolanding is allowed, the system eventually lands after the delay has passed.",
+                    "uppaal_formula": "(autolanding_allowed and delay_clock >= RTL_LAND_DELAY) --> landing",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1705,
+                    "sid": 0,
+                    "property_specification": "The system will eventually land if autolanding is allowed.",
+                    "uppaal_formula": "autolanding_allowed --> landed",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.92176304508096
+            }
+        ]
+    },
+    {
+        "id": 165,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1706,
+                    "sid": 0,
+                    "property_specification": "When RTL_LAND_DELAY is -1, the system does not land.",
+                    "uppaal_formula": "A[] (RTL_LAND_DELAY == -1 -> !landing)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1706,
+                    "sid": 0,
+                    "property_specification": "If RTL_LAND_DELAY is set to -1, the system will not land but loiter at RTL_DESCEND_ALT.",
+                    "uppaal_formula": "RTL_LAND_DELAY == -1 --> system_state == loitering_at_RTL_DESCEND_ALT",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9311359675087373
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2690,
+                    "sid": 2,
+                    "property_specification": "If RTL_LAND_DELAY is set to -1, the system will loiter at RTL_DESCEND_ALT.",
+                    "uppaal_formula": "A[] (RTL_LAND_DELAY == -1 && current_altitude == RTL_DESCEND_ALT imply loitering)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.855868456529962,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 166,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 1706,
+                    "sid": 1,
+                    "property_specification": "When RTL_LAND_DELAY is not -1, landing eventually occurs.",
+                    "uppaal_formula": "(RTL_LAND_DELAY != -1) --> landing",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2690,
+                    "sid": 0,
+                    "property_specification": "When the vehicle is at RTL_DESCEND_ALT altitude and RTL_LAND_DELAY is not -1, it will eventually land.",
+                    "uppaal_formula": "(at_RTL_DESCEND_alt && RTL_LAND_DELAY != -1) --> landing",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9161934474610326
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2690,
+                    "sid": 1,
+                    "property_specification": "The system will eventually land if RTL_LAND_DELAY is not -1 and it is at RTL_DESCEND_ALT.",
+                    "uppaal_formula": "RTL_LAND_DELAY != -1 && current_altitude == RTL_DESCEND_ALT --> landed",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9227483178052773,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 207,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2504,
+                    "sid": 1,
+                    "property_specification": "If groundspeed is below MPC_XY_CRUISE while the system is in back transition, then the back transition will eventually end.",
+                    "uppaal_formula": "(in_back_transition and gs < MPC_XY_CRUISE) --> not in_back_transition",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2504,
+                    "sid": 0,
+                    "property_specification": "If the groundspeed drops below MPC_XY_CRUISE, the transition is declared over.",
+                    "uppaal_formula": "groundspeed < MPC_XY_CRUISE --> transition_over",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9238726289967901,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 213,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2539,
+                    "sid": 0,
+                    "property_specification": "If COM_DISARM_LAND is non-negative, the vehicle is disarmed within COM_DISARM_LAND seconds after landing.",
+                    "uppaal_formula": "A[] (landed and x >= COM_DISARM_LAND imply disarmed)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2606,
+                    "sid": 0,
+                    "property_specification": "If the auto disarm timeout parameter COM_DISARM_LAND is not -1, then after landing, the vehicle will eventually disarm within COM_DISARM_LAND seconds.",
+                    "uppaal_formula": "(landed && COM_DISARM_LAND != -1) --> (disarmed && t <= COM_DISARM_LAND)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9164247264446985
+            }
+        ]
+    },
+    {
+        "id": 217,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2544,
+                    "sid": 1,
+                    "property_specification": "If the vehicle has low thrust and no rotation for 8.0 seconds, it will eventually transition to the next state.",
+                    "uppaal_formula": "(low_thrust and !rotating and c >= 8.0) --> in_next_state",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2544,
+                    "sid": 0,
+                    "property_specification": "If the vehicle only has knowledge of thrust and angular rate, in order to proceed to the next state the vehicle has to have low thrust and no rotation for 8.0 seconds.",
+                    "uppaal_formula": "A[] (next_state_condition imply c >= 8)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9205184741162258
+            }
+        ]
+    },
+    {
+        "id": 222,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2556,
+                    "sid": 0,
+                    "property_specification": "The vehicle cannot be armed unless the safety switch is engaged.",
+                    "uppaal_formula": "A[] (armed imply safety_on)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2738,
+                    "sid": 1,
+                    "property_specification": "The vehicle is never armed without the safety switch being disengaged.",
+                    "uppaal_formula": "A[] (armed imply safety_disengaged)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9147796617194434
+            }
+        ]
+    },
+    {
+        "id": 223,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2558,
+                    "sid": 0,
+                    "property_specification": "When throttle is at minimum and yaw is at maximum for at least 1 second, the vehicle will eventually be armed.",
+                    "uppaal_formula": "(throttle_min and yaw_max and t >= 1) --> armed",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2558,
+                    "sid": 1,
+                    "property_specification": "When throttle is at minimum and yaw is at minimum for at least 1 second, the vehicle will eventually be disarmed.",
+                    "uppaal_formula": "(throttle_min and yaw_min and t >= 1) --> disarmed",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.929441157218531
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2558,
+                    "sid": 0,
+                    "property_specification": "The vehicle is armed when the RC throttle is at minimum and yaw is at maximum, held for 1 second.",
+                    "uppaal_formula": "No",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9402038841315463
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2558,
+                    "sid": 1,
+                    "property_specification": "The vehicle is disarmed when the RC throttle is at minimum and yaw is at minimum, held for 1 second.",
+                    "uppaal_formula": "No",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.889160735539968
+            }
+        ]
+    },
+    {
+        "id": 225,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2561,
+                    "sid": 0,
+                    "property_specification": "If the system is disarmed and the arming button is pressed for at least one second, then the system will eventually become armed.",
+                    "uppaal_formula": "(!armed && button_pressed && hold_time >= 1) --> armed",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2561,
+                    "sid": 1,
+                    "property_specification": "If the system is armed and the arming button is pressed for at least one second, then the system will eventually become disarmed.",
+                    "uppaal_formula": "(armed && button_pressed && hold_time >= 1) --> !armed",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9632832351232843
+            }
+        ]
+    },
+    {
+        "id": 227,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2565,
+                    "sid": 1,
+                    "property_specification": "Arming is prevented when the safety switch is not engaged.",
+                    "uppaal_formula": "A[] (safety_switch_not_engaged -> !armed)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2565,
+                    "sid": 1,
+                    "property_specification": "If the safety switch is not engaged, arming is prevented.",
+                    "uppaal_formula": "A[] ( !safety_switch_engaged imply !arming_state )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9838391705139794
+            }
+        ]
+    },
+    {
+        "id": 234,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2596,
+                    "sid": 1,
+                    "property_specification": "If the vehicle is flying and does not have a valid local position, it will eventually enter failsafe mode.",
+                    "uppaal_formula": "(flying && !valid_local_position) --> failsafe",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2602,
+                    "sid": 3,
+                    "property_specification": "When the vehicle is not landed and does not have a valid local position estimate, it will eventually enter a failsafe state.",
+                    "uppaal_formula": "(not landed && not valid_local_position) --> failsafe",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9298742581586881
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2694,
+                    "sid": 1,
+                    "property_specification": "If a flying vehicle has an invalid position estimate, it will eventually enter failsafe mode.",
+                    "uppaal_formula": "(flying && !position_estimate_valid) --> failsafe",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.949431727860053
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2577,
+                    "sid": 1,
+                    "property_specification": "If the vehicle is flying and loses its position estimate, it will eventually enter a failsafe state.",
+                    "uppaal_formula": "UAV.Flying && !UAV.LocalPositionValid --> UAV.Failsafe",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9520458527591378
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2596,
+                    "sid": 0,
+                    "property_specification": "If a flying vehicle loses the position estimate, it will enter failsafe.",
+                    "uppaal_formula": "flying_vehicle_loses_position_estimate --> failsafe",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9370819772864301
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2602,
+                    "sid": 2,
+                    "property_specification": "If a flying vehicle loses the position estimate, it will failsafe.",
+                    "uppaal_formula": "flying_vehicle && loses_position_estimate --> failsafe",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.916205840939317
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2694,
+                    "sid": 2,
+                    "property_specification": "If a flying vehicle loses its position estimate, it will enter failsafe.",
+                    "uppaal_formula": "A[] (flying_vehicle && lost_position_estimate) imply failsafe_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9387037847772579
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2684,
+                    "sid": 1,
+                    "property_specification": "Flying vehicles will failsafe if they lose the position estimate.",
+                    "uppaal_formula": "A[] (GlobalPosition.lost imply A<> FlyingVehicle.failsafe)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8707511261267904
+            }
+        ]
+    },
+    {
+        "id": 235,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2596,
+                    "sid": 4,
+                    "property_specification": "If RC stick is moved and not in critical battery failsafe, then the mode will eventually be Position mode.",
+                    "uppaal_formula": "(rc_stick_moved && !critical_battery_failsafe) --> (mode == POSITION)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2602,
+                    "sid": 5,
+                    "property_specification": "If there is RC stick movement and not in critical battery failsafe, the vehicle will eventually be in Position mode.",
+                    "uppaal_formula": "(rc_stick_movement && not critical_battery) --> mode == Position",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9228415707480488
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2684,
+                    "sid": 4,
+                    "property_specification": "If RC stick is moved and not in critical battery failsafe, the vehicle will eventually be in Position mode.",
+                    "uppaal_formula": "(rc_stick_moved and not critical_battery) --> position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9388828079045102
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2695,
+                    "sid": 0,
+                    "property_specification": "If RC stick movement occurs and it is not handling a critical battery failsafe, then the vehicle will eventually change to Position mode.",
+                    "uppaal_formula": "RC_stick_movement && !critical_battery_failsafe --> vehicle_in_position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9160713587049356
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2597,
+                    "sid": 1,
+                    "property_specification": "RC stick movement leads to the vehicle entering Position mode.",
+                    "uppaal_formula": "rc_moved --> in_position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8191851980287552
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2604,
+                    "sid": 2,
+                    "property_specification": "When RC stick movement is detected, the vehicle will eventually switch to Position mode.",
+                    "uppaal_formula": "rc_movement --> position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.878415202183426
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2696,
+                    "sid": 1,
+                    "property_specification": "RC stick movement will eventually cause the vehicle to enter Position mode.",
+                    "uppaal_formula": "rc_stick_movement --> (current_mode == position_mode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8663003465180056
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2696,
+                    "sid": 2,
+                    "property_specification": "If RC stick movement occurs, the vehicle will change to Position mode.",
+                    "uppaal_formula": "rc_stick_movement --> vehicle_in_position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8693574685267228
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2616,
+                    "sid": 2,
+                    "property_specification": "If RC stick movement occurs and the vehicle is not handling a critical battery failsafe, it will eventually enter position mode.",
+                    "uppaal_formula": "(RC_stick_movement and not critical_battery) --> position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9036547878084148
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2695,
+                    "sid": 0,
+                    "property_specification": "If RC stick movement is detected and the vehicle is not handling a critical battery failsafe, then the vehicle will eventually be in Position mode.",
+                    "uppaal_formula": "(rc_movement && !critical_battery) --> position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9039688910807738
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2684,
+                    "sid": 4,
+                    "property_specification": "RC stick movement will change the vehicle to Position mode unless handling a critical battery failsafe.",
+                    "uppaal_formula": "A[] (RCStick.moved && !Battery.criticalFailsafe imply Vehicle.mode == PositionMode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9002146132004558
+            }
+        ]
+    },
+    {
+        "id": 237,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2600,
+                    "sid": 0,
+                    "property_specification": "When COM_RC_OVERRIDE is enabled and stick movement exceeds COM_RC_STICK_OV, the system eventually transitions to Position mode.",
+                    "uppaal_formula": "(COM_RC_OVERRIDE_enabled && stick_movement > COM_RC_STICK_OV) --> in_position_mode",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2626,
+                    "sid": 0,
+                    "property_specification": "When COM_RC_OVERRIDE is enabled and the RC stick movement exceeds COM_RC_STICK_OV, the system eventually transitions to Position mode.",
+                    "uppaal_formula": "(COM_RC_OVERRIDE && stick_movement > COM_RC_STICK_OV) --> (mode == POSITION)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9925874234405043
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2699,
+                    "sid": 0,
+                    "property_specification": "When COM_RC_OVERRIDE is enabled and stick movement exceeds COM_RC_STICK_OV, the system eventually transitions to Position mode.",
+                    "uppaal_formula": "(COM_RC_OVERRIDE && stick_movement > COM_RC_STICK_OV) --> (flight_mode == PositionMode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9999999999999996
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2600,
+                    "sid": 1,
+                    "property_specification": "When COM_RC_OVERRIDE is enabled and there is COM_RC_STICK_OV amount of stick movement, it leads to a transition to Position mode.",
+                    "uppaal_formula": "(COM_RC_OVERRIDE_enabled && stick_movement_equals_COM_RC_STICK_OV) --> Position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9707690069190296
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2607,
+                    "sid": 0,
+                    "property_specification": "If COM_RC_OVERRIDE is enabled, then a mode change to Position mode may eventually occur when there is sufficient stick movement (COM_RC_STICK_OV).",
+                    "uppaal_formula": "COM_RC_OVERRIDE.enabled && COM_RC_STICK_OV.sufficient --> Position_Mode.active",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9515300049725527
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2626,
+                    "sid": 0,
+                    "property_specification": "If COM_RC_OVERRIDE is enabled and there is stick movement as defined by COM_RC_STICK_OV, then a transition to Position mode will eventually happen.",
+                    "uppaal_formula": "COM_RC_OVERRIDE_enabled && stick_movement_exceeds_COM_RC_STICK_OV --> Position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9532516090866767
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2692,
+                    "sid": 0,
+                    "property_specification": "If COM_RC_OVERRIDE is enabled, then a sufficient COM_RC_STICK_OV will lead to a transition to Position mode.",
+                    "uppaal_formula": "COM_RC_OVERRIDE_enabled && COM_RC_STICK_OV_sufficient --> Position_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9467211856100423
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2699,
+                    "sid": 0,
+                    "property_specification": "If COM_RC_OVERRIDE is enabled, then a transition to Position mode is possible when there is a sufficient amount of stick movement (COM_RC_STICK_OV).",
+                    "uppaal_formula": "E<> (COM_RC_OVERRIDE && stick_movement_exceeds_COM_RC_STICK_OV && Position_mode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9473926621170334
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2607,
+                    "sid": 2,
+                    "property_specification": "It is always true that if COM_RC_OVERRIDE is enabled and COM_RC_STICK_OV indicates sufficient stick movement, this causes a transition to Position mode.",
+                    "uppaal_formula": "A[](COM_RC_OVERRIDE.enabled && COM_RC_STICK_OV.is_sufficient imply Position_Mode.is_active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9075667424494984
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2607,
+                    "sid": 1,
+                    "property_specification": "It is potentially always true that if COM_RC_OVERRIDE is enabled and there is sufficient stick movement, then Position mode is active.",
+                    "uppaal_formula": "E[](COM_RC_OVERRIDE.enabled && COM_RC_STICK_OV.sufficient imply Position_Mode.active)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8634281987501784
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2692,
+                    "sid": 1,
+                    "property_specification": "A mode change to Position mode can potentially always occur when COM_RC_OVERRIDE is enabled and COM_RC_STICK_OV is sufficient.",
+                    "uppaal_formula": "E[] (COM_RC_OVERRIDE_enabled && COM_RC_STICK_OV_sufficient imply Position_mode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8832558652875024
+            }
+        ]
+    },
+    {
+        "id": 239,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2611,
+                    "sid": 0,
+                    "property_specification": "In Altitude mode, if the control sticks are released, the vehicle will eventually maintain altitude.",
+                    "uppaal_formula": "(in_altitude_mode && sticks_released) --> maintaining_altitude",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2637,
+                    "sid": 0,
+                    "property_specification": "If the control sticks are centered, then the vehicle eventually levels itself and maintains its current altitude.",
+                    "uppaal_formula": "sticks_centered --> (vehicle_level && altitude_maintained)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.910398932791901
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2611,
+                    "sid": 0,
+                    "property_specification": "When in Altitude mode and the sticks are released, the vehicle will level and maintain altitude.",
+                    "uppaal_formula": "AltitudeMode.sticksReleased --> AltitudeMode.level && AltitudeMode.maintainingAltitude",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.954908719248182
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2637,
+                    "sid": 0,
+                    "property_specification": "When the sticks are released/centered the vehicle will level and maintain the current altitude.",
+                    "uppaal_formula": "sticks_released --> altitude_controlled",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9139245729012608
+            }
+        ]
+    },
+    {
+        "id": 240,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2611,
+                    "sid": 2,
+                    "property_specification": "In Manual/Stabilized mode, if the control sticks are released, the vehicle will eventually maintain horizontal posture.",
+                    "uppaal_formula": "(in_manual_mode && sticks_released) --> maintaining_horizontal_posture",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2611,
+                    "sid": 1,
+                    "property_specification": "When in Manual/Stabilized mode and the sticks are released, the vehicle levels and maintains its horizontal posture.",
+                    "uppaal_formula": "ManualStabilizedMode.sticksReleased --> ManualStabilizedMode.levels && ManualStabilizedMode.maintainsHorizontalPosture",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9659908447466867
+            }
+        ]
+    },
+    {
+        "id": 241,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2612,
+                    "sid": 0,
+                    "property_specification": "The vehicle in Takeoff mode eventually enters Hold mode.",
+                    "uppaal_formula": "mode == Takeoff --> mode == Hold",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2612,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is in Takeoff mode, it eventually switches to Hold mode.",
+                    "uppaal_formula": "Takeoff --> Hold",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9623822820839676
+            }
+        ]
+    },
+    {
+        "id": 243,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2617,
+                    "sid": 1,
+                    "property_specification": "If no mission is stored, or mission execution is finished, or mission is not feasible, and the vehicle is flying, it will eventually hold.",
+                    "uppaal_formula": "(no_mission or mission_finished or mission_not_feasible) and flying --> hold",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2617,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is flying and the mission is not feasible, it will hold.",
+                    "uppaal_formula": "A[] (flying && !mission_feasible imply holding)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9197510270164102
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2618,
+                    "sid": 0,
+                    "property_specification": "If no mission is stored, and the vehicle is flying, then the vehicle will hold.",
+                    "uppaal_formula": "no_mission_stored && is_flying --> vehicle_holds",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9482224650223774
+            }
+        ]
+    },
+    {
+        "id": 244,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2618,
+                    "sid": 0,
+                    "property_specification": "If a mission is stored and PX4 is flying, it will eventually execute the mission.",
+                    "uppaal_formula": "(mission_stored && flying) --> executing_mission",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2618,
+                    "sid": 1,
+                    "property_specification": "If a mission is stored and PX4 is landed, it will eventually execute the mission.",
+                    "uppaal_formula": "(mission_stored && landed) --> executing_mission",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9619702003448862
+            }
+        ]
+    },
+    {
+        "id": 245,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2618,
+                    "sid": 2,
+                    "property_specification": "If there is no mission stored or the mission is finished, and PX4 is flying, it will eventually hold.",
+                    "uppaal_formula": "((!mission_stored || mission_finished) && flying) --> holding",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2617,
+                    "sid": 2,
+                    "property_specification": "If no mission is stored, or mission execution is finished, or mission is not feasible, and the vehicle is landed, it will eventually wait.",
+                    "uppaal_formula": "(no_mission or mission_finished or mission_not_feasible) and landed --> wait",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.820160401495591
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2618,
+                    "sid": 3,
+                    "property_specification": "If there is no mission stored or the mission is finished, and PX4 is landed, it will eventually wait.",
+                    "uppaal_formula": "((!mission_stored || mission_finished) && landed) --> waiting",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9138766686176946
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2617,
+                    "sid": 1,
+                    "property_specification": "If the vehicle is landed and the mission is not feasible, it will wait.",
+                    "uppaal_formula": "A[] (landed && !mission_feasible imply waiting)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.7647478456010006
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2618,
+                    "sid": 1,
+                    "property_specification": "If no mission is stored, and the vehicle is landed, then the vehicle will wait.",
+                    "uppaal_formula": "no_mission_stored && is_landed --> vehicle_waits",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.7938577492826682
+            }
+        ]
+    },
+    {
+        "id": 252,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2639,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is in landed state and the throttle stick percentage is greater than 62.5, then the vehicle will eventually be in flying state.",
+                    "uppaal_formula": "(state == landed and throttle > 62.5) --> state == flying",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2656,
+                    "sid": 1,
+                    "property_specification": "If the vehicle is landed and the throttle stick is above 62.5%, then it will take off.",
+                    "uppaal_formula": "(landed && throttle_above_62_5) --> takeoff",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9313079183144992
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2639,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is landed and the throttle stick is raised above 62.5%, then the vehicle will eventually take off.",
+                    "uppaal_formula": "landed && throttle_stick_pos > 0.625 --> taken_off",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9284159259259397
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2656,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is landed and the throttle stick is raised above 62.5%, the vehicle will eventually take off.",
+                    "uppaal_formula": "landed && throttle_stick_pos > 0.625 --> taking_off",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9262924930105028
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2740,
+                    "sid": 1,
+                    "property_specification": "In position or altitude mode, if throttle is above 62.5%, then eventually the vehicle takes off.",
+                    "uppaal_formula": "((mode_position || mode_altitude) && throttle > 62.5) --> takeoff",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8897277988260806
+            }
+        ]
+    },
+    {
+        "id": 253,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2640,
+                    "sid": 1,
+                    "property_specification": "Manual input for roll or pitch leads to autopilot assistance for attitude stabilization.",
+                    "uppaal_formula": "input_roll_pitch --> autopilot_assist_roll_pitch",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2640,
+                    "sid": 3,
+                    "property_specification": "Manual input for yaw leads to autopilot assistance for stabilizing attitude rate.",
+                    "uppaal_formula": "input_yaw --> autopilot_assist_yaw",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9522283725594514,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 255,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2650,
+                    "sid": 0,
+                    "property_specification": "Always, when the throttle stick is centered and MPC_THR_CURVE is set to default, the hover throttle is output.",
+                    "uppaal_formula": "A[] ( (throttle_centered && mpc_thr_curve_default) imply (output == MPC_THR_HOVER) )",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2651,
+                    "sid": 2,
+                    "property_specification": "When the throttle stick is centered and MPC_THR_CURVE is 'Rescale to hover thrust', the configured hover throttle is output.",
+                    "uppaal_formula": "(throttle_stick_centered && MPC_THR_CURVE == RESCALE_HOVER_THRUST) --> (output_throttle == MPC_THR_HOVER)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9124167526689684
+            }
+        ]
+    },
+    {
+        "id": 256,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2661,
+                    "sid": 1,
+                    "property_specification": "Always, if the altitude is less than or equal to MPC_LAND_ALT2, then the velocity is at most MPC_LAND_SPEED.",
+                    "uppaal_formula": "A[] (alt <= MPC_LAND_ALT2 imply vel <= MPC_LAND_SPEED)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2661,
+                    "sid": 2,
+                    "property_specification": "Always, if the altitude is less than or equal to MPC_LAND_ALT1 and greater than MPC_LAND_ALT2, then the velocity is between MPC_LAND_SPEED and MPC_Z_VEL_MAX_DN (assuming MPC_LAND_SPEED <= MPC_Z_VEL_MAX_DN).",
+                    "uppaal_formula": "A[] ( (alt <= MPC_LAND_ALT1 and alt > MPC_LAND_ALT2) imply (vel >= MPC_LAND_SPEED and vel <= MPC_Z_VEL_MAX_DN) )",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9458488689681972
+            }
+        ]
+    },
+    {
+        "id": 259,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2676,
+                    "sid": 0,
+                    "property_specification": "When the system is in Position slow mode and external limits are not provided, the horizontal velocity limit is 3 m/s.",
+                    "uppaal_formula": "A[] ( (mode == POSITION_SLOW and not external_input) imply h_limit == 3 )",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2676,
+                    "sid": 1,
+                    "property_specification": "When the system is in Position slow mode and external limits are not provided, if the horizontal velocity exceeds 3 m/s, it will eventually be reduced to 3 m/s.",
+                    "uppaal_formula": "(mode == POSITION_SLOW and not external_input and h_velocity > 3) --> h_velocity == 3",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9541166057456002
+            }
+        ]
+    },
+    {
+        "id": 262,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2694,
+                    "sid": 0,
+                    "property_specification": "A flying vehicle cannot be in hold mode if it does not have a valid global position estimate.",
+                    "uppaal_formula": "A[] (flying && !position_estimate_valid) imply !in_hold_mode",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2694,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is a flying vehicle and does not have a global position estimate, then it cannot switch to Hold mode.",
+                    "uppaal_formula": "A[] (flying_vehicle && !global_position_estimate) imply !can_switch_to_hold_mode",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9298845398934862,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 263,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2696,
+                    "sid": 0,
+                    "property_specification": "If the hover mode is engaged and the altitude is below NAV_MIN_LTR_ALT, then the vehicle will eventually reach an altitude of at least NAV_MIN_LTR_ALT.",
+                    "uppaal_formula": "(current_mode == hover_mode && altitude < NAV_MIN_LTR_ALT) --> (altitude >= NAV_MIN_LTR_ALT)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2696,
+                    "sid": 1,
+                    "property_specification": "The vehicle will first ascend to NAV_MIN_LTR_ALT if the mode is engaged below this altitude.",
+                    "uppaal_formula": "mode_engaged_below_min_altitude --> vehicle_ascends_to_min_altitude",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9179730094227496
+            }
+        ]
+    },
+    {
+        "id": 268,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2722,
+                    "sid": 2,
+                    "property_specification": "When the vehicle is at search altitude and the search timeout has elapsed with no target visible, a normal landing is eventually initiated.",
+                    "uppaal_formula": "(at_search_alt && t >= PLD_SRCH_TOUT && !target_visible) --> normal_landing",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2722,
+                    "sid": 3,
+                    "property_specification": "If the target is still not visible at the search altitude and after a search timeout, a normal landing is initiated at the current position.",
+                    "uppaal_formula": "climbing_to_search_altitude and !target_visible and search_timeout --> normal_landing_initiated_at_current_position",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9490858820051749
+            }
+        ]
+    },
+    {
+        "id": 269,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2724,
+                    "sid": 1,
+                    "property_specification": "If the target is not visible for more than PLD_BTOUT seconds while in the horizontal approach phase, then eventually the vehicle will enter either the search procedure state or the normal landing state.",
+                    "uppaal_formula": "(state == horizontal_approach && !target_visible && c > PLD_BTOUT) --> (state == search_procedure || state == normal_landing)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2724,
+                    "sid": 2,
+                    "property_specification": "If the target is not visible for more than PLD_BTOUT seconds while in the descent over target phase, then eventually the vehicle will enter either the search procedure state or the normal landing state.",
+                    "uppaal_formula": "(state == descent_over_target && !target_visible && c > PLD_BTOUT) --> (state == search_procedure || state == normal_landing)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.968341707678467
+            }
+        ]
+    },
+    {
+        "id": 272,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2733,
+                    "sid": 0,
+                    "property_specification": "The vehicle starts descending when the horizontal distance is within the acceptance radius.",
+                    "uppaal_formula": "(horizontal_distance <= HACC_RAD) --> descending",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2733,
+                    "sid": 2,
+                    "property_specification": "The vehicle will start descending when the current horizontal radius is within the acceptance radius.",
+                    "uppaal_formula": "current_horizontal_radius <= horizontal_acceptance_radius --> vehicle_descending",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9697224263394884
+            }
+        ]
+    },
+    {
+        "id": 273,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2740,
+                    "sid": 3,
+                    "property_specification": "After detecting the apex of a throw, the vehicle eventually activates its motors.",
+                    "uppaal_formula": "detect_apex --> motors_activated",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2740,
+                    "sid": 2,
+                    "property_specification": "It is possible for the vehicle to activate motors after detecting it has reached the apex of a throw.",
+                    "uppaal_formula": "E<> (vehicle_detects_apex_of_throw && vehicle_activates_motors)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9557055217123325,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 277,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2765,
+                    "sid": 0,
+                    "property_specification": "When the heading parameter is set (param4 not NaN) and the vehicle type is multi-rotor, the vehicle eventually has its yaw heading equal to param4.",
+                    "uppaal_formula": "(param4 != NaN && vehicle_type == multi_rotor) --> (yaw_heading == param4)",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2765,
+                    "sid": 1,
+                    "property_specification": "When the heading parameter is not set (param4 is NaN) and the vehicle type is multi-rotor, the vehicle eventually has its yaw heading equal to the target specified by MPC_YAW_MODE.",
+                    "uppaal_formula": "(param4 == NaN && vehicle_type == multi_rotor) --> (yaw_heading == mpc_yaw_mode)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9344798944496553,
+                "useit": true
+            }
+        ]
+    },
+    {
+        "id": 281,
+        "properties": [
+            {
+                "source": "deepseek",
+                "property": {
+                    "id": 2772,
+                    "sid": 0,
+                    "property_specification": "Setting the parameter RTL_TYPE to 3 leads to safety points being enabled.",
+                    "uppaal_formula": "RTL_TYPE == 3 --> safety_enabled",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2772,
+                    "sid": 1,
+                    "property_specification": "Setting RTL_TYPE to 3 enables safety points.",
+                    "uppaal_formula": "RTL_TYPE == 3 --> SafetyPointsEnabled",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.970187335739115
+            }
+        ]
+    },
+    {
+        "id": 336,
+        "properties": [
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 548,
+                    "sid": 0,
+                    "property_specification": "The attitude estimator is disabled when ATT_EN is 0.",
+                    "uppaal_formula": "ATT_EN == 0 --> attitude_estimator_disabled",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 548,
+                    "sid": 1,
+                    "property_specification": "If ATT_EN is 0, then the attitude estimator is disabled permanently.",
+                    "uppaal_formula": "A[](ATT_EN == 0 imply attitude_estimator_disabled)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9696989993083485
+            }
+        ]
+    },
+    {
+        "id": 349,
+        "properties": [
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 667,
+                    "sid": 3,
+                    "property_specification": "Starting from 90% of the maximum flight time, a warning message will be sent.",
+                    "uppaal_formula": "t_takeoff >= 0.9 * COM_FLT_TIME_MAX --> Vehicle.WarningMessageSent",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 667,
+                    "sid": 4,
+                    "property_specification": "A warning message will be sent every 1 minute with the remaining time until automatic RTL, starting from 90% of the maximum flight time.",
+                    "uppaal_formula": "A[] (t_takeoff >= 0.9 * COM_FLT_TIME_MAX imply A<> (Vehicle.WarningMessageSent && (time_since_last_warning == 0)))",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9157907697799059
+            }
+        ]
+    },
+    {
+        "id": 350,
+        "properties": [
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 687,
+                    "sid": 0,
+                    "property_specification": "The offboard loss failsafe will only be entered after a timeout.",
+                    "uppaal_formula": "UAV.offboard_loss_failsafe_pending --> UAV.offboard_loss_failsafe_entered",
+                    "reason": ""
+                }
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 687,
+                    "sid": 1,
+                    "property_specification": "The offboard loss failsafe will only be entered after a timeout, set by COM_OF_LOSS_T in seconds.",
+                    "uppaal_formula": "UAV.offboard_loss_failsafe_pending && UAV.failsafe_timer >= COM_OF_LOSS_T --> UAV.offboard_loss_failsafe_entered",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9629917448346919,
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 713,
+                    "sid": 0,
+                    "property_specification": "The RC loss failsafe will only be entered after a timeout, set by COM_RC_LOSS_T in seconds.",
+                    "uppaal_formula": "No",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.8962891608766141
+            }
+        ]
+    },
+    {
+        "id": 387,
+        "properties": [
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 1408,
+                    "sid": 0,
+                    "property_specification": "The system will always obey the minimum loiter altitude in Loiter (Hold) mode when switched into this mode without specifying an altitude.",
+                    "uppaal_formula": "A[] (system.LoiterMode && !altitude_specified) imply (current_altitude >= NAV_MIN_LTR_ALT)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2698,
+                    "sid": 0,
+                    "property_specification": "The system will always obey the minimum altitude above Home in Hold mode when switched into this mode without specifying an altitude.",
+                    "uppaal_formula": "A[] (HoldMode && NoAltitudeSpecified imply Altitude >= NAV_MIN_LTR_ALT)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.924424381239568
+            }
+        ]
+    },
+    {
+        "id": 457,
+        "properties": [
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2691,
+                    "sid": 0,
+                    "property_specification": "If the vehicle is horizontally closer than RTL_MIN_DIST to home, it will return at its current altitude or RTL_DESCEND_ALT (whichever is higher).",
+                    "uppaal_formula": "horizontal_distance < RTL_MIN_DIST --> (return_at_current_altitude || return_at_RTL_DESCEND_ALT)",
+                    "reason": ""
+                },
+                "useit": true
+            },
+            {
+                "source": "gemini",
+                "property": {
+                    "id": 2691,
+                    "sid": 2,
+                    "property_specification": "If RTL_CONE_ANG is 90, the vehicle must return at the current altitude or RTL_DESCEND_ALT (whichever is higher).",
+                    "uppaal_formula": "RTL_CONE_ANG == 90 --> (return_at_current_altitude || return_at_RTL_DESCEND_ALT)",
+                    "reason": ""
+                },
+                "similarity_to_first": 0.9165690510929905
+            }
+        ]
+    }
+]

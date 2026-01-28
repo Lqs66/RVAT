@@ -1,0 +1,1482 @@
+diff -uNr -x .git llvm-project/clang/lib/CodeGen/CGExpr.cpp llvm-16.0.4/clang/lib/CodeGen/CGExpr.cpp
+--- llvm-project/clang/lib/CodeGen/CGExpr.cpp	2026-01-14 16:40:47.146685006 +0800
++++ llvm-16.0.4/clang/lib/CodeGen/CGExpr.cpp	2026-01-14 16:38:29.410685944 +0800
+@@ -26,6 +26,7 @@
+ #include "clang/AST/Attr.h"
+ #include "clang/AST/DeclObjC.h"
+ #include "clang/AST/NSAPI.h"
++#include "clang/AST/ParentMapContext.h"
+ #include "clang/Basic/Builtins.h"
+ #include "clang/Basic/CodeGenOptions.h"
+ #include "clang/Basic/SourceManager.h"
+@@ -41,6 +42,7 @@
+ #include "llvm/Support/Path.h"
+ #include "llvm/Support/SaveAndRestore.h"
+ #include "llvm/Transforms/Utils/SanitizerStats.h"
++#include "llvm/CodeGen/StableHashing.h"
+ 
+ #include <optional>
+ #include <string>
+@@ -4964,6 +4966,116 @@
+   llvm_unreachable("bad evaluation kind");
+ }
+ 
++/// 
++/// @brief Used to get type from sizeof(XXX) expression.
++QualType CodeGenFunction::GetMemAllocTypeFromSizeOf(const UnaryExprOrTypeTraitExpr *SizeOf){
++  QualType ResultType;
++  if (SizeOf->isArgumentType())
++    ResultType = SizeOf->getArgumentType();
++  else
++    ResultType = SizeOf->getArgumentExpr()->getType();
++  
++  return ResultType.getDesugaredType(getContext());
++}
++
++/// 
++/// Currently, we only support the following types:
++/// sizeof(A)
++/// sizeof(A) * 10
++static const UnaryExprOrTypeTraitExpr *FindSizeOfExpr(const Expr *E) {
++  E = E->IgnoreParenImpCasts();
++  if (const auto *UETTE = dyn_cast<UnaryExprOrTypeTraitExpr>(E))
++    return UETTE;
++
++  if (const auto *BO = dyn_cast<BinaryOperator>(E)) {
++    if (const auto *UETTE = FindSizeOfExpr(BO->getLHS()))
++      return UETTE;
++    if (const auto *UETTE = FindSizeOfExpr(BO->getRHS()))
++      return UETTE;
++  }
++
++  return nullptr;
++}
++
++/// 
++/// @brief Add metadata to the call instruction to indicate the type of the heap allocation.
++void CodeGenFunction::processTypeForHeapAlloc(QualType MemAllocType, RValue Call) {
++  llvm::Type* allocTypeTy = ConvertTypeForMem(MemAllocType);
++  uint64_t typeHashValue = hashType(allocTypeTy);
++  StringRef typeName = "";
++  switch (allocTypeTy->getTypeID()){
++    case llvm::Type::TypeID::StructTyID:
++      typeName = getStructTypeNamePrefix(dyn_cast<llvm::StructType>(allocTypeTy)->getName());
++      break;
++    case llvm::Type::TypeID::PointerTyID:
++      typeName = "ptr";
++      break;
++    case llvm::Type::TypeID::IntegerTyID:
++      typeName = StringRef("i" + std::to_string(dyn_cast<llvm::IntegerType>(allocTypeTy)->getBitWidth()));
++      break;
++    case llvm::Type::TypeID::FloatTyID:
++      typeName = "float";
++      break;
++    case llvm::Type::TypeID::DoubleTyID:
++      typeName = "double";
++      break;
++    case llvm::Type::TypeID::HalfTyID:
++      typeName = "half";
++      break;
++    case llvm::Type::TypeID::X86_FP80TyID:
++      typeName = "x86_fp80";
++      break;
++    case llvm::Type::TypeID::FP128TyID:
++      typeName = "fp128";
++      break;
++    case llvm::Type::TypeID::PPC_FP128TyID:
++      typeName = "ppc_fp128";
++      break;
++    case llvm::Type::TypeID::FixedVectorTyID:
++      typeName = "fixed_vector";
++      break;
++    case llvm::Type::TypeID::ScalableVectorTyID:
++      typeName = "scalable_vector";
++      break;
++    case llvm::Type::TypeID::ArrayTyID:
++      typeName = "array";
++      break;
++    case llvm::Type::TypeID::FunctionTyID:
++      typeName = "function";
++      break;
++    case llvm::Type::TypeID::VoidTyID:
++      typeName = "void";
++      break;
++    case llvm::Type::TypeID::LabelTyID:
++      typeName = "label";
++      break;
++    case llvm::Type::TypeID::X86_MMXTyID:
++      typeName = "x86_mmx";
++      break;
++    case llvm::Type::TypeID::TokenTyID:
++      typeName = "token";
++      break;
++    default:
++      typeName = "unknown";
++      break;
++  }
++  if (auto *newCall = dyn_cast<llvm::CallBase>(Call.getScalarVal())){
++    addHeapAllocTypeMetadata(newCall, typeName, true, typeHashValue);
++    if (auto *STy = dyn_cast<llvm::StructType>(allocTypeTy)){
++      if (CGM.heapAllocSTys[typeHashValue] != nullptr){
++        if (getStructTypeNamePrefix(CGM.heapAllocSTys[typeHashValue]->getName()) != typeName){
++          llvm::errs() << "WARNING: heapAllocType metadata already exists for type " << *CGM.heapAllocSTys[typeHashValue] << "\n";
++          llvm::errs() << "                                                  and " << *STy << "\n";
++        }
++      }
++      CGM.heapAllocSTys[typeHashValue] = STy;
++      // if (STy->getName().str() == "class.uavcan::Subscriber"){
++      //   llvm::outs() << *STy << "\n";
++      // }
++    }
++  }
++}
++
+ //===--------------------------------------------------------------------===//
+ //                             Expression Emission
+ //===--------------------------------------------------------------------===//
+@@ -4987,9 +5099,49 @@
+ 
+   CGCallee callee = EmitCallee(E->getCallee());
+ 
++  /// 
++  /// @brief According to the 'Builtins.def', malloc, calloc and realloc are all builtins.
+   if (callee.isBuiltin()) {
+-    return EmitBuiltinExpr(callee.getBuiltinDecl(), callee.getBuiltinID(),
+-                           E, ReturnValue);
++    RValue Call = EmitBuiltinExpr(callee.getBuiltinDecl(), callee.getBuiltinID(),
++    E, ReturnValue);
++    const FunctionDecl *FD = E->getDirectCallee();
++    if (!FD || !FD->getIdentifier())
++      return Call;
++    StringRef FuncName = FD->getName();
++    int argNo = -1;
++    if (FuncName == "malloc" || FuncName == "calloc") 
++      argNo = 0;
++    else if (FuncName == "realloc")
++      argNo = 1;
++    if (argNo != -1) {
++      // Check parent nodes to see if there is a type cast
++      QualType CastType;
++      bool hasCast = false;
++      for (auto p : getContext().getParents(*E)) {
++        if (auto *castExpr = p.get<CStyleCastExpr>()) {
++          CastType = castExpr->getType();
++          if (CastType->isPointerType()) {
++            hasCast = true;
++            break;
++          }
++        }
++      }
++      
++      // if exists a cast, we need to process the type of the cast
++      if (hasCast && CastType->isPointerType()) {
++        QualType PointeeType = CastType->getPointeeType();
++        processTypeForHeapAlloc(PointeeType, Call);
++      } else {
++        const Expr *SizeArg = E->getArg(argNo)->IgnoreParenImpCasts();
++        if (const UnaryExprOrTypeTraitExpr *SizeOf = FindSizeOfExpr(SizeArg)) {
++          if (SizeOf->getKind() == UETT_SizeOf) {
++            QualType MemAllocType = GetMemAllocTypeFromSizeOf(SizeOf);
++            processTypeForHeapAlloc(MemAllocType, Call);
++          }
++        }
++      }
++    }
++    return Call;
+   }
+ 
+   if (callee.isPseudoDestructor()) {
+diff -uNr -x .git llvm-project/clang/lib/CodeGen/CGExprCXX.cpp llvm-16.0.4/clang/lib/CodeGen/CGExprCXX.cpp
+--- llvm-project/clang/lib/CodeGen/CGExprCXX.cpp	2026-01-14 16:40:47.147684993 +0800
++++ llvm-16.0.4/clang/lib/CodeGen/CGExprCXX.cpp	2026-01-14 16:38:29.411685928 +0800
+@@ -20,6 +20,7 @@
+ #include "clang/Basic/CodeGenOptions.h"
+ #include "clang/CodeGen/CGFunctionInfo.h"
+ #include "llvm/IR/Intrinsics.h"
++#include "llvm/CodeGen/StableHashing.h"
+ 
+ using namespace clang;
+ using namespace CodeGen;
+@@ -1649,6 +1650,82 @@
+       if (auto *newCall = dyn_cast<llvm::CallBase>(RV.getScalarVal()))
+         getDebugInfo()->addHeapAllocSiteMetadata(newCall, allocType,
+                                                  E->getExprLoc());
++    ///       
++    /// Set !heapAllocType metadata on the call to operator new.  
++    bool isArray = E->isArray();
++    llvm::Type* allocTypeTy = ConvertTypeForMem(allocType);
++    uint64_t typeHashValue = hashType(allocTypeTy);
++    StringRef typeName = "";
++    switch (allocTypeTy->getTypeID()){
++      case llvm::Type::TypeID::StructTyID:
++        typeName = getStructTypeNamePrefix(dyn_cast<llvm::StructType>(allocTypeTy)->getName());
++        break;
++      case llvm::Type::TypeID::PointerTyID:
++        typeName = "ptr";
++        break;
++      case llvm::Type::TypeID::IntegerTyID:
++        typeName = StringRef("i" + std::to_string(dyn_cast<llvm::IntegerType>(allocTypeTy)->getBitWidth()));
++        break;
++      case llvm::Type::TypeID::FloatTyID:
++        typeName = "float";
++        break;
++      case llvm::Type::TypeID::DoubleTyID:
++        typeName = "double";
++        break;
++      case llvm::Type::TypeID::HalfTyID:
++        typeName = "half";
++        break;
++      case llvm::Type::TypeID::X86_FP80TyID:
++        typeName = "x86_fp80";
++        break;
++      case llvm::Type::TypeID::FP128TyID:
++        typeName = "fp128";
++        break;
++      case llvm::Type::TypeID::PPC_FP128TyID:
++        typeName = "ppc_fp128";
++        break;
++      case llvm::Type::TypeID::FixedVectorTyID:
++        typeName = "fixed_vector";
++        break;
++      case llvm::Type::TypeID::ScalableVectorTyID:
++        typeName = "scalable_vector";
++        break;
++      case llvm::Type::TypeID::ArrayTyID:
++        typeName = "array";
++        break;
++      case llvm::Type::TypeID::FunctionTyID:
++        typeName = "function";
++        break;
++      case llvm::Type::TypeID::VoidTyID:
++        typeName = "void";
++        break;
++      case llvm::Type::TypeID::LabelTyID:
++        typeName = "label";
++        break;
++      case llvm::Type::TypeID::X86_MMXTyID:
++        typeName = "x86_mmx";
++        break;
++      case llvm::Type::TypeID::TokenTyID:
++        typeName = "token";
++        break;
++      default:
++        typeName = "unknown";
++        break;
++    }
++    if (auto *newCall = dyn_cast<llvm::CallBase>(RV.getScalarVal())){
++      CharUnits cookieSize = CalculateCookiePadding(*this, E);
++      addNewOperatorCookieMetadata(newCall, cookieSize);
++      addHeapAllocTypeMetadata(newCall, typeName, isArray, typeHashValue);
++      if (auto *STy = dyn_cast<llvm::StructType>(allocTypeTy)){
++        if (CGM.heapAllocSTys[typeHashValue] != nullptr){
++          if (getStructTypeNamePrefix(CGM.heapAllocSTys[typeHashValue]->getName()) != typeName){
++            llvm::errs() << "Error: heapAllocType metadata already exists for type " << *CGM.heapAllocSTys[typeHashValue] << "\n";
++            llvm::errs() << "                                                  and " << *STy << "\n";
++          }
++        }
++        CGM.heapAllocSTys[typeHashValue] = STy;
++      }
++    }
+ 
+     // If this was a call to a global replaceable allocation function that does
+     // not take an alignment argument, the allocator is known to produce
+diff -uNr -x .git llvm-project/clang/lib/CodeGen/CodeGenFunction.h llvm-16.0.4/clang/lib/CodeGen/CodeGenFunction.h
+--- llvm-project/clang/lib/CodeGen/CodeGenFunction.h	2026-01-14 16:40:47.159684835 +0800
++++ llvm-16.0.4/clang/lib/CodeGen/CodeGenFunction.h	2026-01-14 16:38:29.424685721 +0800
+@@ -41,6 +41,8 @@
+ #include "llvm/IR/ValueHandle.h"
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Transforms/Utils/SanitizerStats.h"
++#include "llvm/CodeGen/StableHashing.h"
++#include "llvm/IR/TypedPointerType.h"
+ #include <optional>
+ 
+ namespace llvm {
+@@ -403,6 +405,150 @@
+     return PostAllocaInsertPt;
+   }
+ 
++  /// 
++  /// @brief This function is used to get the struct type name prefix, such as "class.A.1.2" -> "class.A".
++  StringRef getStructTypeNamePrefix(StringRef Name) {
++    while (!Name.empty()) {
++      size_t DotPos = Name.rfind('.');
++      if (DotPos == StringRef::npos || DotPos == 0 || DotPos == Name.size() - 1)
++        return Name;
++        
++      // 检查点号后面是否都是数字
++      bool AllDigits = true;
++      for (size_t i = DotPos + 1; i < Name.size(); ++i) {
++        if (!isdigit(static_cast<unsigned char>(Name[i]))) {
++          AllDigits = false;
++          break;
++        }
++      }
++      if (!AllDigits)
++        return Name;
++        
++      Name = Name.substr(0, DotPos);
++    }
++    return Name;
++  }
++
++  /// 
++  /// Generate hash value for type.
++  size_t hashType(llvm::Type* Ty) {
++    switch (Ty->getTypeID()) {
++      case llvm::Type::VoidTyID:      return llvm::stable_hash_combine_string("void");
++      case llvm::Type::HalfTyID:      return llvm::stable_hash_combine_string("half");
++      case llvm::Type::BFloatTyID:    return llvm::stable_hash_combine_string("bfloat");
++      case llvm::Type::FloatTyID:     return llvm::stable_hash_combine_string("float");
++      case llvm::Type::DoubleTyID:    return llvm::stable_hash_combine_string("double");
++      case llvm::Type::X86_FP80TyID:  return llvm::stable_hash_combine_string("x86_fp80");
++      case llvm::Type::FP128TyID:     return llvm::stable_hash_combine_string("fp128");
++      case llvm::Type::PPC_FP128TyID: return llvm::stable_hash_combine_string("ppc_fp128");
++      case llvm::Type::LabelTyID:     return llvm::stable_hash_combine_string("label");
++      case llvm::Type::MetadataTyID:  return llvm::stable_hash_combine_string("metadata");
++      case llvm::Type::X86_MMXTyID:   return llvm::stable_hash_combine_string("x86_mmx");
++      case llvm::Type::X86_AMXTyID:   return llvm::stable_hash_combine_string("x86_amx");
++      case llvm::Type::TokenTyID:     return llvm::stable_hash_combine_string("token");
++      case llvm::Type::IntegerTyID: {
++        std::string intType = "i" + std::to_string(cast<llvm::IntegerType>(Ty)->getBitWidth());
++        return llvm::stable_hash_combine_string(intType);
++      }
++      case llvm::Type::PointerTyID:   return llvm::stable_hash_combine_string("ptr");
++      case llvm::Type::FunctionTyID: {
++        llvm::FunctionType *FTy = cast<llvm::FunctionType>(Ty);
++        size_t retHash = hashType(FTy->getReturnType());
++        for (llvm::Type *paramTy : FTy->params()) {
++          retHash = llvm::stable_hash_combine(retHash, hashType(paramTy));
++        }
++        StringRef varArg = FTy->isVarArg() ? "varArg:true" : "varArg:false";
++        return llvm::stable_hash_combine(retHash, llvm::stable_hash_combine_string(varArg));
++      }
++      case llvm::Type::StructTyID: {
++        llvm::StructType *STy = cast<llvm::StructType>(Ty);
++    
++        if (!STy->isLiteral()) {
++          size_t nameHash = llvm::stable_hash_combine_string(getStructTypeNamePrefix(STy->getName()));
++          StringRef packed = STy->isPacked() ? "packed:true" : "packed:false";
++          size_t retHash = llvm::stable_hash_combine_string(packed);
++          for (llvm::Type *elemTy : STy->elements()) {
++            nameHash = llvm::stable_hash_combine(nameHash, hashType(elemTy));
++          }
++          return llvm::stable_hash_combine(nameHash, retHash);
++        }else{
++          StringRef packed = STy->isPacked() ? "packed:true" : "packed:false";
++          size_t retHash = llvm::stable_hash_combine_string(packed);
++          for (llvm::Type *elemTy : STy->elements()) {
++            retHash = llvm::stable_hash_combine(retHash, hashType(elemTy));
++          }
++          return retHash;
++        }
++      }
++      case llvm::Type::ArrayTyID: {
++        llvm::ArrayType *ATy = cast<llvm::ArrayType>(Ty);
++        size_t elemHash = hashType(ATy->getElementType());
++        std::string STStr;
++        llvm::raw_string_ostream STStream(STStr);
++        STStream << ATy->getNumElements();
++        return llvm::stable_hash_combine(elemHash, llvm::stable_hash_combine_string(STStream.str()));
++      }
++      case llvm::Type::FixedVectorTyID:
++      case llvm::Type::ScalableVectorTyID: {
++        llvm::VectorType *PTy = cast<llvm::VectorType>(Ty);
++        llvm::ElementCount EC = PTy->getElementCount();
++        size_t elemHash = hashType(PTy->getElementType());
++        if (EC.isScalable()) {
++          return llvm::stable_hash_combine(elemHash, llvm::stable_hash_combine_string("vscale"));
++        } else {
++          std::string STStr;
++          llvm::raw_string_ostream STStream(STStr);
++          STStream << EC.getKnownMinValue();
++          return llvm::stable_hash_combine(elemHash, llvm::stable_hash_combine_string(STStream.str()));
++        }
++      }
++      case llvm::Type::TypedPointerTyID: {
++        llvm::TypedPointerType *TPTy = cast<llvm::TypedPointerType>(Ty);
++        size_t elemHash = hashType(TPTy->getElementType());
++        return llvm::stable_hash_combine(llvm::stable_hash_combine_string("typedptr"), elemHash);
++      }
++      case llvm::Type::TargetExtTyID: {
++        llvm::TargetExtType *TETy = cast<llvm::TargetExtType>(Ty);
++        std::string STStr;
++        llvm::raw_string_ostream STStream(STStr);
++        STStream << "target(\"";
++        printEscapedString(Ty->getTargetExtName(), STStream);
++        STStream << "\"";
++        for (llvm::Type *Inner : TETy->type_params())
++        STStream << ", " << *Inner;
++        for (unsigned IntParam : TETy->int_params())
++        STStream << ", " << IntParam;
++        STStream << ")";
++        return llvm::stable_hash_combine_string(STStream.str());
++      }
++    }
++    llvm_unreachable("Invalid TypeID");
++  }
++
++
++  /// 
++  /// @brief Add metadata to the call site to indicate the type of the heap allocation.
++  void addHeapAllocTypeMetadata(llvm::CallBase *CallSite, 
++                                StringRef typeName, 
++                                bool isArray,
++                                size_t typeHashValue) {
++    llvm::MDString *typeNameNode = llvm::MDString::get(CGM.getLLVMContext(), typeName);
++    llvm::Metadata *isArrayNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::get(CGM.getLLVMContext(), llvm::APInt(1, isArray)));
++    llvm::Metadata *HashNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::get(CGM.getLLVMContext(), llvm::APInt(64, typeHashValue)));
++    llvm::MDNode *MDNode = llvm::MDNode::get(CGM.getLLVMContext(), {typeNameNode, isArrayNode, HashNode});
++    CallSite->setMetadata("heapAllocType", MDNode);                     
++  }
++
++  /// @brief Add metadata to the call site to indicate the size of the cookie for new operator.
++  void addNewOperatorCookieMetadata(llvm::CallBase *CallSite, CharUnits CookieSize) {
++    llvm::Metadata *CookieSizeNode = llvm::ConstantAsMetadata::get(
++        llvm::ConstantInt::get(CGM.getLLVMContext(), llvm::APInt(64, CookieSize.getQuantity())));
++    llvm::MDNode *MDNode =
++        llvm::MDNode::get(CGM.getLLVMContext(), {CookieSizeNode});
++    CallSite->setMetadata("newOpCookie", MDNode);
++  }
++
++
+   /// API for captured statement code generation.
+   class CGCapturedStmtInfo {
+   public:
+@@ -4022,6 +4168,11 @@
+   }
+   RValue EmitCall(QualType FnType, const CGCallee &Callee, const CallExpr *E,
+                   ReturnValueSlot ReturnValue, llvm::Value *Chain = nullptr);
++
++  /// 
++  QualType GetMemAllocTypeFromSizeOf(const UnaryExprOrTypeTraitExpr *SizeOf);
++  void processTypeForHeapAlloc(QualType MemAllocType, RValue Call);
++  
+   RValue EmitCallExpr(const CallExpr *E,
+                       ReturnValueSlot ReturnValue = ReturnValueSlot());
+   RValue EmitSimpleCallExpr(const CallExpr *E, ReturnValueSlot ReturnValue);
+diff -uNr -x .git llvm-project/clang/lib/CodeGen/CodeGenModule.cpp llvm-16.0.4/clang/lib/CodeGen/CodeGenModule.cpp
+--- llvm-project/clang/lib/CodeGen/CodeGenModule.cpp	2026-01-14 16:40:47.160684821 +0800
++++ llvm-16.0.4/clang/lib/CodeGen/CodeGenModule.cpp	2026-01-14 16:38:29.426685689 +0800
+@@ -266,6 +266,40 @@
+   HLSLRuntime.reset(new CGHLSLRuntime(*this));
+ }
+ 
++/// 
++/// @brief Create dummy function to force the emission of the struct type.
++void CodeGenModule::createDummyFunc() {
++  // Create a dummy function to force the emission of the struct type.
++  if (heapAllocSTys.empty())
++    return;
++      
++  llvm::FunctionType *FTy = llvm::FunctionType::get(VoidTy, false);
++  std::string funcName = "dummyAllocSTy." + 
++                          llvm::Twine(llvm::hash_value(getModule().getModuleIdentifier())).str();
++  llvm::Function *F = llvm::Function::Create(
++      FTy, llvm::GlobalValue::InternalLinkage, funcName, &getModule());
++  
++  // We need to  prevent the function from being
++  // optimized out by the optimizer
++  F->addFnAttr(llvm::Attribute::NoInline);
++  F->addFnAttr(llvm::Attribute::OptimizeNone);
++  addUsedGlobal(F);
++  
++  llvm::BasicBlock *BB = llvm::BasicBlock::Create(VMContext, "entry", F);
++  llvm::IRBuilder<> Builder(BB);
++  
++  for (auto &pair : heapAllocSTys) {
++    llvm::StructType *STy = pair.second;
++    if (!STy->isOpaque()) {
++      Builder.CreateAlloca(STy);
++    }
++  }
++
++  Builder.CreateRetVoid();  
++
++}
++
++
+ void CodeGenModule::addReplacement(StringRef Name, llvm::Constant *C) {
+   Replacements[Name] = C;
+ }
+@@ -627,7 +661,7 @@
+     addCompilerUsedGlobal(GV);
+   }
+ 
+-  emitLLVMUsed();
++  // emitLLVMUsed();
+   if (SanStats)
+     SanStats->finish();
+ 
+@@ -958,6 +992,11 @@
+   // that might affect the DLL storage class or the visibility, and
+   // before anything that might act on these.
+   setVisibilityFromDLLStorageClass(LangOpts, getModule());
++
++  createDummyFunc(); /// Create a dummy function to emit struct types.
++
++  emitLLVMUsed(); /// We move this to the end of the module to ensure that
++                  /// the llvm.used is emitted last.
+ }
+ 
+ void CodeGenModule::EmitOpenCLMetadata() {
+diff -uNr -x .git llvm-project/clang/lib/CodeGen/CodeGenModule.h llvm-16.0.4/clang/lib/CodeGen/CodeGenModule.h
+--- llvm-project/clang/lib/CodeGen/CodeGenModule.h	2026-01-14 16:40:47.161684808 +0800
++++ llvm-16.0.4/clang/lib/CodeGen/CodeGenModule.h	2026-01-14 16:38:29.426685689 +0800
+@@ -298,6 +298,8 @@
+ 
+   typedef std::vector<Structor> CtorList;
+ 
++  llvm::DenseMap<size_t, llvm::StructType*> heapAllocSTys; // Only used for generating dummy functions to allca structs.
++
+ private:
+   ASTContext &Context;
+   const LangOptions &LangOpts;
+@@ -539,6 +541,8 @@
+   void createCUDARuntime();
+   void createHLSLRuntime();
+ 
++  void createDummyFunc(); /// @author: lqs66
++
+   bool isTriviallyRecursive(const FunctionDecl *F);
+   bool shouldEmitFunction(GlobalDecl GD);
+   bool shouldOpportunisticallyEmitVTables();
+diff -uNr -x .git llvm-project/.gitignore llvm-16.0.4/.gitignore
+--- llvm-project/.gitignore	2026-01-14 16:40:46.729690513 +0800
++++ llvm-16.0.4/.gitignore	2026-01-14 16:38:28.960693134 +0800
+@@ -28,6 +28,7 @@
+ 
+ # Nested build directory
+ /build*
++/arm_build*
+ 
+ #==============================================================================#
+ # Explicit files to ignore (only matches one).
+diff -uNr -x .git llvm-project/llvm/include/llvm/Linker/IRMover.h llvm-16.0.4/llvm/include/llvm/Linker/IRMover.h
+--- llvm-project/llvm/include/llvm/Linker/IRMover.h	2026-01-14 16:40:50.868635993 +0800
++++ llvm-16.0.4/llvm/include/llvm/Linker/IRMover.h	2026-01-14 16:38:33.301623948 +0800
+@@ -12,6 +12,7 @@
+ #include "llvm/ADT/ArrayRef.h"
+ #include "llvm/ADT/DenseSet.h"
+ #include "llvm/ADT/FunctionExtras.h"
++#include "llvm/ADT/StringRef.h"
+ #include <functional>
+ 
+ namespace llvm {
+@@ -27,8 +28,9 @@
+   struct StructTypeKeyInfo {
+     struct KeyTy {
+       ArrayRef<Type *> ETypes;
++      StringRef Name; // Add struct type name as part of the key.
+       bool IsPacked;
+-      KeyTy(ArrayRef<Type *> E, bool P);
++      KeyTy(ArrayRef<Type *> E, StringRef Name, bool P);
+       KeyTy(const StructType *ST);
+       bool operator==(const KeyTy &that) const;
+       bool operator!=(const KeyTy &that) const;
+@@ -56,7 +58,7 @@
+     void addNonOpaque(StructType *Ty);
+     void switchToNonOpaque(StructType *Ty);
+     void addOpaque(StructType *Ty);
+-    StructType *findNonOpaque(ArrayRef<Type *> ETypes, bool IsPacked);
++    StructType *findNonOpaque(ArrayRef<Type *> ETypes, StringRef Name, bool IsPacked);
+     bool hasType(StructType *Ty);
+   };
+ 
+diff -uNr -x .git llvm-project/llvm/lib/Linker/IRMover.cpp llvm-16.0.4/llvm/lib/Linker/IRMover.cpp
+--- llvm-project/llvm/lib/Linker/IRMover.cpp	2026-01-14 16:40:51.053633563 +0800
++++ llvm-16.0.4/llvm/lib/Linker/IRMover.cpp	2026-01-14 16:38:33.492620914 +0800
+@@ -243,6 +243,31 @@
+   return get(Ty, Visited);
+ }
+ 
++/**
++ * Modified getTypeNamePrefix to support restoring LLVM's auto-renamed structs,
++ *  e.g., %foo.42.1.23 is restored to %foo.
++ */
++static StringRef getTypeNamePrefix(StringRef Name) {
++  while (!Name.empty()) {
++    size_t DotPos = Name.rfind('.');
++    if (DotPos == StringRef::npos || DotPos == 0 || DotPos == Name.size() - 1)
++      return Name;
++      
++    bool AllDigits = true;
++    for (size_t i = DotPos + 1; i < Name.size(); ++i) {
++      if (!isdigit(static_cast<unsigned char>(Name[i]))) {
++        AllDigits = false;
++        break;
++      }
++    }
++    if (!AllDigits)
++      return Name;
++      
++    Name = Name.substr(0, DotPos);
++  }
++  return Name;
++}
++
+ Type *TypeMapTy::get(Type *Ty, SmallPtrSet<StructType *, 8> &Visited) {
+   // If we already have an entry for this type, return it.
+   Type **Entry = &MappedTypes[Ty];
+@@ -330,8 +355,14 @@
+       return *Entry = Ty;
+     }
+ 
++  // When processing structs, first check if a struct with the same layout exists in Dst's struct set.
++  // We added a 'Name' field in the StructTypeKeyInfo index of DstStructTypesSet,
++  // which stores the struct name without numerical suffixes (e.g., %foo.42 becomes %foo).
++  // This ensures that type mapping is not based solely on memory layout, preventing merging of different structs with the same layout.
++  // For example, if %class.A exists in Dst, %class.B with the same layout in Src will not map to %class.A.
++  // However, %class.A.2 and %class.A.3 will map to %class.A.
+     if (StructType *OldT =
+-            DstStructTypesSet.findNonOpaque(ElementTypes, IsPacked)) {
++            DstStructTypesSet.findNonOpaque(ElementTypes, getTypeNamePrefix(STy->getName()), IsPacked)) {
+       STy->setName("");
+       return *Entry = OldT;
+     }
+@@ -766,13 +797,13 @@
+   return NewGV;
+ }
+ 
+-static StringRef getTypeNamePrefix(StringRef Name) {
+-  size_t DotPos = Name.rfind('.');
+-  return (DotPos == 0 || DotPos == StringRef::npos || Name.back() == '.' ||
+-          !isdigit(static_cast<unsigned char>(Name[DotPos + 1])))
+-             ? Name
+-             : Name.substr(0, DotPos);
+-}
++// static StringRef getTypeNamePrefix(StringRef Name) {
++//   size_t DotPos = Name.rfind('.');
++//   return (DotPos == 0 || DotPos == StringRef::npos || Name.back() == '.' ||
++//           !isdigit(static_cast<unsigned char>(Name[DotPos + 1])))
++//              ? Name
++//              : Name.substr(0, DotPos);
++// }
+ 
+ /// Loop over all of the linked values to compute type mappings.  For example,
+ /// if we link "extern Foo *x" and "Foo *x = NULL", then we have two struct
+@@ -835,10 +866,11 @@
+       continue;
+ 
+     // Check to see if the destination module has a struct with the prefix name.
+-    StructType *DST = StructType::getTypeByName(ST->getContext(), STTypePrefix);
++    // Get the type with the same hash, rather than the same prefix.
++    StructType *DST = TypeMap.DstStructTypesSet.findNonOpaque(ST->elements(), STTypePrefix, ST->isPacked());
+     if (!DST)
+-      continue;
+-
++      continue;        
++      
+     // Don't use it if this actually came from the source module. They're in
+     // the same LLVMContext after all. Also don't use it unless the type is
+     // actually used in the destination module. This can happen in situations
+@@ -1687,14 +1719,14 @@
+   return linkModuleFlagsMetadata();
+ }
+ 
+-IRMover::StructTypeKeyInfo::KeyTy::KeyTy(ArrayRef<Type *> E, bool P)
+-    : ETypes(E), IsPacked(P) {}
++IRMover::StructTypeKeyInfo::KeyTy::KeyTy(ArrayRef<Type *> E, StringRef N, bool P)
++    : ETypes(E), Name(N), IsPacked(P) {}
+ 
+ IRMover::StructTypeKeyInfo::KeyTy::KeyTy(const StructType *ST)
+-    : ETypes(ST->elements()), IsPacked(ST->isPacked()) {}
++    : ETypes(ST->elements()), Name(getTypeNamePrefix(ST->getName())), IsPacked(ST->isPacked()) {}
+ 
+ bool IRMover::StructTypeKeyInfo::KeyTy::operator==(const KeyTy &That) const {
+-  return IsPacked == That.IsPacked && ETypes == That.ETypes;
++  return IsPacked == That.IsPacked && Name == That.Name && ETypes == That.ETypes;
+ }
+ 
+ bool IRMover::StructTypeKeyInfo::KeyTy::operator!=(const KeyTy &That) const {
+@@ -1711,7 +1743,7 @@
+ 
+ unsigned IRMover::StructTypeKeyInfo::getHashValue(const KeyTy &Key) {
+   return hash_combine(hash_combine_range(Key.ETypes.begin(), Key.ETypes.end()),
+-                      Key.IsPacked);
++                      hash_combine(Key.Name, Key.IsPacked));
+ }
+ 
+ unsigned IRMover::StructTypeKeyInfo::getHashValue(const StructType *ST) {
+@@ -1752,8 +1784,9 @@
+ 
+ StructType *
+ IRMover::IdentifiedStructTypeSet::findNonOpaque(ArrayRef<Type *> ETypes,
++                                                StringRef Name,
+                                                 bool IsPacked) {
+-  IRMover::StructTypeKeyInfo::KeyTy Key(ETypes, IsPacked);
++  IRMover::StructTypeKeyInfo::KeyTy Key(ETypes, Name, IsPacked);
+   auto I = NonOpaqueStructTypes.find_as(Key);
+   return I == NonOpaqueStructTypes.end() ? nullptr : *I;
+ }
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/CMakeLists.txt llvm-16.0.4/llvm/lib/Transforms/CMakeLists.txt
+--- llvm-project/llvm/lib/Transforms/CMakeLists.txt	2026-01-14 16:40:51.398629035 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/CMakeLists.txt	2026-01-14 16:38:33.848615260 +0800
+@@ -9,3 +9,5 @@
+ add_subdirectory(ObjCARC)
+ add_subdirectory(Coroutines)
+ add_subdirectory(CFGuard)
++
++add_subdirectory(PreModelChecking)
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/CMakeLists.txt llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/CMakeLists.txt
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/CMakeLists.txt	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/CMakeLists.txt	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,25 @@
++
++add_llvm_library( PreModelChecking MODULE
++  PreModelCheckingWarpper.cpp
++  ConstExprRemover.cpp
++  RemoveUnusedInstructions.cpp
++  GetElementPtrSimplifier.cpp
++  # SplitCalls.cpp
++  InfoAppender.cpp
++
++  # ADDITIONAL_HEADER_DIRS
++  # ${LLVM_MAIN_INCLUDE_DIR}/llvm/Transforms
++
++  DEPENDS
++  intrinsics_gen
++  PLUGIN_TOOL
++  opt
++
++  # LINK_COMPONENTS
++  # Core
++  # Support
++  # TransformUtils
++  # Scalar
++  # IPO
++  # Passes
++)
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/ConstExprRemover.cpp llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/ConstExprRemover.cpp
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/ConstExprRemover.cpp	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/ConstExprRemover.cpp	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,194 @@
++#include "PreModelChecking.h"
++
++// ConstExprRemover
++llvm::PreservedAnalyses PreModelChecking::ConstExprRemover::run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM) {
++    llvm::outs() << "Remove Constant Expressions...\n";
++    runOnModule(M);
++    return llvm::PreservedAnalyses::none();
++}
++
++
++//
++// Function: hasConstantGEP()
++//
++// Description:
++//  This function determines whether the given value is a constant expression
++//  that has a constant GEP expression embedded within it.
++//
++// Inputs:
++//  V - The value to check.
++//
++// Return value:
++//  nullptr  - This value is not a constant expression with a constant expression
++//          GEP within it.
++//  ~nullptr - A pointer to the value casted into a ConstantExpr is returned.
++//
++llvm::ConstantExpr* PreModelChecking::ConstExprRemover::hasConstantGEP (llvm::Value*  V)
++{
++    if (llvm::ConstantExpr * CE = llvm::dyn_cast<llvm::ConstantExpr>(V))
++    {
++        if (CE->getOpcode() == llvm::Instruction::GetElementPtr)
++        {
++            return CE;
++        }
++        else
++        {
++            for (uint32_t index = 0; index < CE->getNumOperands(); ++index)
++            {
++                if (hasConstantGEP (CE->getOperand(index)))
++                    return CE;
++            }
++        }
++    }
++    return nullptr;
++}
++
++//  This function determines whether the given value is a constant expression
++//  that has a constant binary or unary operator expression embedded within it.
++llvm::ConstantExpr* PreModelChecking::ConstExprRemover::hasConstantBinaryOrUnaryOp (llvm::Value*  V)
++{
++    if (llvm::ConstantExpr * CE = llvm::dyn_cast<llvm::ConstantExpr>(V))
++    {
++        if (llvm::Instruction::isBinaryOp(CE->getOpcode()) || llvm::Instruction::isUnaryOp(CE->getOpcode()))
++        {
++            return CE;
++        }
++        else
++        {
++            for (uint32_t index = 0; index < CE->getNumOperands(); ++index)
++            {
++                if (hasConstantBinaryOrUnaryOp (CE->getOperand(index)))
++                    return CE;
++            }
++        }
++    }
++    return nullptr;
++}
++
++// Return true if this is a constant Gep or binaryOp or UnaryOp expression.
++llvm::ConstantExpr* PreModelChecking::ConstExprRemover::hasConstantExpr (llvm::Value*  V)
++{
++    if (llvm::ConstantExpr * gep = hasConstantGEP(V))
++    {
++        return gep;
++    }
++    else if (llvm::ConstantExpr * buop = hasConstantBinaryOrUnaryOp(V))
++    {
++        return buop;
++    }
++    else
++    {
++        return nullptr;
++    }
++}
++
++//
++// Function: convertExpression()
++//
++// Description:
++//  Convert a constant expression into an instruction.  This routine does *not*
++//  perform any recursion, so the resulting instruction may have constant
++//  expression operands.
++//
++llvm::Instruction* PreModelChecking::ConstExprRemover::convertExpression (llvm::ConstantExpr * CE, llvm::Instruction*  InsertPt)
++{
++    //
++    // Convert this constant expression into a regular instruction.
++    //
++    llvm::Instruction* Result = CE->getAsInstruction();
++    Result->insertBefore(InsertPt);
++    return Result;
++}
++
++void PreModelChecking::ConstExprRemover::runOnModule(llvm::Module &M) 
++{
++    for (llvm::Module::iterator F = M.begin(), E = M.end(); F != E; ++F)
++    {
++        // Worklist of values to check for constant GEP expressions
++        std::vector<llvm::Instruction* > Worklist;
++
++        //
++        // Initialize the worklist by finding all instructions that have one or more
++        // operands containing a constant GEP expression.
++        //
++        for (llvm::Function::iterator BB = (*F).begin(); BB != (*F).end(); ++BB)
++        {
++            for (llvm::BasicBlock::iterator i = BB->begin(); i != BB->end(); ++i)
++            {
++                //
++                // Scan through the operands of this instruction.  If it is a constant
++                // expression GEP, insert an instruction GEP before the instruction.
++                //
++                llvm::Instruction*  I = &(*i);
++                for (uint32_t index = 0; index < I->getNumOperands(); ++index)
++                {
++                    if (hasConstantExpr(I->getOperand(index)))
++                    {
++                        Worklist.push_back (I);
++                    }
++                }
++            }
++        }
++
++        //
++        // While the worklist is not empty, take an item from it, convert the
++        // operands into instructions if necessary, and determine if the newly
++        // added instructions need to be processed as well.
++        //
++        while (Worklist.size())
++        {
++            llvm::Instruction*  I = Worklist.back();
++            Worklist.pop_back();
++
++            //
++            // Scan through the operands of this instruction and convert each into an
++            // instruction.  Note that this works a little differently for phi
++            // instructions because the new instruction must be added to the
++            // appropriate predecessor block.
++            //
++            if (llvm::PHINode * PHI = llvm::dyn_cast<llvm::PHINode>(I))
++            {
++                for (uint32_t index = 0; index < PHI->getNumIncomingValues(); ++index)
++                {
++                    //
++                    // For PHI Nodes, if an operand is a constant expression with a GEP, we
++                    // want to insert the new instructions in the predecessor basic block.
++                    //
++                    // Note: It seems that it's possible for a phi to have the same
++                    // incoming basic block listed multiple times; this seems okay as long
++                    // the same value is listed for the incoming block.
++                    //
++                    llvm::Instruction*  InsertPt = PHI->getIncomingBlock(index)->getTerminator();
++                    if (llvm::ConstantExpr * CE = hasConstantExpr(PHI->getIncomingValue(index)))
++                    {
++                        llvm::Instruction*  NewInst = convertExpression (CE, InsertPt);
++                        for (uint32_t i2 = index; i2 < PHI->getNumIncomingValues(); ++i2)
++                        {
++                            if ((PHI->getIncomingBlock (i2)) == PHI->getIncomingBlock (index))
++                                PHI->setIncomingValue (i2, NewInst);
++                        }
++                        Worklist.push_back (NewInst);
++                    }
++                }
++            }
++            else
++            {
++                for (uint32_t index = 0; index < I->getNumOperands(); ++index)
++                {
++                    //
++                    // For other instructions, we want to insert instructions replacing
++                    // constant expressions immediately before the instruction using the
++                    // constant expression.
++                    //
++                    if (llvm::ConstantExpr * CE = hasConstantExpr(I->getOperand(index)))
++                    {
++                        llvm::Instruction*  NewInst = convertExpression (CE, I);
++                        I->replaceUsesOfWith (CE, NewInst);
++                        Worklist.push_back (NewInst);
++                    }
++                }
++            }
++        }
++
++    }
++}
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/GetElementPtrSimplifier.cpp llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/GetElementPtrSimplifier.cpp
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/GetElementPtrSimplifier.cpp	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/GetElementPtrSimplifier.cpp	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,35 @@
++#include "PreModelChecking.h"
++
++// GetElementPtrSimplifier
++llvm::PreservedAnalyses PreModelChecking::GetElementPtrSimplifier::run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM) {
++    llvm::outs() << "simplify GetElementPtr...\n";
++    for (llvm::Function& F : M) {
++        runOnFunction(F);
++    }
++    return llvm::PreservedAnalyses::none();
++}
++
++void PreModelChecking::GetElementPtrSimplifier::runOnFunction(llvm::Function& F) {
++    llvm::LLVMContext& context = F.getContext();
++    auto i32Type = llvm::IntegerType::getInt32Ty(context);
++    auto zero = llvm::ConstantInt::get(i32Type, 0);
++    for (llvm::BasicBlock& BB : F) {
++        llvm::BasicBlock::iterator BI = BB.begin();
++        llvm::BasicBlock::iterator BE = BB.end();
++        while (BI != BE) {
++            auto& I = *BI++;
++            if (I.getOpcode() == llvm::Instruction::GetElementPtr) {
++                llvm::GetElementPtrInst* inst = llvm::dyn_cast<llvm::GetElementPtrInst>(&I);
++                llvm::Value* indexList[1] = {inst->getOperand(1)};
++                auto prev = llvm::GetElementPtrInst::Create(inst->getSourceElementType (), inst->getOperand(0), llvm::ArrayRef<llvm::Value*>(indexList, 1), "_gep__", inst);
++                const std::size_t E = inst->getNumOperands();
++                for (std::size_t oper = 2; oper < E; ++oper) {
++                    llvm::Value* indexList[2] = {zero, inst->getOperand(oper)};
++                    prev = llvm::GetElementPtrInst::Create(prev->getResultElementType (), prev, llvm::ArrayRef<llvm::Value*>(indexList, 2), "_gep__", inst);
++                }
++                I.replaceAllUsesWith(prev);
++                I.eraseFromParent();
++            }
++        }
++    }
++}
+\ No newline at end of file
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/InfoAppender.cpp llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/InfoAppender.cpp
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/InfoAppender.cpp	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/InfoAppender.cpp	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,91 @@
++#include "PreModelChecking.h"
++llvm::PreservedAnalyses PreModelChecking::InfoAppender::run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM) {
++    // runBBRenamer(M);
++    addMetaData(M);
++    createGlobalVarSection(M);
++    createStringsSection(M);
++    return llvm::PreservedAnalyses::all();
++}
++
++// void PreModelChecking::InfoAppender::runBBRenamer(llvm::Module &M){
++//     llvm::outs() << "Renaming basic blocks...\n";
++//     for(auto& F : M){
++//         for(auto& BB : F){
++//             if (F.getName().startswith("dummyAllocSTy.")) {
++//                 continue;
++//             }
++//             BB.setName("bbNum" + std::to_string(bbID++));
++//         }
++//     }
++// }
++
++void PreModelChecking::InfoAppender::addMetaData(llvm::Module &M){
++    llvm::outs() << "Add MetaData funcID for all functions...\n";
++    llvm::outs() << "Add MetaData inCallID for indirect callsites...\n";
++    for(auto& F : M){
++        if (F.getName().startswith("dummyAllocSTy.")) {
++            continue;
++        }
++        llvm::Constant* funcIDConstant = llvm::ConstantInt::get(llvm::Type::getInt32Ty(M.getContext()), funcID++);
++        auto *fidMDNode = llvm::MDNode::get(M.getContext(), llvm::ConstantAsMetadata::get(funcIDConstant));
++        F.setMetadata("funcID", fidMDNode);
++        if(F.isDeclaration()){
++            continue;
++        }
++        for(auto& BB : F){
++            for(auto& I : BB){
++                if(auto* callInst = llvm::dyn_cast<llvm::CallBase>(&I)){
++                    if (callInst->isIndirectCall()) {
++                        llvm::Constant* inCallIDConstant = llvm::ConstantInt::get(llvm::Type::getInt32Ty(M.getContext()), inCallID++);
++                        auto *metadataNode = llvm::MDNode::get(M.getContext(), llvm::ConstantAsMetadata::get(inCallIDConstant));
++                        callInst->setMetadata("inCallID", metadataNode);
++                    } 
++                }
++            }
++        }
++    }
++}
++
++void PreModelChecking::InfoAppender::createGlobalVarSection(llvm::Module &M){
++    llvm::outs() << "Move User global vars to global_vars.xx section...\n";
++    unsigned globalVarID = 0;
++    for (auto &G : M.globals()) {
++        if (G.isConstant()) {
++            continue;
++        }
++        if (G.getName().startswith("llvm.")) {
++            continue;
++        }
++        if (G.isDeclaration()) {
++            continue;
++        }
++        if (G.hasSection() && G.getSection() == ".forInstrumentation") {
++            continue;
++        }
++        
++        llvm::Constant* gvarIDConstant = llvm::ConstantInt::get(llvm::Type::getInt32Ty(M.getContext()), globalVarID++);
++        auto *gvarMDNode = llvm::MDNode::get(M.getContext(), llvm::ConstantAsMetadata::get(gvarIDConstant));
++        G.setMetadata("globalVarID", gvarMDNode);
++        G.setSection("global_vars." + std::to_string(globalVarID - 1));
++    }
++}
++
++void PreModelChecking::InfoAppender::createStringsSection(llvm::Module &M){
++    llvm::outs() << "Move string constant global vars to strings section...\n";
++    for (auto &G : M.globals()) {
++        if (!G.isConstant()) {
++            continue;
++        }
++        if (G.hasSection() && G.getSection() == ".forInstrumentation") {
++            continue;
++        }
++        if (G.hasInitializer()) {
++            if (llvm::isa<llvm::ConstantDataArray>(G.getInitializer())) {
++                auto* constDataArray = llvm::cast<llvm::ConstantDataArray>(G.getInitializer());
++                if (constDataArray->isString()) {
++                    G.setSection("strings");
++                }
++            }
++        }
++    }
++}
+\ No newline at end of file
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/PreModelChecking.h llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/PreModelChecking.h
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/PreModelChecking.h	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/PreModelChecking.h	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,101 @@
++#ifndef PREMODELCHECKING_H
++#define PREMODELCHECKING_H
++
++
++#include "llvm/Pass.h"
++#include "llvm/IR/Module.h"
++#include "llvm/IR/Function.h"
++#include "llvm/IR/Instructions.h"
++#include "llvm/IR/BasicBlock.h"
++#include <llvm/IR/InstIterator.h>
++#include <llvm/IR/IRBuilder.h>
++#include "llvm/Passes/PassBuilder.h"
++
++namespace PreModelChecking{
++
++    // interface pass for pre model checking
++    class PreModelCheckingWarpper : public llvm::PassInfoMixin<PreModelCheckingWarpper> {
++    public:
++        llvm::PreservedAnalyses run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM);
++
++        static bool isRequired() { return true; }
++    };
++
++    /**
++     * @brief Eliminating constant expressions (means an expression that can be fully computed during the static analysis phase of the compiler).
++     * 
++     * Iterate through the operands of each instruction.
++     * For each operand, if it is a constant expression (of type llvm::ConstantExpr ), 
++     * it is converted to an instruction and inserted in front of the current instruction, 
++     * and then the operands of the current instruction are updated to the newly inserted instruction.
++     * 
++     * Recursive processing of newly generated instructions.
++    */
++    struct ConstExprRemover : public llvm::PassInfoMixin<ConstExprRemover> {
++        
++        llvm::PreservedAnalyses run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM);
++
++        llvm::ConstantExpr* hasConstantGEP (llvm::Value*  V);
++
++        llvm::ConstantExpr* hasConstantBinaryOrUnaryOp (llvm::Value*  V);
++
++        llvm::ConstantExpr* hasConstantExpr (llvm::Value*  V);
++
++        llvm::Instruction* convertExpression (llvm::ConstantExpr * CE, llvm::Instruction*  InsertPt);
++
++        void runOnModule(llvm::Module &M);
++
++        static bool isRequired() { return true; }
++    };
++
++    /**
++     * @brief Remove unused instructions.
++     * 
++     * For each instruction, 
++     * if it is not used by another instruction and satisfies the conditions of the deleteable method, 
++     * it is removed from the parent basic block and the changed flag is set to true.
++     * 
++     * The deleteable method is used to determine whether an instruction can be deleted. In this method, it first checks the opcode of the instruction. 
++     * If the instruction is Store, Call, or Unreachable, it cannot be deleted and returns false; 
++     * otherwise, if the instruction is not a terminating instruction (i.e., it is not a control-flow related instruction), it can be deleted and returns true.
++    */
++    struct RemoveUnusedInstructions : public llvm::PassInfoMixin<RemoveUnusedInstructions> {
++
++        llvm::PreservedAnalyses run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM);
++
++        void runOnModule(llvm::Module &M);
++
++        bool deleteable(llvm::Instruction* inst);
++
++        static bool isRequired() { return true; }
++    };
++
++    /**
++     * @brief Simplify the GetElementPtr instruction.
++     * 
++    */
++    struct GetElementPtrSimplifier : public llvm::PassInfoMixin<GetElementPtrSimplifier> {
++
++        llvm::PreservedAnalyses run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM);
++
++        void runOnFunction(llvm::Function& F);
++
++        static bool isRequired() { return true; }
++    };
++ 
++    class InfoAppender : public llvm::PassInfoMixin<InfoAppender>{
++    public:
++        llvm::PreservedAnalyses run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM);
++        
++        static bool isRequired() { return true; }
++        void runBBRenamer(llvm::Module &M);
++        void addMetaData(llvm::Module &M);
++        void createGlobalVarSection(llvm::Module &M);
++        void createStringsSection(llvm::Module &M);
++    private:
++        int bbID = 0;
++        int inCallID = 0;
++        int funcID = 0;
++    }; 
++}
++#endif //PREMODELCHECKING_H
+\ No newline at end of file
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/PreModelCheckingWarpper.cpp llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/PreModelCheckingWarpper.cpp
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/PreModelCheckingWarpper.cpp	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/PreModelCheckingWarpper.cpp	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,64 @@
++#include "PreModelChecking.h"
++
++#include "llvm/Passes/PassBuilder.h"
++#include "llvm/IR/PassManager.h"
++#include "llvm/Passes/PassPlugin.h"
++#include "llvm/Transforms/Scalar.h" // LowerSwitchPass
++#include "llvm/Transforms/Scalar/SimplifyCFG.h" // SimplifyCFGPass
++#include "llvm/Transforms/IPO/GlobalOpt.h" // GlobalOptPass
++#include "llvm/IR/LegacyPassManager.h"
++#include "llvm/Transforms/Utils.h"
++
++#include "llvm/Support/raw_ostream.h"
++#include "llvm/Support/FileSystem.h"
++
++llvm::PreservedAnalyses PreModelChecking::PreModelCheckingWarpper::run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM){
++    llvm::FunctionPassManager FPM;
++    llvm::ModulePassManager MPM, MPM2;
++
++    llvm::legacy::PassManager lpm;
++    lpm.add(llvm::createLowerSwitchPass());
++    lpm.run(M);
++ 
++    MPM.addPass(ConstExprRemover());
++    MPM.addPass(RemoveUnusedInstructions());
++    MPM.addPass(GetElementPtrSimplifier());
++    MPM.run(M, MAM);
++
++    FPM.addPass(llvm::SimplifyCFGPass());
++    llvm::FunctionAnalysisManager &FAM = MAM.getResult<llvm::FunctionAnalysisManagerModuleProxy>(M).getManager();
++    for(auto& F : M){
++        if(F.isDeclaration()){
++            continue;
++        }
++        if (F.getName().startswith("dummyAllocSTy.")) {
++            continue;
++        }
++        FPM.run(F, FAM);
++    }
++
++    MPM2.addPass(llvm::GlobalOptPass());
++    MPM2.addPass(InfoAppender());
++    MPM2.run(M, MAM);
++
++    return llvm::PreservedAnalyses::none();
++}
++
++// register pass
++extern "C" LLVM_ATTRIBUTE_WEAK ::llvm::PassPluginLibraryInfo llvmGetPassPluginInfo() {
++    return {
++        LLVM_PLUGIN_API_VERSION, 
++        "PreModelChecking",      
++        "v0.1",                  
++        [](llvm::PassBuilder &PB) {   
++            PB.registerPipelineParsingCallback(
++                [](llvm::StringRef Name, llvm::ModulePassManager &MPM,
++                   llvm::ArrayRef<llvm::PassBuilder::PipelineElement>) {
++                    if (Name == "pre-model-checking") {
++                        MPM.addPass(PreModelChecking::PreModelCheckingWarpper());
++                        return true;
++                    }
++                    return false;
++                });
++        }};
++}
+\ No newline at end of file
+diff -uNr -x .git llvm-project/llvm/lib/Transforms/PreModelChecking/RemoveUnusedInstructions.cpp llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/RemoveUnusedInstructions.cpp
+--- llvm-project/llvm/lib/Transforms/PreModelChecking/RemoveUnusedInstructions.cpp	1970-01-01 08:00:00.000000000 +0800
++++ llvm-16.0.4/llvm/lib/Transforms/PreModelChecking/RemoveUnusedInstructions.cpp	2026-01-14 16:38:33.873614863 +0800
+@@ -0,0 +1,41 @@
++#include "PreModelChecking.h"
++
++// RemoveUnusedInstructions
++llvm::PreservedAnalyses PreModelChecking::RemoveUnusedInstructions::run(llvm::Module &M, llvm::ModuleAnalysisManager &MAM) {
++    llvm::outs() << "Remove Unused Instructions...\n";
++    runOnModule(M);
++    return llvm::PreservedAnalyses::none();
++}
++
++void PreModelChecking::RemoveUnusedInstructions::runOnModule(llvm::Module &M) {
++    bool changed = true;
++    do {
++        changed = false;
++        for (llvm::Function& F : M) {
++            if (F.getName().startswith("dummyAllocSTy.")) {
++                continue;
++            }
++            for (llvm::BasicBlock& BB : F) {
++                for (auto I = BB.begin(), E = BB.end(); I != E; ++I) {
++                    llvm::Instruction& inst = *I;
++                    if (!inst.getNumUses() &&
++                        deleteable(&inst)) {
++                        I = inst.eraseFromParent();
++                        changed = true;
++                    }
++                }
++            }
++        }
++    } while (changed);
++}
++
++bool PreModelChecking::RemoveUnusedInstructions::deleteable(llvm::Instruction* inst) {
++    switch (inst->getOpcode()) {
++        case llvm::Instruction::Store:
++        case llvm::Instruction::Call:
++        case llvm::Instruction::Unreachable:
++            return false;
++        default:
++            return !inst->isTerminator();
++    }
++}
+\ No newline at end of file
+diff -uNr -x .git llvm-project/llvm/tools/lli/lli.cpp llvm-16.0.4/llvm/tools/lli/lli.cpp
+--- llvm-project/llvm/tools/lli/lli.cpp	2026-01-14 16:40:54.720585524 +0800
++++ llvm-16.0.4/llvm/tools/lli/lli.cpp	2026-01-14 16:38:37.479557765 +0800
+@@ -448,7 +448,7 @@
+ 
+   ExitOnErr(loadDylibs());
+ 
+-  if (UseJITKind == JITKind::MCJIT)
++  if (UseJITKind == JITKind::MCJIT || ForceInterpreter)
+     disallowOrcOptions();
+   else
+     return runOrcJIT(argv[0]);
+diff -uNr -x .git llvm-project/polly/lib/External/isl/imath/Makefile llvm-16.0.4/polly/lib/External/isl/imath/Makefile
+--- llvm-project/polly/lib/External/isl/imath/Makefile	2026-01-14 16:40:55.507575245 +0800
++++ llvm-16.0.4/polly/lib/External/isl/imath/Makefile	1970-01-01 08:00:00.000000000 +0800
+@@ -1,131 +0,0 @@
+-##
+-## Name:     Makefile
+-## Purpose:  Makefile for imath library and associated tools
+-## Author:   M. J. Fromberger
+-##
+-## Copyright (C) 2002-2008 Michael J. Fromberger, All Rights Reserved.
+-##
+-## Permission is hereby granted, free of charge, to any person obtaining a copy
+-## of this software and associated documentation files (the "Software"), to
+-## deal in the Software without restriction, including without limitation the
+-## rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+-## sell copies of the Software, and to permit persons to whom the Software is
+-## furnished to do so, subject to the following conditions:
+-##
+-## The above copyright notice and this permission notice shall be included in
+-## all copies or substantial portions of the Software.
+-##
+-## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-## IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+-## AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-## LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+-## FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+-## IN THE SOFTWARE.
+-##
+-
+-# --- begin configuration section ---
+-
+-## Generic settings for systems with GCC (default)
+-## To build with debugging, add DEBUG=Y on the "make" command line.
+-ifeq ($(origin CC),default)
+-CC=gcc
+-endif
+-CFLAGS+=-pedantic -Wall -Werror -Wextra -Wno-unused-parameter \
+-	-I. -std=c99 $(DFLAGS$(DEBUG))
+-CSFLAGS=$(CFLAGS) -fPIC
+-#LIBS=
+-
+-# These are needed to build the GMP compatibility tests.
+-export CC CFLAGS
+-
+-DFLAGS=-O3 -funroll-loops -finline-functions
+-DFLAGSN=$(DFLAGS)
+-DFLAGSY=-g -DDEBUG=1
+-
+-# --- end of configuration section ---
+-
+-TARGETS=bintest bug-swap imtest imtimer rtest
+-HDRS=imath.h imrat.h iprime.h imdrover.h rsamath.h gmp_compat.h
+-SRCS=$(HDRS:.h=.c) $(TARGETS:=.c)
+-OBJS=$(SRCS:.c=.o)
+-OTHER=LICENSE ChangeLog Makefile doc.md doc.md.in \
+-	tools/findthreshold.py tools/mkdoc.py .dockerignore
+-VPATH += examples tests
+-EXAMPLES=basecvt findprime imcalc input pi randprime rounding rsakey
+-
+-.PHONY: all test clean distclean
+-.SUFFIXES: .so .md
+-
+-.c.o:
+-	$(CC) $(CFLAGS) -c $<
+-
+-.c.so:
+-	$(CC) $(CSFLAGS) -o $@ -c $<
+-
+-all: objs examples test
+-
+-objs: $(OBJS)
+-
+-check: test gmp-compat-test
+-	@ echo "Completed running imath and gmp-compat unit tests"
+-
+-test: imtest pi bug-swap doc.md
+-	@ echo ""
+-	@ echo "Running tests, you should not see any 'FAILED' lines here."
+-	@ echo "If you do, please see doc.txt for how to report a bug."
+-	@ echo ""
+-	(cd tests && ./test.sh)
+-
+-gmp-compat-test: libimath.so
+-	@ echo "Running gmp-compat unit tests"
+-	@ echo "Printing progress after every 100,000 tests"
+-	make -C tests/gmp-compat-test TESTS="-p 100000 random.tests"
+-
+-docker-test:
+-	if which docker ; \
+-	then \
+-		docker run --rm -it \
+-		"$(shell docker build -f tests/linux/Dockerfile -q .)" ; \
+-	fi
+-
+-$(EXAMPLES):%: imath.o imrat.o iprime.o %.o
+-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+-
+-$(TARGETS):%: imath.o %.o
+-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+-
+-examples: $(EXAMPLES)
+-
+-libimath.so: imath.so imrat.so gmp_compat.so
+-	$(CC) $(CFLAGS) -shared -o $@ $^
+-
+-imtest: imtest.o imath.o imrat.o imdrover.o iprime.o
+-
+-rtest: rtest.o imath.o rsamath.o
+-
+-# Requires clang-format: https://clang.llvm.org/docs/ClangFormat.html
+-format-c:
+-	@ echo "Formatting C source files and headers ..."
+-	find . -type f -name '*.h' -o -name '*.c' -print0 | \
+-		xargs -0 clang-format --style=Google -i
+-
+-# Requires yapf: pip install yapf
+-format-py:
+-	@ echo "Formatting Python source files ..."
+-	find . -type f -name '*.py' -print0 | \
+-		xargs -0 yapf --style=pep8 -i
+-
+-# Format source files.
+-format: format-c format-py
+-
+-# Generate documentation from header comments.
+-# This rule depends on the header files to ensure the docs get updated when the
+-# headers change.
+-doc.md: doc.md.in imath.h imrat.h tools/mkdoc.py
+-	tools/mkdoc.py $< $@
+-
+-clean distclean:
+-	rm -f *.o *.so *.pyc *~ core gmon.out tests/*~ tests/gmon.out examples/*~
+-	make -C tests/gmp-compat-test clean
+-	rm -f $(TARGETS) $(EXAMPLES)
+diff -uNr -x .git llvm-project/polly/lib/External/isl/imath/tests/gmp-compat-test/Makefile llvm-16.0.4/polly/lib/External/isl/imath/tests/gmp-compat-test/Makefile
+--- llvm-project/polly/lib/External/isl/imath/tests/gmp-compat-test/Makefile	2026-01-14 16:40:55.514575153 +0800
++++ llvm-16.0.4/polly/lib/External/isl/imath/tests/gmp-compat-test/Makefile	1970-01-01 08:00:00.000000000 +0800
+@@ -1,27 +0,0 @@
+-CFLAGS+=-fPIC -I$(IMATH_DIR)
+-IMATH_DIR=../..
+-
+-runtest: imath_test.so gmp_test.so wrappers.py random.tests
+-	./runtest $(TESTS)
+-
+-gmp_test.c: gmp_custom_test.c genctest.py gmpapi.py
+-	./genctest.py gmp > $@
+-
+-imath_test.c: imath_custom_test.c genctest.py gmpapi.py
+-	./genctest.py imath > $@
+-
+-gmp_test.so: gmp_test.o
+-	$(CC) $(CFLAGS) -shared -o $@ $^ -lgmp
+-
+-imath_test.so: imath_test.o
+-	$(CC) $(CFLAGS) -shared -L$(IMATH_DIR) -o $@ $^ -limath
+-
+-wrappers.py: genpytest.py gmpapi.py
+-	./genpytest.py > $@
+-
+-random.tests: gendata.py
+-	./gendata.py > $@
+-
+-clean:
+-	rm -f a.out *.so *.o gmp_test.c imath_test.c wrappers.py *.pyc
+-	rm -rf __pycache__

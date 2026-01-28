@@ -1,0 +1,3607 @@
+# APM_P1:
+#   flightControl: ArduCopter
+#   LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+#   call_depth: 7
+#   entrypoints:
+#     - _ZN7ModeRTL21compute_return_targetEv
+#   isTime: false
+#   params:
+#     - id: 0
+#       type: ptr
+#       value: 45844
+#     - id: 1
+#       type: i8
+#       value: 1
+#   queries:
+#     - pname: WPNAV_RFND_USE
+#       cname: copter->wp_nav._rangefinder_use._value
+#       offset: 
+#       scope: memory
+#       type: i8
+#     - pname: rangefinder_healthy
+#       cname: copter.rangefinder_state.alt_healthy
+#       offset: 
+#       scope: memory
+#       type: bool
+#     - pname: alt_type
+#       cname: 
+#       offset: 46004
+#       scope: memory
+#       type: i32
+
+AP_ACRO_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeAcro3runEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 32152
+  queries:
+    - pname: ACRO_TRAINER
+      cname: copter.g.acro_trainer
+      file: null
+      line: null
+      column: null
+      field: copter + 19064
+      scope: global
+      type: i8
+
+    - pname: roll_angle
+      cname: roll_angle
+      file: ../../ArduCopter/mode_acro.cpp
+      line: 138
+      column: null
+      field: roll_angle + 0
+      scope: stack
+      type: i32
+
+    - pname: roll_correction
+      cname: rate_ef_level_cd.x
+      file: ../../ArduCopter/mode_acro.cpp
+      line: 108
+      column: null
+      field: rate_ef_level_cd + 0
+      scope: stack
+      type: float
+
+AP_ACRO_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeAcro3runEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 32152
+  queries:
+    - pname: ACRO_TRAINER
+      cname: copter.g.acro_trainer
+      file: null
+      line: null
+      column: null
+      field: copter + 19064
+      scope: global
+      type: i8
+
+    - pname: pitch_angle
+      cname: pitch_angle
+      file: ../../ArduCopter/mode_acro.cpp
+      line: 142
+      column: null
+      field: pitch_angle + 0
+      scope: stack
+      type: i32
+      
+    - pname: pitch_correction
+      cname: rate_ef_level_cd.y
+      file: ../../ArduCopter/mode_acro.cpp
+      line: 108
+      column: null
+      field: rate_ef_level_cd + 4
+      scope: stack
+      type: float
+
+AP_ALTHOLD_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN11ModeAltHold3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 32280
+  isTime: false
+  queries:
+    - pname: throttle_stick
+      cname: channel_throttle->get_control_in()
+      file: ../../ArduCopter/mode_althold.cpp
+      line: 42
+      column: 78
+      field: null
+      scope: register
+      type: i16
+
+    - pname: PILOT_SPEED_UP
+      cname: g.pilot_speed_up
+      file: null
+      line: null
+      column: null
+      field: copter + 19010
+      scope: global
+      type: i16
+  
+    - pname: climb_rate
+      cname: target_climb_rate
+      file: ../../ArduCopter/mode_althold.cpp
+      line: 42
+      column: null
+      field: target_climb_rate + 0
+      scope: stack
+      type: float
+
+PX_RCFS_P1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN19RcAndDataLinkChecks14checkAndReportERK7ContextR6Report
+  isTime: true
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 125100
+    - id: 1
+      type: ptr
+      value: heap + 121684
+    - id: 2
+      type: ptr
+      value: heap + 121692
+  queries:
+    - pname: RC_valid
+      cname: manual_control_setpoint.valid
+      file: src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp
+      line: 49
+      column: 31
+      field: null
+      scope: register
+      type: i1
+
+    - pname: manual_control_update_time
+      cname: hrt_elapsed_time(&manual_control_setpoint.timestamp)
+      file: src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp
+      line: 50
+      column: 9
+      field: null
+      scope: register
+      type: float
+
+    - pname: COM_RC_LOSS_T
+      cname: _param_com_rc_loss_t
+      file: null
+      line: null
+      column: null
+      field: heap + 125156
+      scope: global
+      type: float
+
+    - pname: manual_control_loss_failsafe
+      cname: reporter.failsafeFlags().manual_control_signal_lost
+      file: null
+      line: null
+      column: null
+      field: heap + 120866
+      scope: global
+      type: i8
+
+AP_ZIGZAG_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeZigZag14manual_controlEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 36544
+  queries:
+    - pname: throttle_stick
+      cname: channel_throttle->get_control_in()
+      file: ../../ArduCopter/mode_zigzag.cpp
+      line: 309
+      column: 76
+      field: null
+      scope: register
+      type: i16
+
+    - pname: PILOT_SPEED_UP
+      cname: g.pilot_speed_up
+      file: null
+      line: null
+      column: null
+      field: copter + 19010
+      scope: global
+      type: i16
+  
+    - pname: climb_rate
+      cname: target_climb_rate
+      file: ../../ArduCopter/mode_zigzag.cpp
+      line: 292
+      column: null
+      field: target_climb_rate + 0
+      scope: stack
+      type: float
+
+PX_BRAKE_P1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN14FlightTaskAuto6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 100076
+  queries:
+    - pname: Vertical_Speed_Exceeded
+      cname: is_vertical_speed_exceeded
+      file: /src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp
+      line: 749
+      column: null
+      field: is_vertical_speed_exceeded + 0
+      scope: stack
+      type: i1
+
+    - pname: Emergency_Braking_activated
+      cname: _is_emergency_braking_active
+      file: null
+      line: null
+      column: null
+      field: heap + 102944
+      scope: global
+      type: i1
+
+    - pname: vertical_speed
+      cname: _position_smoothing.getCurrentVelocityZ()
+      file: null
+      line: null
+      column: null
+      field: heap + 102436
+      scope: global
+      type: float
+
+    - pname: max_vertical_speed
+      cname: _param_mpc_z_vel_max_dn
+      file: null
+      line: null
+      column: null
+      field: heap + 100952
+      scope: global
+      type: float
+
+AP_POSHOLD_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN11ModePosHold3runEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34912
+  queries:
+    - pname: roll_angle
+      cname: roll
+      file: null
+      line: null
+      column: null
+      field: copter + 35112
+      scope: global
+      type: float
+  
+    - pname: ANGLE_MAX
+      cname: copter.aparm.angle_max
+      file: null
+      line: null
+      column: null
+      field: copter + 18952
+      scope: global
+      type: float
+
+AP_POSHOLD_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN11ModePosHold3runEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34912
+  queries:
+    - pname: pitch_angle
+      cname: pitch
+      file: null
+      line: null
+      column: null
+      field: copter + 35116
+      scope: global
+      type: float
+  
+    - pname: ANGLE_MAX
+      cname: copter.aparm.angle_max
+      file: null
+      line: null
+      column: null
+      field: copter + 18952
+      scope: global
+      type: float
+
+AP_POSHOLD_P3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN11ModePosHold3runEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34912
+  queries:
+    - pname: throttle_stick
+      cname: channel_throttle->get_control_in()
+      file: ../../ArduCopter/mode_poshold.cpp
+      line: 89
+      column: 78
+      field: null
+      scope: register
+      type: i16
+
+    - pname: PILOT_SPEED_UP
+      cname: g.pilot_speed_up
+      file: null
+      line: null
+      column: null
+      field: copter + 19010
+      scope: global
+      type: i16
+  
+    - pname: climb_rate
+      cname: target_climb_rate
+      file: ../../ArduCopter/mode_poshold.cpp
+      line: 89
+      column: null
+      field: target_climb_rate + 0
+      scope: stack
+      type: float
+
+AP_RTL_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7ModeRTL3runEb
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35120
+    - id: 1
+      type: i1
+      value: 1
+  queries:
+    - pname: curr_alt
+      cname: curr_alt
+      file: ../../ArduCopter/mode_rtl.cpp
+      line: 419
+      column: null
+      field: curr_alt + 0
+      scope: stack
+      type: i32
+
+    - pname: target_alt
+      cname: rtl_path.return_target.alt
+      file: null
+      line: null
+      column: null
+      field: copter + 35280
+      scope: global
+      type: i32
+
+AP_RTL_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7ModeRTL3runEb
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35120
+    - id: 1
+      type: i1
+      value: 1
+  queries:
+    - pname: target_alt
+      cname: rtl_path.return_target.alt
+      file: null
+      line: null
+      column: null
+      field: copter + 35280
+      scope: global
+      type: i32
+
+AP_RTL_P4:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7ModeRTL3runEb
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35120
+    - id: 1
+      type: i1
+      value: 1
+  queries:
+    - pname: WPNAV_RFND_USE
+      cname: _rangefinder_use
+      file: null
+      line: null
+      column: null
+      field: heap + 116976
+      scope: global
+      type: i8
+
+    - pname: rangefinder_available
+      cname: _rangefinder_available
+      file: null
+      line: null
+      column: null
+      field: heap + 116975
+      scope: global
+      type: i8
+
+    - pname: alt_type
+      cname: alt_type
+      file: ../../ArduCopter/mode_rtl.cpp
+      line: 422
+      column: null
+      field: alt_type + 0
+      scope: stack
+      type: i32
+
+##############################################################
+#                           PGFUZZ                           #
+####Properties' configuration for the PGFUZZ verification.####
+##############################################################
+A_RTL1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7ModeRTL3runEb
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35120
+    - id: 1
+      type: i1
+      value: 1
+  queries:
+    - pname: curr_alt
+      cname: curr_alt
+      file: ../../ArduCopter/mode_rtl.cpp
+      line: 419
+      column: null
+      field: curr_alt + 0
+      scope: stack
+      type: i32
+
+    - pname: RTL_ALT
+      cname: g.rtl_altitude
+      file: null
+      line: null
+      column: null
+      field: copter + 18976
+      scope: global
+      type: i32
+
+    - pname: target_alt
+      cname: rtl_path.return_target.alt
+      file: null
+      line: null
+      column: null
+      field: copter + 35280
+      scope: global
+      type: i32
+
+A_RTL2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7ModeRTL3runEb 
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35120
+    - id: 1
+      type: i1
+      value: 1
+  queries:
+    - pname: curr_alt
+      cname: curr_alt
+      file: ../../ArduCopter/mode_rtl.cpp
+      line: 419
+      column: null
+      field: curr_alt + 0
+      scope: stack
+      type: i32
+
+    - pname: RTL_ALT
+      cname: g.rtl_altitude
+      file: null
+      line: null
+      column: null
+      field: copter + 18976
+      scope: global
+      type: i32
+
+    - pname: at_home
+      cname: wp_nav->reached_wp_destination()
+      file: null
+      line: null
+      column: null
+      field: heap + 114749
+      scope: global
+      type: i8
+
+    - pname: target_alt
+      cname: rtl_path.return_target.alt
+      file: null
+      line: null
+      column: null
+      field: copter + 35280
+      scope: global
+      type: i32
+
+A_RTL3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7ModeRTL3runEb
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35120
+    - id: 1
+      type: i1
+      value: 1
+  isTime: false
+  queries:
+    - pname: curr_alt
+      cname: curr_alt
+      file: ../../ArduCopter/mode_rtl.cpp
+      line: 419
+      column: null
+      field: curr_alt + 0
+      scope: stack
+      type: i32
+
+    - pname: RTL_ALT
+      cname: g.rtl_altitude
+      file: null
+      line: null
+      column: null
+      field: copter + 18976
+      scope: global
+      type: i32
+
+    - pname: at_home
+      cname: wp_nav->reached_wp_destination()
+      file: null
+      line: null
+      column: null
+      field: heap + 114749
+      scope: global
+      type: i8
+
+    - pname: mode
+      cname: copter.mode_rtl._state
+      file: null
+      line: null
+      column: null
+      field: copter + 35240
+      scope: global
+      type: i8
+
+A_RTL4:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeLand3runEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34648
+  queries:
+    - pname: on_ground
+      cname: copter.ap.land_complete
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+    - pname: motors_idle
+      cname: motors->get_spool_state() == AP_Motors::SpoolState::GROUND_IDLE
+      file: ../../ArduCopter/mode_land.cpp
+      line: 74
+      column: 62
+      field: null
+      scope: register
+      type: i1
+
+    - pname: armed
+      cname: copter.arming.disarm(AP_Arming::Method::LANDED)
+      file: null
+      line: null
+      column: null
+      field: copter + 26168
+      scope: global
+      type: i8
+
+A_CIRCLE1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: RC_pitch
+      cname: pitch_stick
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 45
+      column: null
+      field: pitch_stick + 0
+      scope: stack
+      type: float
+
+    - pname: circle_radius
+      cname: radius_current
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 44
+      column: null
+      field: radius_current + 0
+      scope: stack
+      type: float
+
+    - pname: radius_change
+      cname: radius_pilot_change
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 47
+      column: null
+      field: radius_pilot_change + 0
+      scope: stack
+      type: float
+
+A_CIRCLE2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: RC_pitch
+      cname: pitch_stick
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 45
+      column: null
+      field: pitch_stick + 0
+      scope: stack
+      type: float
+
+    - pname: radius_change
+      cname: radius_pilot_change
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 47
+      column: null
+      field: radius_pilot_change + 0
+      scope: stack
+      type: float
+
+A_CIRCLE3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: roll_stick
+      cname: roll_stick
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 57
+      column: null
+      field: roll_stick + 0
+      scope: stack
+      type: float
+
+    - pname: clockwise
+      cname: is_positive(rate)
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 67
+      column: 21
+      field: null
+      scope: register
+      type: i1
+    
+    - pname: current_speed
+      cname: rate_current
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 64
+      column: null
+      field: rate_current + 0
+      scope: stack
+      type: float
+
+    - pname: next_speed
+      cname: rate_new
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 66
+      column: null
+      field: rate_new + 0
+      scope: stack
+      type: float
+
+A_CIRCLE4:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: roll_stick
+      cname: roll_stick
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 57
+      column: null
+      field: roll_stick + 0
+      scope: stack
+      type: float
+
+    - pname: counterclockwise
+      cname: is_negative(rate)
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 71
+      column: 28
+      field: null
+      scope: register
+      type: i1
+    
+    - pname: current_speed
+      cname: rate_current
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 64
+      column: null
+      field: rate_current + 0
+      scope: stack
+      type: float
+
+    - pname: next_speed
+      cname: rate_new
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 66
+      column: null
+      field: rate_new + 0
+      scope: stack
+      type: float
+
+A_CIRCLE5:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: roll_stick
+      cname: roll_stick
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 57
+      column: null
+      field: roll_stick + 0
+      scope: stack
+      type: float
+
+    - pname: counterclockwise
+      cname: is_negative(rate)
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 71
+      column: 28
+      field: null
+      scope: register
+      type: i1
+    
+    - pname: current_speed
+      cname: rate_current
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 64
+      column: null
+      field: rate_current + 0
+      scope: stack
+      type: float
+
+    - pname: next_speed
+      cname: rate_new
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 66
+      column: null
+      field: rate_new + 0
+      scope: stack
+      type: float
+
+A_CIRCLE6:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: roll_stick
+      cname: roll_stick
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 57
+      column: null
+      field: roll_stick + 0
+      scope: stack
+      type: float
+
+    - pname: clockwise
+      cname: is_positive(rate)
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 67
+      column: 21
+      field: null
+      scope: register
+      type: i1
+    
+    - pname: current_speed
+      cname: rate_current
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 64
+      column: null
+      field: rate_current + 0
+      scope: stack
+      type: float
+
+    - pname: next_speed
+      cname: rate_new
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 66
+      column: null
+      field: rate_new + 0
+      scope: stack
+      type: float
+
+A_CIRCLE7:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeCircle3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33992
+  isTime: false
+  queries:
+    - pname: user_control_enabled
+      cname:  copter.circle_nav->pilot_control_enabled()
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 42
+      column: 54
+      field: null
+      scope: register
+      type: i1
+
+    - pname: throttle_stick
+      cname: channel_throttle->get_control_in()
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 87
+      column: 78
+      field: null
+      scope: register
+      type: i16
+    
+    - pname: radius_change
+      cname: radius_pilot_change
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 47
+      column: null
+      field: radius_pilot_change + 0
+      scope: stack
+      type: float
+
+    - pname: rate_change
+      cname: rate_pilot_change
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 65
+      column: null
+      field: rate_pilot_change + 0
+      scope: stack
+      type: float
+
+    - pname: climb_rate
+      cname: target_climb_rate
+      file: ../../ArduCopter/mode_circle.cpp
+      line: 87
+      column: null
+      field: target_climb_rate + 0
+      scope: stack
+      type: float
+
+A_LAND1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN4Mode25land_run_vertical_controlEb
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34648
+    - id: 1
+      type: i1
+      value: 0
+  isTime: false
+  queries:
+    - pname: curr_alt
+      cname: get_alt_above_ground_cm()
+      file: ../../ArduCopter/mode.cpp
+      line: 579
+      column: 60
+      field: null
+      scope: register
+      type: i32
+
+    - pname: descend_rate
+      cname: cmb_rate
+      file: ../../ArduCopter/mode.cpp
+      line: 574
+      column: null
+      field: cmb_rate + 0
+      scope: stack
+      type: float
+    
+    - pname: LAND_SPEED_HIGH
+      cname: g.land_speed_high
+      file: null
+      line: null
+      column: null
+      field: copter + 19008
+      scope: global
+      type: i16
+
+A_LAND2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN4Mode25land_run_vertical_controlEb
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34648
+    - id: 1
+      type: i1
+      value: 0
+  isTime: false
+  queries:
+    - pname: curr_alt
+      cname: get_alt_above_ground_cm()
+      file: ../../ArduCopter/mode.cpp
+      line: 579
+      column: 60
+      field: null
+      scope: register
+      type: i32
+
+    - pname: descend_rate
+      cname: cmb_rate
+      file: ../../ArduCopter/mode.cpp
+      line: 574
+      column: null
+      field: cmb_rate + 0
+      scope: stack
+      type: float
+    
+    - pname: LAND_SPEED
+      cname: g.land_speed
+      file: null
+      line: null
+      column: null
+      field: copter + 19006
+      scope: global
+      type: i16
+
+AP_LAND_P4:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeLand7gps_runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34648
+  isTime: false
+  queries:
+    - pname: landed
+      cname: copter.ap.land_complete
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+    - pname: motors_state
+      cname: motors->get_spool_state()
+      file: ../../ArduCopter/mode_land.cpp
+      line: 74
+      column: 44
+      field: null
+      scope: register
+      type: i8
+
+    - pname: disarmed
+      cname: copter.arming.disarm(AP_Arming::Method::LANDED)
+      file: ../../ArduCopter/mode_land.cpp
+      line: 75
+      column: 23
+      field: null
+      scope: register
+      type: i1
+
+A_GUIDED1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeGuided14wp_control_runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34520
+  isTime: false
+  queries:
+    - pname: yaw_input_enabled
+      cname: auto_yaw.get_heading()
+      file: ../../ArduCopter/mode_guided.cpp
+      line: 205
+      column: 94
+      field: null
+      scope: register
+      type: i8
+
+A_AUTO1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeAuto6wp_runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 32400
+  isTime: false
+  queries:
+    - pname: yaw_input_enabled
+      cname: auto_yaw.get_heading()
+      file: ../../ArduCopter/mode_auto.cpp
+      line: 992
+      column: 94
+      field: null
+      scope: register
+      type: i8
+
+A_SPORT1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN11ModeAltHold3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 32280
+  isTime: false
+  queries:
+    - pname: throttle_stick
+      cname: channel_throttle->get_control_in()
+      file: ../../ArduCopter/mode_althold.cpp
+      line: 42
+      column: 78
+      field: null
+      scope: register
+      type: i16
+
+    - pname: PILOT_SPEED_UP
+      cname: g.pilot_speed_up
+      file: null
+      line: null
+      column: null
+      field: copter + 19010
+      scope: global
+      type: i16
+  
+    - pname: climb_rate
+      cname: target_climb_rate
+      file: ../../ArduCopter/mode_althold.cpp
+      line: 42
+      column: null
+      field: target_climb_rate + 0
+      scope: stack
+      type: float
+
+AP_DRIFT_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9ModeDrift3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34120
+  isTime: false
+  queries:
+    - pname: throttle_input_is_zero
+      cname: copter.ap.throttle_zero
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i8
+  
+    - pname: motors_spin_rate_is_MOT_SPIN_ARMED
+      cname: motors->get_spool_state()
+      file: ../../ArduCopter/mode_drift.cpp
+      line: 91
+      column: 21
+      field: null
+      scope: register
+      type: i8
+
+A_DRIFT1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter18failsafe_ekf_eventEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: mode
+      cname: flightmode->mode_number()
+      file: ../../ArduCopter/ekf_check.cpp
+      line: 167
+      column: 21
+      field: null
+      scope: register
+      type: i8
+
+    - pname: GPS_loss
+      cname: copter.failsafe.ekf
+      file: null
+      line: null
+      column: null
+      field: copter + 27181
+      scope: global
+      type: i8
+
+    - pname: FS_EKF_ACTION
+      cname: g.fs_ekf_action
+      file: null
+      line: null
+      column: null
+      field: copter + 19041
+      scope: global
+      type: i8
+
+    - pname: target_mode
+      cname: mode
+      file: ../../ArduCopter/mode.cpp
+      line: 201
+      column: null
+      field: mode + 0
+      scope: stack
+      type: i8
+
+AP_DRIFT_P3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9ModeDrift3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34120
+  isTime: false
+  queries:
+    - pname: roll_angle
+      cname: target_roll
+      file: ../../ArduCopter/mode_drift.cpp
+      line: 45
+      column: null
+      field: target_roll + 0
+      scope: stack
+      type: float
+
+A_FLIP1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeFlip4initEb
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34240
+    - id: 1
+      type: i1
+      value: 0
+  isTime: false
+  queries:
+    - pname: mode
+      cname: _state = FlipState::Start
+      file: null
+      line: null
+      column: null
+      field: copter + 34372
+      scope: global
+      type: i8
+
+    - pname: previous_mode
+      cname: copter.prev_control_mode
+      file: null
+      line: null
+      column: null
+      field: copter + 27160
+      scope: global
+      type: i8
+
+    - pname: roll_angle
+      cname: channel_roll->get_control_in()
+      file: ../../ArduCopter/mode_flip.cpp
+      line: 49
+      column: 27
+      field: null
+      scope: register
+      type: i16
+
+    - pname: curr_alt
+      cname: copter.current_loc.alt
+      file: null
+      line: null
+      column: null
+      field: copter + 28752
+      scope: global
+      type: float
+
+    - pname: throttle
+      cname: copter.ap.throttle_zero
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+A_FLIP2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeFlip3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34240
+  isTime: false
+  queries:
+    - pname: roll_start
+      cname: _state
+      file: null
+      line: null
+      column: null
+      field: copter + 34372
+      scope: global
+      type: i8
+
+    - pname: roll_dir_is_right
+      cname: roll_dir
+      file: null
+      line: null
+      column: null
+      field: copter + 34380
+      scope: global
+      type: i8
+
+    - pname: roll_angle
+      cname: ahrs.roll_sensor
+      file: null
+      line: null
+      column: null
+      field: copter + 9852
+      scope: global
+      type: float
+
+    - pname: roll_rate
+      cname: roll_rate_bf_cds
+      file: ../../libraries/AC_AttitudeControl/AC_AttitudeControl.cpp
+      line: 421
+      column: null
+      field: roll_rate_bf_cds + 0
+      scope: stack
+      type: float
+
+A_FLIP3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeFlip3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34240
+  isTime: true
+  queries:
+    - pname: roll_finished
+      cname: _state
+      file: null
+      line: null
+      column: null
+      field: copter + 34372
+      scope: global
+      type: i8
+
+A_FLIPGeneral:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN8ModeFlip3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34240
+  isTime: true
+  queries:
+    - pname: roll_finished
+      cname: _state
+      file: null
+      line: null
+      column: null
+      field: copter + 34372
+      scope: global
+      type: i8
+
+    - pname: mode
+      cname: mode
+      file: ../../ArduCopter/mode.cpp
+      line: 201
+      column: null
+      field: mode + 0
+      scope: stack
+      type: i8
+
+    - pname: previous_mode
+      cname: orig_control_mode
+      file: null
+      line: null
+      column: null
+      field: copter + 34373
+      scope: global
+      type: i8
+
+A_LOITER1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeLoiter3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34784
+  isTime: false
+  queries:
+    - pname: target_x
+      cname: _pos_target.x
+      file: null
+      line: null
+      column: null
+      field: heap + 117025
+      scope: global
+      type: double
+
+    - pname: target_y
+      cname: _pos_target.y
+      file: null
+      line: null
+      column: null
+      field: heap + 117033
+      scope: global
+      type: double
+
+    - pname: target_z
+      cname: _pos_target.z
+      file: null
+      line: null
+      column: null
+      field: heap + 117041
+      scope: global
+      type: double
+    
+    - pname: curr_x
+      cname: _relpos_cm.x
+      file: null
+      line: null
+      column: null
+      field: copter + 28768
+      scope: global
+      type: float
+    
+    - pname: curr_y
+      cname: _relpos_cm.y
+      file: null
+      line: null
+      column: null
+      field: copter + 28772
+      scope: global
+      type: float
+
+    - pname: curr_z
+      cname: _relpos_cm.z
+      file: null
+      line: null
+      column: null
+      field: copter + 28776
+      scope: global
+      type: float
+
+    - pname: target_yaw
+      cname: _yaw_target
+      file: null
+      line:  null
+      column: null
+      field: heap + 117013
+      scope: global
+      type: float
+
+    - pname: curr_yaw
+      cname: ahrs.yaw_sensor
+      file: null
+      line: null
+      column: null
+      field: copter + 9860
+      scope: global
+      type: float
+
+AP_LOITER_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN10ModeLoiter3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 34784
+  isTime: false
+  queries:
+    - pname: throttle_stick
+      cname: channel_throttle->get_control_in()
+      file: ../../ArduCopter/mode_loiter.cpp
+      line: 108
+      column: 76
+      field: null
+      scope: register
+      type: i16
+
+    - pname: climb_rate
+      cname: target_climb_rate
+      file: ../../ArduCopter/mode_loiter.cpp
+      line: 88
+      column: null
+      field: target_climb_rate + 0
+      scope: stack
+      type: float
+
+    - pname: PILOT_SPEED_UP
+      cname: g.pilot_speed_up
+      file: null
+      line: null
+      column: null
+      field: copter + 19010
+      scope: global
+      type: i16
+
+AP_LOITER_P3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9AC_Loiter21calc_desired_velocityEb
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 113753
+    - id: 1
+      type: i1
+      value: 1
+  isTime: false
+  queries:
+    - pname: horizontal_speed_x
+      cname: desired_vel.x
+      file: ../../libraries/AC_WPNav/AC_Loiter.cpp
+      line: 225
+      column: null
+      field: desired_vel + 0
+      scope: stack
+      type: float
+
+    - pname: horizontal_speed_y
+      cname: desired_vel.y
+      file: ../../libraries/AC_WPNav/AC_Loiter.cpp
+      line: 225
+      column: null
+      field: desired_vel + 4
+      scope: stack
+      type: float
+
+    - pname: LOIT_SPEED
+      cname: _speed_cms
+      file: null
+      line: null
+      column: null
+      field: heap + 113789
+      scope: global
+      type: float
+
+AP_LOITER_P4:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN13AC_PosControl20update_xy_controllerEv
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 116145
+  isTime: false
+  queries:
+    - pname: acceleration_x
+      cname: _accel_target.x
+      file: null
+      line: null
+      column: null
+      field: heap + 117085
+      scope: global
+      type: float
+    
+    - pname: acceleration_y
+      cname: _accel_target.y
+      file: null
+      line: null
+      column: null
+      field: heap + 117089
+      scope: global
+      type: float
+
+    - pname: LOIT_ACC_MAX
+      cname: accel_max
+      file: ../../libraries/AC_AttitudeControl/AC_PosControl.cpp
+      line: 646
+      column: null
+      field: accel_max + 0
+      scope: stack
+      type: float
+
+AP_STABILIZE_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN13ModeStabilize3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35320
+  isTime: false
+  queries:
+    - pname:  roll_angle
+      cname: target_roll
+      file: ../../ArduCopter/mode_stabilize.cpp
+      line: 15
+      column: null
+      field: target_roll + 0
+      scope: stack
+      type: float
+
+    - pname: ANGLE_MAX
+      cname: copter.aparm.angle_max
+      file: null
+      line: null
+      column: null
+      field: copter + 18952
+      scope: global
+      type: float
+
+AP_STABILIZE_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN13ModeStabilize3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 35320
+  isTime: false
+  queries:
+    - pname:  pitch_angle
+      cname: target_pitch
+      file: ../../ArduCopter/mode_stabilize.cpp
+      line: 15
+      column: null
+      field: target_pitch + 0
+      scope: stack
+      type: float
+
+    - pname: ANGLE_MAX
+      cname: copter.aparm.angle_max
+      file: null
+      line: null
+      column: null
+      field: copter + 18952
+      scope: global
+      type: float
+
+A_ALT_HOLD1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN12NavEKF3_core21selectHeightForFusionEv
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 69440
+  isTime: false
+  queries:
+    - pname: alt_sensor
+      cname: activeHgtSource
+      file: null
+      line: null
+      column: null
+      field: heap + 78253
+      scope: global
+      type: i8
+
+    - pname: baro_has_data
+      cname: baroDataToFuse
+      file: null
+      line: null
+      column: null
+      field: heap + 77153
+      scope: global
+      type: i8
+
+    - pname: alt_measured
+      cname: hgtMea
+      file: null
+      line: null
+      column: null
+      field: heap + 76920
+      scope: global
+      type: double
+
+    - pname: baro_val
+      cname: baroDataDelayed.hgt - baroHgtOffset
+      file: ../../libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp
+      line: 1265
+      column: 38
+      field: null
+      scope: register
+      type: double
+
+A_ALT_HOLD2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN12NavEKF3_core18SelectVelPosFusionEv
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 69440
+  isTime: false
+  queries:
+    - pname: mode
+      cname: copter.flightmode
+      file: null
+      line: null
+      column: null
+      field: copter + 27152
+      scope: global
+      type: ptr
+
+    - pname: ALT_HOLD
+      cname: mode_althold
+      file: null
+      line: null
+      column: null
+      field: copter + 32288
+      scope: global
+      type: ptr
+
+    - pname: velocity_z
+      cname: gpsDataDelayed.vel.z
+      file: null
+      line: null
+      column: null
+      field: heap + 75872
+      scope: global
+      type: double
+
+A_RC_FS1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter23failsafe_radio_on_eventEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: mode
+      cname: copter.flightmode
+      file: null
+      line: null
+      column: null
+      field: copter + 27152
+      scope: global
+      type: ptr
+
+    - pname: ACRO
+      cname: mode_acro
+      file: null
+      line: null
+      column: null
+      field: copter + 32288
+      scope: global
+      type: ptr
+    
+    - pname: armed
+      cname: copter.arming.AP_Arming.armed
+      file: null
+      line: null
+      column: null
+      field: copter + 26168
+      scope: global
+      type: i8
+
+    - pname: disarmed
+      cname: should_disarm_on_failsafe()
+      file: ../../ArduCopter/events.cpp
+      line: 47
+      column: 9
+      field: null
+      scope: register
+      type: i1
+
+A_RC_FS2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter10read_radioEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: throttle_input
+      cname: channel_throttle->get_radio_in()
+      file: ../../ArduCopter/radio.cpp
+      line: 94
+      column: 53
+      field: null
+      scope: register
+      type: i16
+
+    - pname: FS_THR_VALUE
+      cname: g.failsafe_throttle_value
+      file: null
+      line: null
+      column: null
+      field: copter + 19016
+      scope: global
+      type: i16
+
+    - pname: RC_failsafe_triggered
+      cname: copter.AP_Vehicle.notify.flags.failsafe_radio
+      file: null
+      line: null
+      column: null
+      field: copter + 8786
+      scope: global
+      type: i8
+
+AP_RCFS_P3:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter23failsafe_radio_on_eventEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: landed
+      cname: ap.land_complete
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+    - pname: armed
+      cname: copter.arming.AP_Arming.armed
+      file: null
+      line: null
+      column: null
+      field: copter + 26168
+      scope: global
+      type: i8
+
+    - pname: disarmed
+      cname: arming.disarm(AP_Arming::Method::RADIOFAILSAFE)
+      file: ../../ArduCopter/events.cpp
+      line: 50
+      column: 16
+      field: null
+      scope: register
+      type: i1
+
+AP_GCSFS_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter21failsafe_gcs_on_eventEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: mode
+      cname: copter.flightmode
+      file: null
+      line: null
+      column: null
+      field: copter + 27152
+      scope: global
+      type: ptr
+
+    - pname: ACRO
+      cname: mode_acro
+      file: null
+      line: null
+      column: null
+      field: copter + 32288
+      scope: global
+      type: ptr
+    
+    - pname: throttle_is_zero
+      cname: ap.throttle_zero
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+    - pname: disarmed
+      cname: should_disarm_on_failsafe()
+      file: ../../ArduCopter/events.cpp
+      line: 199
+      column: 16
+      field: null
+      scope: register
+      type: i1
+
+    - pname: landed
+      cname: ap.land_complete
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+AP_GCSFS_P2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter21failsafe_gcs_on_eventEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: armed
+      cname: copter.arming.AP_Arming.armed
+      file: null
+      line: null
+      column: null
+      field: copter + 26168
+      scope: global
+      type: i8
+
+    - pname: throttle_is_zero
+      cname: ap.throttle_zero
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+    - pname: disarmed
+      cname: should_disarm_on_failsafe()
+      file: ../../ArduCopter/events.cpp
+      line: 199
+      column: 16
+      field: null
+      scope: register
+      type: i1
+
+    - pname: landed
+      cname: ap.land_complete
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+A_GPS_FS1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN12NavEKF3_core18calcGpsGoodToAlignEv
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 69440
+  isTime: false
+  queries:
+    - pname: GPS_satellite_count
+      cname: gps.num_sats(preferred_gps)
+      file: ../../libraries/AP_NavEKF3/AP_NavEKF3_VehicleStatus.cpp
+      line: 181
+      column: 29
+      field: null
+      scope: register
+      type: i8
+
+    - pname: GPS_failsafe_triggered
+      cname: gpsCheckStatus.bad_sats
+      file: null
+      line: null
+      column: null
+      field: heap + 78728
+      scope: global
+      type: i16
+
+A_GPS_FS2:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN12NavEKF3_core21selectHeightForFusionEv
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 69440
+  isTime: false
+  queries:
+    - pname: GPS_failsafe
+      cname: lostGpsHgt
+      file: ../../libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp
+      line: 1178
+      column: null
+      field: lostGpsHgt + 0
+      scope: stack
+      type: i8
+
+    - pname: alt_sensor
+      cname: activeHgtSource
+      file: null
+      line: null
+      column: null
+      field: heap + 78253
+      scope: global
+      type: i8
+
+AP_BATTFS_P1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter23handle_battery_failsafeEPKca
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+    - id: 1
+      type: ptr
+      value: copter + 0
+    - id: 2
+      type: i8
+      value: 0
+  isTime: false
+  queries:
+    - pname: mode
+      cname: copter.flightmode
+      file: null
+      line: null
+      column: null
+      field: copter + 27152
+      scope: global
+      type: ptr
+
+    - pname: ACRO
+      cname: mode_acro
+      file: null
+      line: null
+      column: null
+      field: copter + 32288
+      scope: global
+      type: ptr
+
+    - pname: STABILIZE 
+      cname: mode_stabilize
+      file: null
+      line: null
+      column: null
+      field: copter + 32288
+      scope: global
+      type: ptr
+    
+    - pname: motors_armed
+      cname: copter.arming.AP_Arming.armed
+      file: null
+      line: null
+      column: null
+      field: copter + 26168
+      scope: global
+      type: i8
+
+    - pname: throttle_is_zero
+      cname: ap.throttle_zero
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+    
+    - pname: landed
+      cname: ap.land_complete
+      file: null
+      line: null
+      column: null
+      field: copter + 27136
+      scope: global
+      type: i32
+
+    - pname: disarmed
+      cname: should_disarm_on_failsafe()
+      file: ../../ArduCopter/events.cpp
+      line: 106
+      column: 9
+      field: null
+      scope: register
+      type: i1
+
+A_BRAKE1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9ModeBrake3runEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 33864
+  isTime: true
+  queries:
+    - pname: mode_is_BRAKE
+      cname: copter.flightmode->mode_number()
+      file: null
+      line: null
+      column: null
+      field: copter + 0
+      scope: global
+      type: i8
+
+A_CHUTE1:
+  flightControl: ArduCopter
+  LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Copter24parachute_manual_releaseEv
+  params:
+    - id: 0
+      type: ptr
+      value: copter + 0
+  isTime: false
+  queries:
+    - pname: parachute_release
+      cname: AP_Notify::flags.parachute_release
+      file: null
+      line: null
+      column: null
+      field: copter + 8790
+      scope: global
+      type: i8
+
+    - pname: armed
+      cname: copter.arming.AP_Arming.armed
+      file: null
+      line: null
+      column: null
+      field: copter + 26168
+      scope: global
+      type: i8
+
+    - pname: mode
+      cname: copter.flightmode
+      file: null
+      line: null
+      column: null
+      field: copter + 27152
+      scope: global
+      type: ptr
+
+    - pname: FLIP
+      cname: copter.mode_flip
+      file: null
+      line: null
+      column: null
+      field: copter + 34240
+      scope: global
+      type: ptr
+
+    - pname: ACRO
+      cname: copter.mode_acro
+      file: null
+      line: null
+      column: null
+      field: copter + 32152
+      scope: global
+      type: ptr
+
+    - pname: not_climbing
+      cname: copter.inertial_nav._velocity_cm <= 0
+      file: null
+      line: null
+      column: null
+      field: copter + 28780
+      scope: global
+      type: i8
+
+    - pname: curr_alt
+      cname: copter.current_loc.alt
+      file: null
+      line: null
+      column: null
+      field: copter + 28752
+      scope: global
+      type: float      
+
+    - pname: CHUTE_ALT_MIN
+      cname: parachute._alt_min
+      file: null
+      line: null
+      column: null
+      field: copter + 29130
+      scope: global
+      type: i16   
+
+PX_ORBIT1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries:
+    - pname: pitch_stick
+      cname: _sticks.getPositionExpo()(0)
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 285
+      column: 13
+      field: null
+      scope: register
+      type: float
+
+    - pname: next_radius
+      cname: radius
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 270
+      column: null
+      field: radius + 0
+      scope: stack
+      type: float
+
+    - pname: current_radius
+      cname: _orbit_radius
+      file: null
+      line: null
+      column: null
+      field: heap + 103000
+      scope: global
+      type: float
+
+PX_ORBIT2:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries:
+    - pname: pitch_stick
+      cname: _sticks.getPositionExpo()(0)
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 285
+      column: 13
+      field: null
+      scope: register
+      type: float
+
+    - pname: next_radius
+      cname: radius
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 270
+      column: null
+      field: radius + 0
+      scope: stack
+      type: float
+
+    - pname: current_radius
+      cname: _orbit_radius
+      file: null
+      line: null
+      column: null
+      field: heap + 103000
+      scope: global
+      type: float
+
+PX_ORBIT3:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries:
+    - pname: roll_stick
+      cname: _sticks.getPositionExpo()(1)
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 286
+      column: 15
+      field: null
+      scope: register
+      type: float
+
+    - pname: clockwise
+      cname: _orbit_velocity > 0
+      file: null
+      line: null
+      column: null
+      field: heap + 102996
+      scope: global
+      type: float
+
+    - pname: velocity_change_vector
+      cname: _sticks.getPositionExpo()(1) * _deltatime * _param_mpc_acc_hor.get()
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 286
+      column: 12
+      field: null
+      scope: register
+      type: float
+
+    - pname: current_speed
+      cname: _orbit_velocity
+      file: null
+      line: null
+      column: null
+      field: heap + 102996
+      scope: global
+      type: float
+
+PX_ORBIT4:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries:
+    - pname: roll_stick
+      cname: _sticks.getPositionExpo()(1)
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 286
+      column: 15
+      field: null
+      scope: register
+      type: float
+
+    - pname: counterclockwise
+      cname: _orbit_velocity < 0
+      file: null
+      line: null
+      column: null
+      field: heap + 102996
+      scope: global
+      type: float
+
+    - pname: velocity_change_vector
+      cname: _sticks.getPositionExpo()(1) * _deltatime * _param_mpc_acc_hor.get()
+      file: src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp
+      line: 286
+      column: 12
+      field: null
+      scope: register
+      type: float
+
+    - pname: current_speed
+      cname: _orbit_velocity
+      file: null
+      line: null
+      column: null
+      field: heap + 102996
+      scope: global
+      type: float
+
+PX_ORBIT5:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries:
+    - pname: circle_radius
+      cname: _orbit_radius
+      file: null
+      line: null
+      column: null
+      field: heap + 103000
+      scope: global
+      type: float
+
+PX_ORBIT6:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries: # circle_acceleration = circle_velocity^2 / circle_radius
+    - pname: circle_velocity
+      cname: _orbit_velocity
+      file: null
+      line: null
+      column: null
+      field: heap + 102996
+      scope: global
+      type: float
+
+    - pname: circle_radius
+      cname: _orbit_radius
+      file: null
+      line: null
+      column: null
+      field: heap + 103000
+      scope: global
+      type: float
+
+PX_ORBIT_P6:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries: 
+    - pname: circle_radius
+      cname: _orbit_radius
+      file: null
+      line: null
+      column: null
+      field: heap + 103000
+      scope: global
+      type: float
+
+PX_ORBIT_P7:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15FlightTaskOrbit6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101628
+  queries: 
+    - pname: circle_radius
+      cname: _orbit_radius
+      file: null
+      line: null
+      column: null
+      field: heap + 103000
+      scope: global
+      type: float
+
+    - pname: MC_ORBIT_RAD_MAX
+      cname: _param_mc_orbit_rad_max.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 103188
+      scope: global
+      type: float
+
+PX_HOLD1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN14FlightTaskAuto6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101772
+  queries:
+    - pname: mode
+      cname: _type
+      file: null
+      line: null
+      column: null
+      field: heap + 102716
+      scope: global
+      type: i32
+
+    - pname: target_x
+      cname: _target.x
+      file: null
+      line: null
+      column: null
+      field: heap + 102684
+      scope: global
+      type: float
+
+    - pname: target_y
+      cname: _target.y
+      file: null
+      line: null
+      column: null
+      field: heap + 102688
+      scope: global
+      type: float
+
+    - pname: target_z
+      cname: _target.z
+      file: null
+      line: null
+      column: null
+      field: heap + 102692
+      scope: global
+      type: float
+
+    - pname: curr_x
+      cname: _position_setpoint.x
+      file: null
+      line: null
+      column: null
+      field: heap + 102216
+      scope: global
+      type: float
+    
+    - pname: curr_y
+      cname: _position_setpoint.y
+      file: null
+      line: null
+      column: null
+      field: heap + 102220
+      scope: global
+      type: float
+
+    - pname: curr_z
+      cname: _position_setpoint.z
+      file: null
+      line: null
+      column: null
+      field: heap + 102224
+      scope: global
+      type: float
+
+    - pname: target_yaw
+      cname: _yaw_sp_prev
+      file: null
+      line: null
+      column: null
+      field: heap + 102902
+      scope: global
+      type: float
+
+    - pname: curr_yaw
+      cname: _yaw_setpoint
+      file: null
+      line: null
+      column: null
+      field: heap + 102288
+      scope: global
+      type: float
+
+PX_RTL1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN3RTL24setRtlTypeAndDestinationEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 60050
+  queries:
+    - pname: curr_alt
+      cname: _global_pos_sub.get().alt
+      file: null
+      line: null
+      column: null
+      field: heap + 61466
+      scope: global
+      type: float
+
+    - pname: home_alt # RTL_RETURN_ALT = home_alt + rtl_climb_alt
+      cname: _home_pos_sub.get().alt
+      file: null
+      line: null
+      column: null
+      field: heap + 61690
+      scope: global
+      type: float
+
+    - pname: rtl_climb_alt
+      cname: _param_rtl_return_alt.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 61366
+      scope: global
+      type: float
+
+    - pname: target_alt
+      cname: rtl_alt
+      file: src/modules/navigator/rtl.cpp
+      line: 316
+      column: null
+      field: rtl_alt + 0
+      scope: stack
+      type: float
+
+PX_RTL2:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN3RTL24setRtlTypeAndDestinationEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 60050
+  queries:
+    - pname: curr_alt
+      cname: _global_pos_sub.get().alt
+      file: null
+      line: null
+      column: null
+      field: heap + 61466
+      scope: global
+      type: float
+
+    - pname: home_alt # RTL_RETURN_ALT = home_alt + rtl_climb_alt
+      cname: _home_pos_sub.get().alt
+      file: null
+      line: null
+      column: null
+      field: heap + 61690
+      scope: global
+      type: float
+
+    - pname: rtl_climb_alt
+      cname: _param_rtl_return_alt.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 61366
+      scope: global
+      type: float
+    
+    - pname: at_home
+      cname: destination_dist <= _param_nav_acc_rad.get()
+      file: src/modules/navigator/rtl.cpp
+      line: 533
+      column: 23
+      field: null
+      scope: register
+      type: i1
+
+    - pname: target_alt
+      cname: rtl_alt
+      file: src/modules/navigator/rtl.cpp
+      line: 316
+      column: null
+      field: rtl_alt + 0
+      scope: stack
+      type: float
+
+PX_RTL3:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9RtlDirect12set_rtl_itemEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 62922
+  queries:
+    - pname: curr_alt_geq_RTL_RETURN_ALT
+      cname: _rtl_state == RTLState::MOVE_TO_LOITER
+      file: null
+      line: null
+      column: null
+      field: heap + 63074
+      scope: global
+      type: i32
+
+    - pname: at_home
+      cname: is_close_to_destination
+      file: src/modules/navigator/rtl_direct.cpp
+      line: 159
+      column: null
+      field: is_close_to_destination + 0
+      scope: stack
+      type: i1
+
+    - pname: mode_is_LAND
+      cname: _rtl_state == RTLState::LOITER_DOWN
+      file: null
+      line: null
+      column: null
+      field: heap + 63074
+      scope: global
+      type: i32
+
+PX_RTL4:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9RtlDirect12set_rtl_itemEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 62922
+  queries:
+    - pname: RTL_LAND_DELAY
+      cname: _param_rtl_land_delay
+      file: null
+      line: null
+      column: null
+      field: heap + 63394
+      scope: global
+      type: float
+
+    - pname: target_alt
+      cname: pos_yaw_sp.alt
+      file: src/modules/navigator/rtl_direct.cpp
+      line: 227
+      column: null
+      field: pos_yaw_sp + 16
+      scope: stack
+      type: float
+
+    - pname: RTL_DESCEND_ALT
+      cname: loiter_altitude
+      file: src/modules/navigator/rtl_direct.cpp
+      line: 157
+      column: null
+      field: loiter_altitude + 0
+      scope: stack
+      type: float
+
+PX_RTL_P4:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN3RTL24setRtlTypeAndDestinationEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 60050
+  queries:
+    - pname: curr_alt
+      cname: _global_pos_sub.get().alt
+      file: null
+      line: null
+      column: null
+      field: heap + 61466
+      scope: global
+      type: float
+
+    - pname: return_alt
+      cname: rtl_alt
+      file: src/modules/navigator/rtl.cpp
+      line: 316
+      column: null
+      field: rtl_alt + 0
+      scope: stack
+      type: float
+
+PX_RTL_P5:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN3RTL24setRtlTypeAndDestinationEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 60050
+  queries:
+    - pname: RTL_CONE_ANG
+      cname: _param_rtl_cone_half_angle_deg
+      file: null
+      line: null
+      column: null
+      field: heap + 57250
+      scope: global
+      type: float
+
+    - pname: return_alt
+      cname: rtl_alt
+      file: src/modules/navigator/rtl.cpp
+      line: 316
+      column: null
+      field: rtl_alt + 0
+      scope: stack
+      type: float
+
+    - pname: RTL_RETURN_ALT
+      cname: _param_rtl_return_alt.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 61366
+      scope: global
+      type: float
+
+PX_RTL_P6:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN3RTL24setRtlTypeAndDestinationEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 60050
+  queries:
+    - pname: RTL_CONE_ANG
+      cname: _param_rtl_cone_half_angle_deg
+      file: null
+      line: null
+      column: null
+      field: heap + 57250
+      scope: global
+      type: float
+
+    - pname: return_alt
+      cname: rtl_alt
+      file: src/modules/navigator/rtl.cpp
+      line: 316
+      column: null
+      field: rtl_alt + 0
+      scope: stack
+      type: float
+
+    - pname: curr_alt
+      cname: _global_pos_sub.get().alt
+      file: null
+      line: null
+      column: null
+      field: heap + 61466
+      scope: global
+      type: float
+
+PX_RTL5:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN9Commander16handleAutoDisarmEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 121644
+  queries:
+    - pname: mode
+      cname: _vehicle_status.nav_state
+      file: null
+      line: null
+      column: null
+      field: heap + 121738
+      scope: global
+      type: i8
+
+    - pname: on_ground
+      cname: landed
+      file: src/modules/commander/Commander.cpp
+      line: 643
+      column: null
+      field: landed + 0
+      scope: stack
+      type: i8
+
+    - pname: armed
+      cname: _vehicle_status.arming_state
+      file: null
+      line: null
+      column: null
+      field: heap + 121734
+      scope: global
+      type: i8
+
+PX_LAND1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN17FlightTaskDescend6updateEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101356
+  queries:
+    - pname: mode
+      cname: _vehicle_status.nav_state
+      file: null
+      line: null
+      column: null
+      field: heap + 121484
+      scope: global
+      type: i8
+
+    - pname: no_loss_control
+      cname: PX4_ISFINITE(_velocity(2))
+      file: src/modules/flight_mode_manager/tasks/Descend/FlightTaskDescend.cpp
+      line: 50
+      column: 6
+      field: null
+      scope: register
+      type: i1
+
+    - pname: no_rc_input
+      cname: _param_mpc_land_rc_help.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 102532
+      scope: global
+      type: i32
+
+    - pname: descend_rate
+      cname: _velocity_setpoint(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 101716
+      scope: global
+      type: float
+
+    - pname: MPC_LAND_SPEED
+      cname: _param_mpc_land_speed.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 102536
+      scope: global
+      type: float
+
+PX_ALTITUDE1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN24FlightTaskManualAltitude19_updateAltitudeLockEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101068
+  queries: 
+    - pname: throttle_stick_eq_1500
+      cname: apply_brake
+      file: src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp
+      line: 107
+      column: null
+      field: apply_brake + 0
+      scope: stack
+      type: i8
+
+    - pname: has_stopped
+      cname: stopped
+      file: src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp
+      line: 110
+      column: null
+      field: stopped + 0
+      scope: stack
+      type: i8
+
+    - pname: target_alt
+      cname: _position_setpoint(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 101520
+      scope: global
+      type: float
+
+    - pname: current_alt
+      cname: _position(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 101476
+      scope: global
+      type: float
+
+PX_ALTITUDE_P2:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN24FlightTaskManualAltitude12_scaleSticksEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101540
+  queries: 
+    - pname: throttle
+      cname: _sticks.getPositionExpo()(2)
+      file: src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp
+      line: 98
+      column: 38
+      field: null
+      scope: register
+      type: float
+
+    - pname: vertical_vel
+      cname: _velocity_setpoint(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 102004
+      scope: global
+      type: i8
+
+    - pname: MPC_Z_VEL_MAX_UP
+      cname: _param_mpc_z_vel_max_up.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 102420
+      scope: global
+      type: float
+
+PX_ALTITUDE_P3:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN24FlightTaskManualAltitude12_scaleSticksEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101540
+  queries: 
+    - pname: throttle
+      cname: _sticks.getPositionExpo()(2)
+      file: src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp
+      line: 98
+      column: 38
+      field: null
+      scope: register
+      type: float
+
+    - pname: vertical_vel
+      cname: _velocity_setpoint(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 102004
+      scope: global
+      type: i8
+
+    - pname: MPC_Z_VEL_MAX_DN
+      cname: _param_mpc_z_vel_max_dn.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 102424
+      scope: global
+      type: float
+
+PX_POSITION1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN24FlightTaskManualPosition16_updateSetpointsEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101772
+  queries:
+    - pname: sticks_centered
+      cname: apply_brake
+      file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+      line: 109
+      column: null
+      field: apply_brake + 0
+      scope: stack
+      type: i8
+
+    - pname: has_stopped
+      cname: stopped
+      file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+      line: 110
+      column: null
+      field: stopped + 0
+      scope: stack
+      type: i8
+
+    - pname: curr_x
+      cname: _position(0)
+      file: null
+      line: null
+      column: null
+      field: heap + 102172
+      scope: global
+      type: float
+
+    - pname: curr_y
+      cname: _position(1)
+      file: null
+      line: null
+      column: null
+      field: heap + 102176
+      scope: global
+      type: float
+
+    - pname: curr_z
+      cname: _position(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 102180
+      scope: global
+      type: float
+
+    - pname: target_x
+      cname: _position_setpoint(0)
+      file: null
+      line: null
+      column: null
+      field: heap + 102216
+      scope: global
+      type: float
+
+    - pname: target_y
+      cname: _position_setpoint(1)
+      file: null
+      line: null
+      column: null
+      field: heap + 102220
+      scope: global
+      type: float
+
+    - pname: target_z
+      cname: _position_setpoint(2)
+      file: null
+      line: null
+      column: null
+      field: heap + 102224
+      scope: global
+      type: float
+
+PX_POSITION_P2:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN24FlightTaskManualPosition12_scaleSticksEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101140
+  queries:
+    - pname: pitch_stick
+      cname: stick_xy(0)
+      file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+      line: 70
+      column: null
+      field: stick_xy + 0
+      scope: stack
+      type: float
+
+    - pname: x_velocity_setpoint
+      cname: vel_sp_xy(0)
+      file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+      line: 92
+      column: null
+      field: vel_sp_xy + 0
+      scope: stack
+      type: float
+  
+    - pname: MPC_VEL_MANUAL
+      cname: _param_mpc_vel_manual.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 102376
+      scope: global
+      type: float
+
+PX_POSITION_P3:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN24FlightTaskManualPosition12_scaleSticksEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 101140
+  queries:
+    - pname: roll_stick
+      cname: stick_xy(1)
+      file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+      line: 70
+      column: null
+      field: stick_xy + 4
+      scope: stack
+      type: float
+
+    - pname: y_velocity_setpoint
+      cname: vel_sp_xy(1)
+      file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+      line: 92
+      column: null
+      field: vel_sp_xy + 4
+      scope: stack
+      type: float
+  
+    - pname: MPC_VEL_MANUAL
+      cname: _param_mpc_vel_manual.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 102376
+      scope: global
+      type: float
+
+PX_HOLD2:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN6Loiter19set_loiter_positionEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 61650
+  queries:
+    - pname: MIS_LTRMIN_ALT
+      cname: _param_min_ltr_alt.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 64902
+      scope: global
+      type: float
+
+    - pname: curr_alt
+      cname: _global_pos.alt
+      file: null
+      line: null
+      column: null
+      field: heap + 58842
+      scope: global
+      type: float
+
+    - pname: target_alt
+      cname: _pos_sp_triplet.current.alt
+      file: null
+      line: null
+      column: null
+      field: heap + 59446
+      scope: global
+      type: float
+
+PX_TAKEOFF2:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN15TakeoffHandling10updateRampEff
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 89308
+    - id: 1
+      type: float
+      value: 1.0
+    - id: 2
+      type: float
+      value: 3.0
+  queries:
+    - pname: takingoff
+      cname: _takeoff_state = TakeoffState::flight
+      file: null
+      line: null
+      column: null
+      field: heap + 89316
+      scope: global
+      type: i32
+
+    - pname: ascend_rate
+      cname: upwards_velocity_limit
+      file: src/modules/mc_pos_control/Takeoff/Takeoff.cpp
+      line: 114
+      column: null
+      field: upwards_velocity_limit + 0
+      scope: stack
+      type: float
+
+    - pname: MPC_TKO_SPEED
+      cname: takeoff_desired_vz
+      file: src/modules/mc_pos_control/Takeoff/Takeoff.cpp
+      line: 112
+      column: null
+      field: takeoff_desired_vz + 0
+      scope: stack
+      type: float
+
+PX_GPS_FS3:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN12FailsafeBase6updateERKmRKNS_5StateEbbRK16failsafe_flags_s
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 112508
+    - id: 1 # hrt_abstime &time_us
+      type: ptr
+      value: params_config + 1
+    - id: 2 # State &state
+      type: ptr
+      value: params_config + 2
+    - id: 3
+      type: i1
+      value: 1
+    - id: 4
+      type: i1
+      value: 1
+    - id: 5 # failsafe_flags_s &status_flags
+      type: ptr
+      value: heap + 113484
+  queries:
+    - pname: curr_mode
+      cname: state.user_intended_mode # 2
+      file: null
+      line: null
+      column: null
+      field: params_config_2 + 1
+      scope: global
+      type: i8
+
+    - pname: failsafe_start
+      cname: state.armed
+      file: null
+      line: null
+      column: null
+      field: params_config_2 + 0
+      scope: global
+      type: i8
+
+    - pname: gps_fail
+      cname: status_flags.global_position_invalid
+      file: null
+      line: null
+      column: null
+      field: heap + 112750
+      scope: global
+      type: i8
+
+    - pname: battery_ok
+      cname: status_flags.battery_warning == 0
+      file: null
+      line: null
+      column: null
+      field: heap + 112756
+      scope: global
+      type: i8
+
+    - pname: rc_loss
+      cname: _param_com_posctl_navl.get() == 1
+      file: null
+      line: null
+      column: null
+      field: heap + 112904
+      scope: global
+      type: i8
+
+    - pname: mode
+      cname: _last_user_intended_mode # 12 18
+      file: null
+      line: null
+      column: null
+      field: heap + 112677
+      scope: global
+      type: i8
+
+PX_TAKEOFF1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZN7Takeoff20set_takeoff_positionEv
+  isTime: false
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 52858
+  queries:
+    - pname: default_alt_takeoff
+      cname: rep->current.valid
+      file: src/modules/navigator/takeoff.cpp
+      line: 101
+      column: 19
+      field: null
+      scope: register
+      type: i1
+
+    - pname: target_alt
+      cname: takeoff_altitude_amsl
+      file: src/modules/navigator/takeoff.cpp
+      line: 99
+      column: null
+      field: takeoff_altitude_amsl + 0
+      scope: stack
+      type: float
+
+    - pname: curr_alt
+      cname: _navigator->get_global_position()->alt
+      file: null
+      line: null
+      column: null
+      field: heap + 49898
+      scope: global
+      type: float
+
+    - pname: MIS_TAKEOFF_ALT
+      cname: _navigator->get_param_mis_takeoff_alt()
+      file: null
+      line: null
+      column: null
+      field: heap + 55962
+      scope: global
+      type: float
+
+PX_GPS_FS1:
+  flightControl: PX4
+  LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+  call_depth: 3
+  entrypoints:
+    - _ZNK15EstimatorChecks19checkPosVelValidityERKmbffS1_Rmb
+  isTime: true
+  params:
+    - id: 0
+      type: ptr
+      value: heap + 122412
+    - id: 1
+      type: ptr
+      value: heap + 0
+    - id: 2
+      type: i1
+      value: 1
+    - id: 3
+      type: float
+      value: 0.123
+    - id: 4
+      type: float
+      value: 5.0
+    - id: 5
+      type: ptr
+      value: heap + 0
+    - id: 6
+      type: ptr
+      value: heap + 122588
+    - id: 7
+      type: i1
+      value: 1
+  queries:
+    - pname: gps_failsafe_triggered
+      cname: valid
+      file: src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp
+      line: 886
+      column: null
+      field: valid + 0
+      scope: stack
+      type: i8
+    
+    - pname: COM_POS_FS_DELAY
+      cname: _param_com_pos_fs_delay.get()
+      file: null
+      line: null
+      column: null
+      field: heap + 122680
+      scope: global
+      type: i32
+
+    - pname: time_since_gps_loss_is_geq_COM_POS_FS_DELAY
+      cname: data_stale
+      file: src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp
+      line: 887
+      column: null
+      field: data_stale + 0
+      scope: stack
+      type: i8

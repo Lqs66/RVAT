@@ -1,0 +1,3003 @@
+{
+  "AP_ACRO_P1": [
+    {
+      "formula_term": "ACRO_TRAINER",
+      "slicing_criterion": [
+        {
+          "line": 92,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_acro.cpp",
+          "variables": [
+            "g.acro_trainer"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "roll_angle",
+      "slicing_criterion": [
+        {
+          "line": 96,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_acro.cpp",
+          "variables": [
+            "roll_angle"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "roll_correction",
+      "slicing_criterion": [
+        {
+          "line": 97,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_acro.cpp",
+          "variables": [
+            "rate_ef_level_cd.x"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_ACRO_P2": [
+    {
+      "formula_term": "ACRO_TRAINER",
+      "slicing_criterion": [
+        {
+          "line": 92,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_acro.cpp",
+          "variables": [
+            "g.acro_trainer"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "pitch_angle",
+      "slicing_criterion": [
+        {
+          "line": 142,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_acro.cpp",
+          "variables": [
+            "pitch_angle"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "pitch_correction",
+      "slicing_criterion": [
+        {
+          "line": 143,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_acro.cpp",
+          "variables": [
+            "rate_ef_level_cd.y"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RCFS_P1": [
+    {
+      "formula_term": "RC_valid",
+      "slicing_criterion": [
+        {
+          "line": 49,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp",
+          "variables": [
+            "manual_control_setpoint.valid"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "manual_control_update_time",
+      "slicing_criterion": [
+        {
+          "line": 50,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp",
+          "variables": [
+            "hrt_elapsed_time(&manual_control_setpoint.timestamp)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "COM_RC_LOSS_T",
+      "slicing_criterion": [
+        {
+          "line": 50,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp",
+          "variables": [
+            "_param_com_rc_loss_t.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "manual_control_loss_failsafe",
+      "slicing_criterion": [
+        {
+          "line": 58,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp",
+          "variables": [
+            "reporter.failsafeFlags().manual_control_signal_lost"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_BRAKE_P1": [
+    {
+      "formula_term": "Vertical_Speed_Exceeded",
+      "slicing_criterion": [
+        {
+          "line": 749,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "is_vertical_speed_exceeded"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "Emergency_Braking_activated",
+      "slicing_criterion": [
+        {
+          "line": 746,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_is_emergency_braking_active"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "vertical_speed",
+      "slicing_criterion": [
+        {
+          "line": 749,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_position_smoothing.getCurrentVelocityZ()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "max_vertical_speed",
+      "slicing_criterion": [
+        {
+          "line": 750,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_param_mpc_z_vel_max_dn.get()"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_ALTHOLD_P2": [
+    {
+      "formula_term": "throttle_stick",
+      "slicing_criterion": [
+        {
+          "line": 42,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_althold.cpp",
+          "variables": [
+            "channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "PILOT_SPEED_UP",
+      "slicing_criterion": [
+        {
+          "line": 43,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_althold.cpp",
+          "variables": [
+            "g.pilot_speed_up"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "climb_rate",
+      "slicing_criterion": [
+        {
+          "line": 43,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_althold.cpp",
+          "variables": [
+            "target_climb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_RTL_P1": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 419,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "curr_alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 482,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "rtl_path.return_target.alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_RTL_P2": [
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 482,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "rtl_path.return_target.alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_RTL1": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 419,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "curr_alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "RTL_ALT",
+      "slicing_criterion": [
+        {
+          "line": 444,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "g.rtl_altitude"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 482,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "rtl_path.return_target.alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_RTL2": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 419,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "curr_alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "RTL_ALT",
+      "slicing_criterion": [
+        {
+          "line": 444,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "g.rtl_altitude"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "at_home",
+      "slicing_criterion": [
+        {
+          "line": 185,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "wp_nav->reached_wp_destination()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 482,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "rtl_path.return_target.alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_RTL3": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 419,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "curr_alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "RTL_ALT",
+      "slicing_criterion": [
+        {
+          "line": 444,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "g.rtl_altitude"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "at_home",
+      "slicing_criterion": [
+        {
+          "line": 185,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "wp_nav->reached_wp_destination()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "mode",
+      "slicing_criterion": [
+        {
+          "line": 70,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_rtl.cpp",
+          "variables": [
+            "_state"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_RTL4": [
+    {
+      "formula_term": "on_ground",
+      "slicing_criterion": [
+        {
+          "line": 74,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_land.cpp",
+          "variables": [
+            "copter.ap.land_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "motors_idle",
+      "slicing_criterion": [
+        {
+          "line": 74,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_land.cpp",
+          "variables": [
+            "motors->get_spool_state() == AP_Motors::SpoolState::GROUND_IDLE"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "armed",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_land.cpp",
+          "variables": [
+            "copter.arming.disarm(AP_Arming::Method::LANDED)"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_LAND_P4": [
+    {
+      "formula_term": "landed",
+      "slicing_criterion": [
+        {
+          "line": 74,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_land.cpp",
+          "variables": [
+            "copter.ap.land_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "motors_idle",
+      "slicing_criterion": [
+        {
+          "line": 74,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_land.cpp",
+          "variables": [
+            "motors->get_spool_state()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "disarmed",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_land.cpp",
+          "variables": [
+            "copter.arming.disarm(AP_Arming::Method::LANDED)"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE1": [
+    {
+      "formula_term": "RC_pitch",
+      "slicing_criterion": [
+        {
+          "line": 45,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "pitch_stick"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "circle_radius",
+      "slicing_criterion": [
+        {
+          "line": 44,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "radius_current"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "radius_change",
+      "slicing_criterion": [
+        {
+          "line": 47,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "radius_pilot_change"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE2": [
+    {
+      "formula_term": "RC_pitch",
+      "slicing_criterion": [
+        {
+          "line": 45,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "pitch_stick"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "radius_change",
+      "slicing_criterion": [
+        {
+          "line": 47,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "radius_pilot_change"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE3": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 57,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "roll_stick"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "clockwise",
+      "slicing_criterion": [
+        {
+          "line": 67,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "is_positive(rate)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_speed",
+      "slicing_criterion": [
+        {
+          "line": 64,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_current"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_speed",
+      "slicing_criterion": [
+        {
+          "line": 66,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_new"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE4": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 57,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "roll_stick"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "counterclockwise",
+      "slicing_criterion": [
+        {
+          "line": 71,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "is_negative(rate)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_speed",
+      "slicing_criterion": [
+        {
+          "line": 64,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_current"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_speed",
+      "slicing_criterion": [
+        {
+          "line": 66,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_new"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE5": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 57,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "roll_stick"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "counterclockwise",
+      "slicing_criterion": [
+        {
+          "line": 71,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "is_negative(rate)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_speed",
+      "slicing_criterion": [
+        {
+          "line": 64,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_current"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_speed",
+      "slicing_criterion": [
+        {
+          "line": 66,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_new"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE6": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 57,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "roll_stick"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "clockwise",
+      "slicing_criterion": [
+        {
+          "line": 67,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "is_positive(rate)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_speed",
+      "slicing_criterion": [
+        {
+          "line": 64,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_current"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_speed",
+      "slicing_criterion": [
+        {
+          "line": 66,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_new"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CIRCLE7": [
+    {
+      "formula_term": "user_control_enabled",
+      "slicing_criterion": [
+        {
+          "line": 42,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "copter.circle_nav->pilot_control_enabled()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "throttle_stick",
+      "slicing_criterion": [
+        {
+          "line": 87,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "radius_change",
+      "slicing_criterion": [
+        {
+          "line": 47,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "radius_pilot_change"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "rate_change",
+      "slicing_criterion": [
+        {
+          "line": 65,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "rate_pilot_change"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "climb_rate",
+      "slicing_criterion": [
+        {
+          "line": 87,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_circle.cpp",
+          "variables": [
+            "target_climb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT1": [
+    {
+      "formula_term": "pitch_stick",
+      "slicing_criterion": [
+        {
+          "line": 285,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_sticks.getPositionExpo()(0)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_radius",
+      "slicing_criterion": [
+        {
+          "line": 270,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "radius"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_radius",
+      "slicing_criterion": [
+        {
+          "line": 270,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_radius"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT2": [
+    {
+      "formula_term": "pitch_stick",
+      "slicing_criterion": [
+        {
+          "line": 285,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_sticks.getPositionExpo()(0)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_radius",
+      "slicing_criterion": [
+        {
+          "line": 270,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "radius"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_radius",
+      "slicing_criterion": [
+        {
+          "line": 270,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_radius"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT3": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 286,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_sticks.getPositionExpo()(1)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "clockwise",
+      "slicing_criterion": [
+        {
+          "line": 60,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_velocity > 0"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_speed",
+      "slicing_criterion": [
+        {
+          "line": 271,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "velocity"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_speed",
+      "slicing_criterion": [
+        {
+          "line": 271,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_velocity"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT4": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 286,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_sticks.getPositionExpo()(1)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "next_speed",
+      "slicing_criterion": [
+        {
+          "line": 271,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "velocity"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_speed",
+      "slicing_criterion": [
+        {
+          "line": 271,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_velocity"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT5": [
+    {
+      "formula_term": "circle_radius",
+      "slicing_criterion": [
+        {
+          "line": 270,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_radius"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT6": [
+    {
+      "formula_term": "circle_acceleration",
+      "slicing_criterion": [
+        {
+          "line": 329,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_velocity * _orbit_velocity / _orbit_radius"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT_P6": [
+    {
+      "formula_term": "circle_radius",
+      "slicing_criterion": [
+        {
+          "line": 329,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_radius"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ORBIT_P7": [
+    {
+      "formula_term": "circle_radius",
+      "slicing_criterion": [
+        {
+          "line": 329,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_orbit_radius"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MC_ORBIT_RAD_MAX",
+      "slicing_criterion": [
+        {
+          "line": 233,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Orbit/FlightTaskOrbit.cpp",
+          "variables": [
+            "_param_mc_orbit_rad_max"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL1": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 479,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_global_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "home_alt",
+      "slicing_criterion": [
+        {
+          "line": 374,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_home_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "rtl_climb_alt",
+      "slicing_criterion": [
+        {
+          "line": 478,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_param_rtl_return_alt.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 316,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "rtl_alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL_P4": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 479,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_global_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 316,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "rtl_alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL_P5": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 479,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_global_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "return_alt",
+      "slicing_criterion": [
+        {
+          "line": 316,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "rtl_alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "RTL_CONE_ANG",
+      "slicing_criterion": [
+        {
+          "line": 473,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_param_rtl_cone_half_angle_deg"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL_P6": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 479,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_global_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "return_alt",
+      "slicing_criterion": [
+        {
+          "line": 316,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "rtl_alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "RTL_CONE_ANG",
+      "slicing_criterion": [
+        {
+          "line": 473,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_param_rtl_cone_half_angle_deg"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL2": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 479,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_global_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "home_alt",
+      "slicing_criterion": [
+        {
+          "line": 374,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_home_pos_sub.get().alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "rtl_climb_alt",
+      "slicing_criterion": [
+        {
+          "line": 478,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "_param_rtl_return_alt.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "at_home",
+      "slicing_criterion": [
+        {
+          "line": 533,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "destination_dist <= _param_nav_acc_rad.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 316,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl/RTL.cpp",
+          "variables": [
+            "rtl_alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL3": [
+    {
+      "formula_term": "curr_alt >= RTL_RETURN_ALT",
+      "slicing_criterion": [
+        {
+          "line": 351,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl_direct.cpp",
+          "variables": [
+            "land_state = RTLState::MOVE_TO_LOITER"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "at_home",
+      "slicing_criterion": [
+        {
+          "line": 159,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl_direct.cpp",
+          "variables": [
+            "is_close_to_destination"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "mode == LAND",
+      "slicing_criterion": [
+        {
+          "line": 194,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl_direct.cpp",
+          "variables": [
+            "_rtl_state = RTLState::LOITER_DOWN"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL4": [
+    {
+      "formula_term": "RTL_LAND_DELAY",
+      "slicing_criterion": [
+        {
+          "line": 234,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl_direct.cpp",
+          "variables": [
+            "_param_rtl_land_delay"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 227,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl_direct.cpp",
+          "variables": [
+            "pos_yaw_sp.alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "RTL_DESCEND_ALT",
+      "slicing_criterion": [
+        {
+          "line": 157,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/rtl_direct.cpp",
+          "variables": [
+            "loiter_altitude"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_RTL5": [
+    {
+      "formula_term": "mode",
+      "slicing_criterion": [
+        {
+          "line": 703,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/Commander.cpp",
+          "variables": [
+            "_vehicle_status.nav_state"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "on_ground",
+      "slicing_criterion": [
+        {
+          "line": 643,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/Commander.cpp",
+          "variables": [
+            "landed"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "armed",
+      "slicing_criterion": [
+        {
+          "line": 665,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/Commander.cpp",
+          "variables": [
+            "_vehicle_status.arming_state"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_LAND1": [
+    {
+      "formula_term": "start_landing",
+      "slicing_criterion": [
+        {
+          "line": 50,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Descend/FlightTaskDescend.cpp",
+          "variables": [
+            "PX4_ISFINITE(_velocity(2))"
+          ]
+        },
+        {
+          "line": 62,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Descend/FlightTaskDescend.cpp",
+          "variables": [
+            "_param_mpc_land_rc_help.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "descend_rate",
+      "slicing_criterion": [
+        {
+          "line": 52,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Descend/FlightTaskDescend.cpp",
+          "variables": [
+            "_velocity_setpoint(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MPC_LAND_SPEED",
+      "slicing_criterion": [
+        {
+          "line": 52,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Descend/FlightTaskDescend.cpp",
+          "variables": [
+            "_param_mpc_land_speed.get()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ALTITUDE1": [
+    {
+      "formula_term": "throttle_stick_eq_1500",
+      "slicing_criterion": [
+        {
+          "line": 107,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "apply_brake"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "has_stopped",
+      "slicing_criterion": [
+        {
+          "line": 110,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "stopped"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 131,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_position_setpoint(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "current_alt",
+      "slicing_criterion": [
+        {
+          "line": 131,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_position(2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ALTITUDE_P2": [
+    {
+      "formula_term": "throttle",
+      "slicing_criterion": [
+        {
+          "line": 98,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_sticks.getPositionExpo()(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "vertical_vel",
+      "slicing_criterion": [
+        {
+          "line": 98,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_velocity_setpoint(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MPC_Z_VEL_MAX_UP",
+      "slicing_criterion": [
+        {
+          "line": 95,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_param_mpc_z_vel_max_up.get()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_ALTITUDE_P3": [
+    {
+      "formula_term": "throttle",
+      "slicing_criterion": [
+        {
+          "line": 98,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_sticks.getPositionExpo()(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "vertical_vel",
+      "slicing_criterion": [
+        {
+          "line": 98,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_velocity_setpoint(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MPC_Z_VEL_MAX_DN",
+      "slicing_criterion": [
+        {
+          "line": 96,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "_param_mpc_z_vel_max_dn.get()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_POSITION1": [
+    {
+      "formula_term": "sticks_centered",
+      "slicing_criterion": [
+        {
+          "line": 109,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "apply_brake"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "has_stopped",
+      "slicing_criterion": [
+        {
+          "line": 110,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "stopped"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "curr_x",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_position_setpoint(0)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "curr_y",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_position(1)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "curr_z",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_position(2)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_x",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_position_setpoint(0)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_y",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_position_setpoint(1)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_z",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_position_setpoint(2)"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_POSITION_P2": [
+    {
+      "formula_term": "pitch_stick",
+      "slicing_criterion": [
+        {
+          "line": 70,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "stick_xy(0)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "x_velocity_setpoint",
+      "slicing_criterion": [
+        {
+          "line": 92,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "vel_sp_xy(0)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MPC_VEL_MANUAL",
+      "slicing_criterion": [
+        {
+          "line": 84,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_param_mpc_vel_manual.get()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_POSITION_P3": [
+    {
+      "formula_term": "roll_stick",
+      "slicing_criterion": [
+        {
+          "line": 70,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "stick_xy(1)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "y_velocity_setpoint",
+      "slicing_criterion": [
+        {
+          "line": 92,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualAltitude/FlightTaskManualAltitude.cpp",
+          "variables": [
+            "vel_sp_xy(1)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MPC_VEL_MANUAL",
+      "slicing_criterion": [
+        {
+          "line": 84,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp",
+          "variables": [
+            "_param_mpc_vel_manual.get()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_HOLD2": [
+    {
+      "formula_term": "MIS_LTRMIN_ALT",
+      "slicing_criterion": [
+        {
+          "line": 107,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/loiter.cpp",
+          "variables": [
+            "_param_min_ltr_alt.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 110,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/loiter.cpp",
+          "variables": [
+            "_global_pos.alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 131,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/loiter.cpp",
+          "variables": [
+            "_pos_sp_triplet.current.alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_TAKEOFF2": [
+    {
+      "formula_term": "takingoff",
+      "slicing_criterion": [
+        {
+          "line": 107,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/mc_pos_control/Takeoff/Takeoff.cpp",
+          "variables": [
+            "_takeoff_state = TakeoffState::flight"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "ascend_rate",
+      "slicing_criterion": [
+        {
+          "line": 114,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/mc_pos_control/Takeoff/Takeoff.cpp",
+          "variables": [
+            "upwards_velocity_limit"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MPC_TKO_SPEED",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/mc_pos_control/Takeoff/Takeoff.cpp",
+          "variables": [
+            "takeoff_desired_vz"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_GPS_FS3": [
+    {
+      "formula_term": "curr_mode",
+      "slicing_criterion": [
+        {
+          "line": 442,
+          "source_file": "src/modules/commander/Failsafe/failsafe.cpp",
+          "variables": [
+            "user_intended_mode"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "battery_ok",
+      "slicing_criterion": [
+        {
+          "line": 206,
+          "source_file": "src/modules/commander/Failsafe/failsafe.cpp",
+          "variables": [
+            "status_flags.battery_warning"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "failsafe_start",
+      "slicing_criterion": [
+        {
+          "line": 314,
+          "source_file": "src/modules/commander/Failsafe/framework.cpp",
+          "variables": [
+            "state.armed"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "gps_fail",
+      "slicing_criterion": [
+        {
+          "line": 562,
+          "source_file": "src/modules/commander/Failsafe/failsafe.cpp",
+          "variables": [
+            "status_flags.global_position_invalid"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "rc_lost",
+      "slicing_criterion": [
+        {
+          "line": 427,
+          "source_file": "src/modules/commander/Failsafe/failsafe.cpp",
+          "variables": [
+            "_param_com_posctl_navl"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "mode",
+      "slicing_criterion": [
+        {
+          "line": 90,
+          "source_file": "src/modules/commander/Failsafe/framework.cpp",
+          "variables": [
+            "_last_user_intended_mode"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_LAND1": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 557,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "get_alt_above_ground_cm()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "LAND_SPEED_HIGH",
+      "slicing_criterion": [
+        {
+          "line": 551,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "g.land_speed_high"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "descend_rate",
+      "slicing_criterion": [
+        {
+          "line": 560,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "cmb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_LAND2": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 557,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "get_alt_above_ground_cm()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "LAND_SPEED",
+      "slicing_criterion": [
+        {
+          "line": 560,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "g.land_speed"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "descend_rate",
+      "slicing_criterion": [
+        {
+          "line": 560,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "cmb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_SPORT1": [
+    {
+      "formula_term": "throttle_stick",
+      "slicing_criterion": [
+        {
+          "line": 42,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_althold.cpp",
+          "variables": [
+            "channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "PILOT_SPEED_UP",
+      "slicing_criterion": [
+        {
+          "line": 43,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_althold.cpp",
+          "variables": [
+            "g.pilot_speed_up"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "climb_rate",
+      "slicing_criterion": [
+        {
+          "line": 43,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_althold.cpp",
+          "variables": [
+            "target_climb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_DRIFT1": [
+    {
+      "formula_term": "mode",
+      "slicing_criterion": [
+        {
+          "line": 167,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/ekf_check.cpp",
+          "variables": [
+            "flightmode->mode_number()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "FS_EKF_ACTION",
+      "slicing_criterion": [
+        {
+          "line": 178,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/ekf_check.cpp",
+          "variables": [
+            "g.fs_ekf_action"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_AUTO1": [
+    {
+      "formula_term": "yaw_input_enabled",
+      "slicing_criterion": [
+        {
+          "line": 992,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_auto.cpp",
+          "variables": [
+            "auto_yaw.get_heading()"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_GUIDED1": [
+    {
+      "formula_term": "yaw_input_enabled",
+      "slicing_criterion": [
+        {
+          "line": 205,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_guided.cpp",
+          "variables": [
+            "auto_yaw.get_heading()"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_ALT_HOLD1": [
+    {
+      "formula_term": "alt_sensor",
+      "slicing_criterion": [
+        {
+          "line": 847,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "activeHgtSource"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "alt_measured",
+      "slicing_criterion": [
+        {
+          "line": 849,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "hgtMea"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "baro_val",
+      "slicing_criterion": [
+        {
+          "line": 849,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "baroDataDelayed.hgt - baroHgtOffset"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_ALT_HOLD2": [
+    {
+      "formula_term": "velocity_z",
+      "slicing_criterion": [
+        {
+          "line": 456,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "gpsDataDelayed.vel.z"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_GPS_FS2": [
+    {
+      "formula_term": "alt_sensor",
+      "slicing_criterion": [
+        {
+          "line": 847,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "activeHgtSource"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "alt_measured",
+      "slicing_criterion": [
+        {
+          "line": 849,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "hgtMea"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "baro_val",
+      "slicing_criterion": [
+        {
+          "line": 849,
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_PosVelFusion.cpp",
+          "variables": [
+            "baroDataDelayed.hgt - baroHgtOffset"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_FLIP2": [
+    {
+      "formula_term": "roll_start",
+      "slicing_criterion": [
+        {
+          "line": 89,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "_state"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "roll_dir_is_right",
+      "slicing_criterion": [
+        {
+          "line": 82,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "roll_dir"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "roll_angle",
+      "slicing_criterion": [
+        {
+          "line": 82,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "ahrs.roll_sensor"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "roll_rate",
+      "slicing_criterion": [
+        {
+          "line": 91,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "FLIP_ROTATION_RATE * roll_dir"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_FLIP3": [
+    {
+      "formula_term": "roll_finished",
+      "slicing_criterion": [
+        {
+          "line": 89,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "_state"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_FLIPGeneral": [
+    {
+      "formula_term": "roll_finished",
+      "slicing_criterion": [
+        {
+          "line": 89,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "_state"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "mode",
+      "slicing_criterion": [
+        {
+          "line": 201,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode.cpp",
+          "variables": [
+            "mode"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "previous_mode",
+      "slicing_criterion": [
+        {
+          "line": 59,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "orig_control_mode"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_BRAKE1": [
+    {
+      "formula_term": "mode_is_BRAKE",
+      "slicing_criterion": [
+        {
+          "line": 35,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_brake.cpp",
+          "variables": [
+            "copter.flightmode->mode_number()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_TAKEOFF1": [
+    {
+      "formula_term": "target_alt",
+      "slicing_criterion": [
+        {
+          "line": 112,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/takeoff.cpp",
+          "variables": [
+            "takeoff_altitude_amsl"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 96,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/takeoff.cpp",
+          "variables": [
+            "_navigator->get_global_position()->alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "MIS_TAKEOFF_ALT",
+      "slicing_criterion": [
+        {
+          "line": 96,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/takeoff.cpp",
+          "variables": [
+            "_navigator->get_param_mis_takeoff_alt()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "default_alt_takeoff",
+      "slicing_criterion": [
+        {
+          "line": 92,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/navigator/takeoff.cpp",
+          "variables": [
+            "rep->current.valid"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_GPS_FS1": [
+    {
+      "formula_term": "gps_failsafe_triggered",
+      "slicing_criterion": [
+        {
+          "line": 886,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp",
+          "variables": [
+            "valid"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "COM_POS_FS_DELAY",
+      "slicing_criterion": [
+        {
+          "line": 887,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp",
+          "variables": [
+            "_param_com_pos_fs_delay.get()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "time_since_gps_loss_is_geq_COM_POS_FS_DELAY",
+      "slicing_criterion": [
+        {
+          "line": 887,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp",
+          "variables": [
+            "data_stale"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_CHUTE1": [
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 357,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/crash_check.cpp",
+          "variables": [
+            "copter.current_loc.alt"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "CHUTE_ALT_MIN",
+      "slicing_criterion": [
+        {
+          "line": 365,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/crash_check.cpp",
+          "variables": [
+            "parachute.alt_min()"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_FLIP1": [
+    {
+      "formula_term": "mode_is_FLIP",
+      "slicing_criterion": [
+        {
+          "line": 64,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "_state"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "previous_mode",
+      "slicing_criterion": [
+        {
+          "line": 60,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "copter.flightmode->mode_number()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "roll_angle",
+      "slicing_criterion": [
+        {
+          "line": 49,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "channel_roll->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "throttle",
+      "slicing_criterion": [
+        {
+          "line": 43,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "copter.channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "curr_alt",
+      "slicing_criterion": [
+        {
+          "line": 32,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_flip.cpp",
+          "variables": [
+            "copter.current_loc.alt"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_RC_FS2": [
+    {
+      "formula_term": "RC_failsafe_triggered",
+      "slicing_criterion": [
+        {
+          "line": 196,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/radio.cpp",
+          "variables": [
+            "copter.failsafe.radio"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "throttle_input",
+      "slicing_criterion": [
+        {
+          "line": 157,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/radio.cpp",
+          "variables": [
+            "channel_throttle->get_radio_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "FS_THR_VALUE",
+      "slicing_criterion": [
+        {
+          "line": 211,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/radio.cpp",
+          "variables": [
+            "g.failsafe_throttle_value"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_RCFS_P3": [
+    {
+      "formula_term": "landed",
+      "slicing_criterion": [
+        {
+          "line": 47,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.land_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "disarmed",
+      "slicing_criterion": [
+        {
+          "line": 50,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "arming.disarm(AP_Arming::Method::RADIOFAILSAFE)"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_GCSFS_P1": [
+    {
+      "formula_term": "landed",
+      "slicing_criterion": [
+        {
+          "line": 455,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.land_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "throttle_is_zero",
+      "slicing_criterion": [
+        {
+          "line": 455,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.throttle_zero"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "disarmed",
+      "slicing_criterion": [
+        {
+          "line": 201,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "arming.disarm(AP_Arming::Method::RADIOFAILSAFE)"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_GCSFS_P2": [
+    {
+      "formula_term": "landed",
+      "slicing_criterion": [
+        {
+          "line": 455,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.land_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "throttle_is_zero",
+      "slicing_criterion": [
+        {
+          "line": 455,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.throttle_zero"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "disarmed",
+      "slicing_criterion": [
+        {
+          "line": 201,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "arming.disarm(AP_Arming::Method::RADIOFAILSAFE)"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_RC_FS1": [
+    {
+      "formula_term": "throttle_input",
+      "slicing_criterion": [
+        {
+          "line": 157,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/radio.cpp",
+          "variables": [
+            "channel_throttle->get_radio_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "FS_THR_VALUE",
+      "slicing_criterion": [
+        {
+          "line": 211,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/radio.cpp",
+          "variables": [
+            "g.failsafe_throttle_value"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_GPS_FS1": [
+    {
+      "formula_term": "GPS_satellite_count",
+      "slicing_criterion": [
+        {
+          "line": 140, 
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_core.cpp",
+          "variables": [
+            "gps.num_sats(preferred_gps)"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "GPS_failsafe_triggered",
+      "slicing_criterion": [
+        {
+          "line": 145, 
+          "source_file": "flight-control/arducopter-4.4/libraries/AP_NavEKF3/AP_NavEKF3_core.cpp",
+          "variables": [
+            "gpsCheckStatus.bad_sats"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_BATTFS_P1": [
+    {
+      "formula_term": "landed",
+      "slicing_criterion": [
+        {
+          "line": 455,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.land_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "throttle_is_zero",
+      "slicing_criterion": [
+        {
+          "line": 455,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "ap.throttle_zero"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "disarmed",
+      "slicing_criterion": [
+        {
+          "line": 106,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/event.cpp",
+          "variables": [
+            "arming.disarm(AP_Arming::Method::RADIOFAILSAFE)"
+          ]
+        }
+      ]
+    }
+  ],
+  "A_LOITER1": [
+    {
+      "formula_term": "mode == LOITER",
+      "slicing_criterion": [
+        {
+          "line": 84, 
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_loiter.cpp",
+          "variables": [
+            "ModeLoiter::run()"
+          ]
+        }
+      ]
+    }
+  ],
+  "PX_HOLD1": [
+    {
+      "formula_term": "_type == 2",
+      "slicing_criterion": [
+        {
+          "line": 124,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "FlightTaskAuto::update"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "_position_setpoint",
+      "slicing_criterion": [
+        {
+          "line": 188,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_position_setpoint"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "_target",
+      "slicing_criterion": [
+        {
+          "line": 153,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_target"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "_yaw_setpoint",
+      "slicing_criterion": [
+        {
+          "line": 197,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_yaw_setpoint"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "_yaw_sp_prev",
+      "slicing_criterion": [
+        {
+          "line": 319,
+          "source_file": "flight-control/PX4-1.15.2/src/modules/flight_mode_manager/tasks/Auto/FlightTaskAuto.cpp",
+          "variables": [
+            "_yaw_sp_prev"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_POSHOLD_P3": [
+    {
+      "formula_term": "throttle_stick",
+      "slicing_criterion": [
+        {
+          "line": 89,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "PILOT_SPEED_UP",
+      "slicing_criterion": [
+        {
+          "line": 90,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "g.pilot_speed_up"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "climb_rate",
+      "slicing_criterion": [
+        {
+          "line": 89,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "target_climb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_POSHOLD_P1": [
+    {
+      "formula_term": "roll_angle",
+      "slicing_criterion": [
+        {
+          "line": 483,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "roll"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "ANGLE_MAX",
+      "slicing_criterion": [
+        {
+          "line": 482,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "copter.aparm.angle_max"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_POSHOLD_P2": [
+    {
+      "formula_term": "pitch_angle",
+      "slicing_criterion": [
+        {
+          "line": 484,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "pitch"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "ANGLE_MAX",
+      "slicing_criterion": [
+        {
+          "line": 482,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_poshold.cpp",
+          "variables": [
+            "copter.aparm.angle_max"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_LOITER_P2": [
+    {
+      "formula_term": "throttle_stick",
+      "slicing_criterion": [
+        {
+          "line": 108,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_loiter.cpp",
+          "variables": [
+            "channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "PILOT_SPEED_UP",
+      "slicing_criterion": [
+        {
+          "line": 91,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_loiter.cpp",
+          "variables": [
+            "g.pilot_speed_up"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "climb_rate",
+      "slicing_criterion": [
+        {
+          "line": 88,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_loiter.cpp",
+          "variables": [
+            "target_climb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_LOITER_P3": [
+    {
+      "formula_term": "horizontal_speed",
+      "slicing_criterion": [
+        {
+          "line": 232,
+          "source_file": "flight-control/arducopter-4.4/libraries/AC_WPNav/AC_Loiter.cpp",
+          "variables": [
+            "desired_vel.length()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "LOIT_SPEED",
+      "slicing_criterion": [
+        {
+          "line": 213,
+          "source_file": "flight-control/arducopter-4.4/libraries/AC_WPNav/AC_Loiter.cpp",
+          "variables": [
+            "_speed_cms"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_LOITER_P4": [
+    {
+      "formula_term": "acceleration",
+      "slicing_criterion": [
+        {
+          "line": 232,
+          "source_file": "flight-control/arducopter-4.4/libraries/AC_AttitudeControl/AC_PosControl.cpp",
+          "variables": [
+            "_accel_target"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "LOIT_ACC_MAX",
+      "slicing_criterion": [
+        {
+          "line": 637,
+          "source_file": "flight-control/arducopter-4.4/libraries/AC_AttitudeControl/AC_PosControl.cpp",
+          "variables": [
+            "accel_max"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_STABILIZE_P1": [
+    {
+      "formula_term": "roll_angle",
+      "slicing_criterion": [
+        {
+          "line": 15,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_stabilize.cpp",
+          "variables": [
+            "target_roll"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "ANGLE_MAX",
+      "slicing_criterion": [
+        {
+          "line": 16,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_stabilize.cpp",
+          "variables": [
+            "copter.aparm.angle_max"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_STABILIZE_P2": [
+    {
+      "formula_term": "pitch_angle",
+      "slicing_criterion": [
+        {
+          "line": 15,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_stabilize.cpp",
+          "variables": [
+            "target_roll"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "ANGLE_MAX",
+      "slicing_criterion": [
+        {
+          "line": 16,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_stabilize.cpp",
+          "variables": [
+            "copter.aparm.angle_max"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_ZIGZAG_P1": [
+    {
+      "formula_term": "throttle_stick",
+      "slicing_criterion": [
+        {
+          "line": 309,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_zigzag.cpp",
+          "variables": [
+            "channel_throttle->get_control_in()"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "PILOT_SPEED_UP",
+      "slicing_criterion": [
+        {
+          "line": 292,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_zigzag.cpp",
+          "variables": [
+            "g.pilot_speed_up"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "climb_rate",
+      "slicing_criterion": [
+        {
+          "line": 292,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_zigzag.cpp",
+          "variables": [
+            "target_climb_rate"
+          ]
+        }
+      ]
+    }
+  ],
+  "AP_DRIFT_P1": [
+    {
+      "formula_term": "throttle_input_is_zero",
+      "slicing_criterion": [
+        {
+          "line": 84,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_drift.cpp",
+          "variables": [
+            "copter.ap.throttle_zero"
+          ]
+        }
+      ]
+    },
+    {
+      "formula_term": "motors_spin_rate_is_MOT_SPIN_ARMED",
+      "slicing_criterion": [
+        {
+          "line": 91,
+          "source_file": "flight-control/arducopter-4.4/ArduCopter/mode_drift.cpp",
+          "variables": [
+            "motors->get_spool_state()"
+          ]
+        }
+      ]
+    }
+  ]
+}

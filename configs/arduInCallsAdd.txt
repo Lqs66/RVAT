@@ -1,0 +1,294 @@
+[INFO] Indircect Call ID: 240
+[INFO] Indirect Call Site:   call void %7(ptr noundef %8, ptr noundef %9, i8 noundef %10), !dbg !105832, !inCallID !105835
+[INFO] Function: _ZNK7FunctorIvJPKcKaEEclES1_a
+
+1. _ZNK7FunctorIvJPKcKaEEclES1_a 的 caller 为 _ZN14AP_BattMonitor15check_failsafesEv, 通过 _battery_failsafe_handler_fn(type_str, action) 调用。
+    即 _battery_failsafe_handler_fn = _ZNK7FunctorIvJPKcKaEEclES1_a；
+2. 查看该函数的源码可知其实际调用的是函数指针 battery_failsafe_handler_fn 指向的函数 （void battery_failsafe_handler_fn(const char *, const int8_t)）；
+3. 该函数指针通过 AP_BattMonitor 构造函数初始化 AP_BattMonitor(uint32_t log_battery_bit, battery_failsafe_handler_fn_t battery_failsafe_handler_fn, const int8_t *failsafe_priorities)；
+4. battery_failsafe_handler_fn 的类型 battery_failsafe_handler_fn_t 通过宏 FUNCTOR_TYPEDEF(battery_failsafe_handler_fn_t, void, const char *, const int8_t) 定义；
+5. 该宏等价于 typedef Functor<void, const char*, int8_t> battery_failsafe_handler_fn_t；
+6. AP_BattMonitor 类的构造函数在 Copter 类中被调用
+    AP_BattMonitor battery{MASK_LOG_CURRENT,
+                            FUNCTOR_BIND_MEMBER(&Copter::handle_battery_failsafe, void, const char*, const int8_t),
+                            _failsafe_priorities};
+    battery_failsafe_handler_fn = FUNCTOR_BIND_MEMBER(&Copter::handle_battery_failsafe, void, const char*, const int8_t)
+7. 宏 FUNCTOR_BIND_MEMBER 展开后等价于 Functor<void, const char*, const int8_t>::bind<Copter, &Copter::handle_battery_failsafe>(this)
+8. 调用静态模版函数
+    template<class T, RetType (T::*method)(Args...)>
+    static constexpr Functor bind(T *obj) {
+        return { obj, method_wrapper<T, method> };
+    }
+    template<class T, RetType (T::*method)(Args...)>
+    static RetType method_wrapper(void *obj, Args... args)
+    {
+        T *t = static_cast<T*>(obj);
+        return (t->*method)(args...);
+    }
+    最终返回了
+    Functor(
+        (void*)obj,
+        method_wrapper<Copter, &Copter::handle_battery_failsafe>(void *obj, const char*, const int8_t)
+    );
+
+以上分析可知 battery_failsafe_handler_fn = _method = method_wrapper<Copter, &Copter::handle_battery_failsafe> = _ZN7FunctorIvJPKcKaEE14method_wrapperI6CopterXadL_ZNS5_23handle_battery_failsafeES1_aEEEEvPvS1_a
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 255
+[INFO] Indirect Call Site:   call void %12(ptr noundef nonnull align 8 dereferenceable(90) %7), !dbg !105838, !inCallID !105839
+[INFO] Function: _ZN7FunctorIvJEE14method_wrapperI20AP_BattMonitor_SMBusXadL_ZNS2_5timerEvEEEEvPv
+
+1. _ZN7FunctorIvJEE14method_wrapperI20AP_BattMonitor_SMBusXadL_ZNS2_5timerEvEEEEvPv 的 demangle 名称为 void Functor<void>::method_wrapper<AP_BattMonitor_SMBus, &AP_BattMonitor_SMBus::timer>(void *)
+2. AP_BattMonitor_SMBus::timer 是一个纯虚函数，其具体调用的类型由传入的对象指针；
+3. 观察其调用链
+    _ZN24AP_BattMonitor_SMBus_SUI4initEv
+        _ZN20AP_BattMonitor_SMBus4initEv
+            _ZN7FunctorIvJEE4bindI20AP_BattMonitor_SMBusXadL_ZNS2_5timerEvEEEES0_PT_
+                _ZN7FunctorIvJEE14method_wrapperI20AP_BattMonitor_SMBusXadL_ZNS2_5timerEvEEEEvPv
+    可见其只会被 AP_BattMonitor_SMBus 的子类 AP_BattMonitor_SMBus_SUI 的 init 函数调用，说明传入的对象地址为 AP_BattMonitor_SMBus_SUI 对象的地址，
+    因此实际调用的是 AP_BattMonitor_SMBus_SUI::timer 函数
+    即对应 _ZN24AP_BattMonitor_SMBus_SUI5timerEv
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 350
+[INFO] Indirect Call Site:   %8 = call noundef i1 %5(ptr noundef %6, i8 noundef %7), !dbg !105831, !inCallID !105834
+[INFO] Function: _ZNK7FunctorIbJhEEclEh
+
+1. _ZNK7FunctorIbJhEEclEh 的 caller _ZN6AP_HAL6Device13transfer_bankEhPKhjPhj _ZN6AP_HAL6Device19check_next_registerEv _ZN15AP_FlashStorage12erase_sectorEhb
+2.  _ZN6AP_HAL6Device13transfer_bankEhPKhjPhj: _bank_select(bank)
+    _ZN6AP_HAL6Device19check_next_registerEv: _bank_select(reg.bank)
+        _bank_select 通过 setup_bankselect_callback 赋值
+            _dev->setup_bankselect_callback(FUNCTOR_BIND_MEMBER(&AP_InertialSensor_Invensensev2::_select_bank, bool, uint8_t))
+                _bank_select = method_wrapper<AP_InertialSensor_Invensensev2, &AP_InertialSensor_Invensensev2::_select_bank> 
+                    这里没有对应的函数，因为是sitl
+    _ZN15AP_FlashStorage12erase_sectorEhb: flash_erase(sector) = method_wrapper<HALSITL::Storage, &HALSITL::Storage::_flash_erase_sector> = _ZN7FunctorIbJhEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS3_19_flash_erase_sectorEhEEEEbPvh
+
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 353
+[INFO] Indirect Call Site:   call void %12(ptr noundef %13, i8 noundef %14, ptr noundef %15, i32 noundef %16, i1 noundef %18), !dbg !105834, !inCallID !105837
+[INFO] Function: _ZNK7FunctorIvJhPhjbEEclEhS0_jb
+
+1. _ZNK7FunctorIvJhPhjbEEclEhS0_jb 的 caller 为 _ZN6AP_HAL6Device14read_registersEhPhj 和 _ZN6AP_HAL6Device14write_registerEhhb；
+2. _ZN6AP_HAL6Device14read_registersEhPhj 通过 _register_rw_callback(read_reg, recv, recv_len, false) 调用
+   _ZN6AP_HAL6Device14write_registerEhhb 通过 _register_rw_callback(reg, &val, 1, true) 调用
+    RegisterRWCb _register_rw_callback
+    FUNCTOR_TYPEDEF(RegisterRWCb, void, uint8_t, uint8_t*, uint32_t, bool)
+    等价于 typedef Functor<void, uint8_t, uint8_t*, uint32_t, bool> RegisterRWCb
+3. _register_rw_callback 通过 
+    virtual void set_register_rw_callback(RegisterRWCb register_rw_callback) {
+        _register_rw_callback = register_rw_callback;
+    }
+    初始化；
+4. set_register_rw_callback 在源码中并无 caller，故该 incallsite 没有targets。
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 354
+[INFO] Indirect Call Site:   call void %11(), !dbg !105898, !inCallID !105899
+[INFO] Function: _ZN6AP_HAL9Scheduler13call_delay_cbEv
+
+1.  _ZN6AP_HAL9Scheduler13call_delay_cbEv 通过 _delay_cb() 间接调用
+2.  typedef void(*Proc)(void)
+    AP_HAL::Proc _delay_cb
+3.  _delay_cb 通过以下函数初始化
+    void Scheduler::register_delay_callback(AP_HAL::Proc proc,
+                                            uint16_t min_time_ms)
+    {
+        _delay_cb = proc;
+        _min_delay_cb_ms = min_time_ms;
+    }
+4.  hal.scheduler->register_delay_callback(scheduler_delay_callback, 5) 可见传入的函数为 scheduler_delay_callback = _ZN10AP_Vehicle24scheduler_delay_callbackEv
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 393
+[INFO] Indirect Call Site:   call void %3(ptr noundef %4), !dbg !105824, !inCallID !105826
+[INFO] Function: _ZNK7FunctorIvJEEclEv
+
+1.  caller: _ZN10AP_Mission8completeEv
+    在该函数中作为函数指针传入 FUNCTOR_BIND_MEMBER(&ModeAuto::exit_mission, void) = _ZN7FunctorIvJEE4bindI8ModeAutoXadL_ZNS2_12exit_missionEvEEEES0_PT_
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 394
+[INFO] Indirect Call Site:   %8 = call noundef i1 %5(ptr noundef %6, ptr noundef nonnull align 4 dereferenceable(25) %7), !dbg !105831, !inCallID !105834
+[INFO] Function: _ZNK7FunctorIbJRKN10AP_Mission15Mission_CommandEEEclES3_
+
+1. _ZNK7FunctorIbJRKN10AP_Mission15Mission_CommandEEEclES3_ 的caller 为 _ZN10AP_Mission14verify_commandERKNS_15Mission_CommandE 和 _ZN10AP_Mission13start_commandERKNS_15Mission_CommandE；
+2. _ZN10AP_Mission14verify_commandERKNS_15Mission_CommandE 通过 _cmd_verify_fn(cmd) 调用
+   _ZN10AP_Mission13start_commandERKNS_15Mission_CommandE 通过 _cmd_start_fn(cmd) 调用。
+3. AP_Mission(mission_cmd_fn_t cmd_start_fn, mission_cmd_fn_t cmd_verify_fn, mission_complete_fn_t mission_complete_fn) 负责 _cmd_verify_fn _cmd_start_fn 的初始化；
+4. ModeAuto 类中初始化了成员变量
+    AP_Mission mission{
+            FUNCTOR_BIND_MEMBER(&ModeAuto::start_command, bool, const AP_Mission::Mission_Command &),
+            FUNCTOR_BIND_MEMBER(&ModeAuto::verify_command, bool, const AP_Mission::Mission_Command &),
+            FUNCTOR_BIND_MEMBER(&ModeAuto::exit_mission, void)}
+5.  _cmd_verify_fn = method_wrapper<ModeAuto, &ModeAuto::start_command> = _ZN7FunctorIbJRKN10AP_Mission15Mission_CommandEEE14method_wrapperI8ModeAutoXadL_ZNS6_13start_commandES3_EEEEbPvS3_
+   _cmd_start_fn = method_wrapper<ModeAuto, &ModeAuto::verify_command> = _ZN7FunctorIbJRKN10AP_Mission15Mission_CommandEEE14method_wrapperI8ModeAutoXadL_ZNS6_14verify_commandES3_EEEEbPvS3_
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 534
+[INFO] Indirect Call Site:   %47 = call noundef ptr %45(ptr noundef nonnull align 8 dereferenceable(797) %12, ptr noundef %46), !dbg !105894, !inCallID !105897
+[INFO] Function: _ZN9AP_Logger4InitEPK12LogStructureh
+
+1. _ZN9AP_Logger4InitEPK12LogStructureh通过backend_config.probe_fn(*this, message_writer)函数指针调用
+2.  可能的targets 为 AP_Logger_MAVLink::probe = _ZN17AP_Logger_MAVLink5probeER9AP_LoggerP30LoggerMessageWriter_DFLogStart
+                    AP_Logger_File::probe = _ZN14AP_Logger_File5probeER9AP_LoggerP30LoggerMessageWriter_DFLogStart
+                    HAL_LOGGING_DATAFLASH_DRIVER::probe = _ZN19AP_Logger_DataFlash5probeER9AP_LoggerP30LoggerMessageWriter_DFLogStart
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 583
+[INFO] Indirect Call Site:   %252 = call noundef i1 %246(ptr noundef %247, i32 noundef %251), !dbg !106164, !inCallID !106170
+[INFO] Function: mavlink_frame_char_buffer
+                   
+暂时未分析出
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 584
+[INFO] Indirect Call Site:   %300 = call noundef i1 %294(ptr noundef %295, i32 noundef %299), !dbg !106224, !inCallID !106230
+[INFO] Function: mavlink_frame_char_buffer
+
+暂时未分析出
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 591
+[INFO] Indirect Call Site:   call void %39(), !dbg !105873, !inCallID !105874
+[INFO] Function: _ZN11GCS_MAVLINK23handle_preflight_rebootERK24__mavlink_command_long_tRK17__mavlink_message
+
+无法分析
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 641
+[INFO] Indirect Call Site:   %11 = call noundef i1 %7(ptr noundef %8, i8 noundef %9, ptr noundef %10), !dbg !105832, !inCallID !105835
+[INFO] Function: _ZNK7FunctorIbJhPN6AP_HAL10UARTDriverEEEclEhS2_
+
+1. _ZNK7FunctorIbJhPN6AP_HAL10UARTDriverEEEclEhS2_ 的caller 为 _ZN11GCS_MAVLINK14update_receiveEj
+    _ZN11GCS_MAVLINK14update_receiveEj 通过 alternative.handler(c, mavlink_comm_port[chan]) 调用。
+2. FUNCTOR_TYPEDEF(protocol_handler_fn_t, bool, uint8_t, AP_HAL::UARTDriver *)
+
+不会被调用 无targets
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 769
+[INFO] Indirect Call Site:   %8 = call noundef i1 %5(ptr noundef %6, ptr noundef nonnull align 1 dereferenceable(33) %7), !dbg !105831, !inCallID !105834
+[INFO] Function: _ZNK7FunctorIbJRK24AP_Frsky_MAVlite_MessageEEclES2_
+
+1. _ZNK7FunctorIbJRK24AP_Frsky_MAVlite_MessageEEclES2_ 的 caller 为 _ZN26AP_Frsky_MAVliteMsgHandler12send_messageER24AP_Frsky_MAVlite_Message
+2. 通过 send_mavlite_fn_t _send_fn 调用。
+3.  FUNCTOR_TYPEDEF(send_mavlite_fn_t, bool, const AP_Frsky_MAVlite_Message &);
+    AP_Frsky_MAVliteMsgHandler(send_mavlite_fn_t send_fn) :
+        _send_fn(send_fn) {}
+4. AP_Frsky_MAVliteMsgHandler mavlite{FUNCTOR_BIND_MEMBER(&AP_Frsky_SPort_Passthrough::send_message, bool, const AP_Frsky_MAVlite_Message &)}
+5. _send_fn = method_wrapper<AP_Frsky_SPort_Passthrough, &AP_Frsky_SPort_Passthrough::send_message> = _ZN7FunctorIbJRK24AP_Frsky_MAVlite_MessageEE14method_wrapperI26AP_Frsky_SPort_PassthroughXadL_ZNS5_12send_messageES2_EEEEbPvS2_
+
+######################################################################################################
+    
+[INFO] Indircect Call ID: 852
+[INFO] Indirect Call Site:   call void %7(ptr noundef %8, i32 noundef %9, i16 noundef %10), !dbg !105832, !inCallID !105835
+[INFO] Function: _ZNK7FunctorIvJK16AC_PolyFenceTypetEEclES0_t
+
+1. _ZNK7FunctorIvJK16AC_PolyFenceTypetEEclES0_t 的 caller 为 _ZN19AC_PolyFence_loader11scan_eepromE7FunctorIvJK16AC_PolyFenceTypetEE
+2. 通过 scan_fn(type, read_offset)
+3. FUNCTOR_TYPEDEF(scan_fn_t, void, const AC_PolyFenceType, uint16_t);
+    bool scan_eeprom(scan_fn_t scan_fn) WARN_IF_UNUSED;
+    FUNCTOR_BIND_MEMBER(&AC_PolyFence_loader::scan_eeprom_index_fences, void, const AC_PolyFenceType, uint16_t)
+4. scan_fn = method_wrapper<AC_PolyFence_loader, &AC_PolyFence_loader::scan_eeprom_index_fences> = _ZN7FunctorIvJK16AC_PolyFenceTypetEE14method_wrapperI19AC_PolyFence_loaderXadL_ZNS4_24scan_eeprom_index_fencesES0_tEEEEvPvS0_t
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 876
+[INFO] Indirect Call Site:   %21 = call noundef i32 %19(ptr noundef %20), !dbg !105852, !inCallID !105855
+[INFO] Function: uzlib_get_byte
+
+暂时无法分析
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 1042
+[INFO] Indirect Call Site:   call void %7(ptr noundef %8, ptr noundef %9, i8 noundef %10), !dbg !105832, !inCallID !105835
+[INFO] Function: _ZNK7FunctorIvJPfhEEclES0_h
+
+1. _ZNK7FunctorIvJPfhEEclES0_h 的 caller _ZN12AP_MotorsTri19thrust_compensationEv 和 _ZN15AP_MotorsMatrix19thrust_compensationEv
+2. _ZN12AP_MotorsTri19thrust_compensationEv 通过 _thrust_compensation_callback(thrust, 4)
+   _ZN15AP_MotorsMatrix19thrust_compensationEv 通过 _thrust_compensation_callback(_thrust_rpyt_out, AP_MOTORS_MAX_NUM_MOTORS)
+    FUNCTOR_TYPEDEF(thrust_compensation_fn_t, void, float *, uint8_t);
+    void                set_thrust_compensation_callback(thrust_compensation_fn_t callback) 
+        _thrust_compensation_callback = callback;
+3. copter.motors->set_thrust_compensation_callback(FUNCTOR_BIND_MEMBER(&ToyMode::thrust_limiting, void, float *, uint8_t))
+4. _thrust_compensation_callback = method_wrapper<ToyMode, &ToyMode::thrust_limiting> 
+5. 并未编译 ToyMode 因此此处无target
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 1048
+[INFO] Indirect Call Site:   call void %15(ptr noundef nonnull align 8 dereferenceable(84) %3), !dbg !105842, !inCallID !105843
+[INFO] Function: _ZN19AP_AdvancedFailsafe20should_crash_vehicleEv
+
+ADVANCED_FAILSAFE 未启动故没有target
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 1091
+[INFO] Indirect Call Site:   %17 = call noundef i1 %11(ptr noundef %12, i8 noundef %13, i32 noundef %14, ptr noundef %15, i16 noundef %16), !dbg !105834, !inCallID !105837
+[INFO] Function: _ZNK7FunctorIbJhjPhtEEclEhjS0_t
+
+1. _ZNK7FunctorIbJhjPhtEEclEhjS0_t 的 caller 为 _ZN15AP_FlashStorage4initEv _ZN15AP_FlashStorage11load_sectorEh  _ZN15AP_FlashStorage14switch_sectorsEv
+2. _ZN15AP_FlashStorage4initEv 通过 flash_read(i, 0, (uint8_t *)&header[i], sizeof(header[i]))
+   _ZN15AP_FlashStorage11load_sectorEh 通过 flash_read(sector, ofs, (uint8_t *)&header, sizeof(header)) 和 flash_read(sector, ofs+sizeof(header), &mem_buffer[block_ofs], block_nbytes)
+   _ZN15AP_FlashStorage14switch_sectorsEv 通过 flash_read(new_sector, 0, (uint8_t *)&header, sizeof(header))
+3. FUNCTOR_TYPEDEF(FlashRead, bool, uint8_t , uint32_t , uint8_t *, uint16_t );
+    AP_FlashStorage::AP_FlashStorage(uint8_t *_mem_buffer,
+                                 uint32_t _flash_sector_size,
+                                 FlashWrite _flash_write,
+                                 FlashRead _flash_read,
+                                 FlashErase _flash_erase,
+                                 FlashEraseOK _flash_erase_ok) :
+    mem_buffer(_mem_buffer),
+    flash_sector_size(_flash_sector_size),
+    flash_write(_flash_write),
+    flash_read(_flash_read),
+    flash_erase(_flash_erase),
+    flash_erase_ok(_flash_erase_ok) {}
+4.  AP_FlashStorage _flash{_buffer,
+        HAL_FLASH_SECTOR_SIZE,
+        FUNCTOR_BIND_MEMBER(&Storage::_flash_write_data, bool, uint8_t, uint32_t, const uint8_t *, uint16_t),
+        FUNCTOR_BIND_MEMBER(&Storage::_flash_read_data, bool, uint8_t, uint32_t, uint8_t *, uint16_t),
+        FUNCTOR_BIND_MEMBER(&Storage::_flash_erase_sector, bool, uint8_t),
+        FUNCTOR_BIND_MEMBER(&Storage::_flash_erase_ok, bool)};
+5. _flash_read = method_wrapper<HALSITL::Storage, &HALSITL::Storage::_flash_read_data> = _ZN7FunctorIbJhjPhtEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS4_16_flash_read_dataEhjS0_tEEEEbPvhjS0_t
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 1092
+[INFO] Indirect Call Site:   %17 = call noundef i1 %11(ptr noundef %12, i8 noundef %13, i32 noundef %14, ptr noundef %15, i16 noundef %16), !dbg !105834, !inCallID !105837
+[INFO] Function: _ZNK7FunctorIbJhjPKhtEEclEhjS1_t
+
+1. _ZNK7FunctorIbJhjPKhtEEclEhjS1_t 的 caller _ZN15AP_FlashStorage14switch_sectorsEv _ZN15AP_FlashStorage5writeEtt _ZN15AP_FlashStorage12erase_sectorEhb _ZN15AP_FlashStorage9erase_allEv
+2. _ZN15AP_FlashStorage14switch_sectorsEv： flash_write(current_sector, 0, (const uint8_t *)&header, sizeof(header))
+    flash_write(new_sector, 0, (const uint8_t *)&header, sizeof(header))
+    _ZN15AP_FlashStorage5writeEtt：flash_write(current_sector, write_offset, (uint8_t*)&blk.header, sizeof(blk.header)) 。。。
+    _ZN15AP_FlashStorage12erase_sectorEhb：flash_write(sector, 0, (const uint8_t *)&header, sizeof(header))
+    _ZN15AP_FlashStorage9erase_allEv： flash_write(current_sector, 0, (const uint8_t *)&header, sizeof(header))
+
+flash_write = method_wrapper<HALSITL::Storage, &HALSITL::Storage::_flash_write_data> = _ZN7FunctorIbJhjPKhtEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS5_17_flash_write_dataEhjS1_tEEEEbPvhjS1_t
+
+######################################################################################################
+
+[INFO] Indircect Call ID: 1093
+[INFO] Indirect Call Site:   %5 = call noundef i1 %3(ptr noundef %4), !dbg !105829, !inCallID !105831
+[INFO] Function: _ZNK7FunctorIbJEEclEv
+
+1. flash_erase_ok()
+2. _flash_erase_ok = method_wrapper<HALSITL::Storage, &HALSITL::Storage::_flash_erase_ok> = _ZN7FunctorIbJEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS3_15_flash_erase_okEvEEEEbPv
+
+######################################################################################################

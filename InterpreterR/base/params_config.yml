@@ -1,0 +1,17 @@
+PX_GPS_FS3:
+  params:
+    - id: 1
+      type: i64
+      value: 0
+    - id: 2
+      type: "struct.FailsafeBase::State"
+      value: [1, 2, 0, 0, 0]
+
+PX_GPS_FS1:
+  params:
+    - id: 1
+      type: i64
+      value: 1
+    - id: 5
+      type: i64
+      value: 1

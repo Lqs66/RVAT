@@ -1,0 +1,22 @@
+##ignore these files##
+
+**/build/
+**/__pycache__/
+*.dot
+.vscode/
+.idea/
+*.bc
+*.png
+*.pdf
+cg_funcs.txt
+verifyDataBase/
+pyscript/LLM/data/property_embeddings/
+/flight-control-bin/
+**/mav.parm
+**/mav.tlog.raw
+**/mav.tlog
+*_noInlineCalls.bin
+a.txt
+restart.txt
+rename_file.py
+**/eeprom.bin

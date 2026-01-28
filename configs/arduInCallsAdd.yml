@@ -1,0 +1,120 @@
+indirectCalls:
+  - inCallID: 240
+    isvcall: false
+    targets:
+      - _ZN7FunctorIvJPKcKaEE14method_wrapperI6CopterXadL_ZNS5_23handle_battery_failsafeES1_aEEEEvPvS1_a
+  - inCallID: 255
+    isvcall: false
+    targets:
+      - _ZN24AP_BattMonitor_SMBus_SUI5timerEv
+  - inCallID: 350
+    isvcall: false
+    targets:
+      - _ZN7FunctorIbJhEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS3_19_flash_erase_sectorEhEEEEbPvh
+  - inCallID: 354
+    isvcall: false
+    targets:
+      - _ZN10AP_Vehicle24scheduler_delay_callbackEv
+  - inCallID: 393
+    isvcall: false
+    targets:
+      - _ZN7FunctorIvJEE4bindI8ModeAutoXadL_ZNS2_12exit_missionEvEEEES0_PT_
+  - inCallID: 394
+    isvcall: false
+    targets:
+      - _ZN7FunctorIbJRKN10AP_Mission15Mission_CommandEEE14method_wrapperI8ModeAutoXadL_ZNS6_13start_commandES3_EEEEbPvS3_
+      - _ZN7FunctorIbJRKN10AP_Mission15Mission_CommandEEE14method_wrapperI8ModeAutoXadL_ZNS6_14verify_commandES3_EEEEbPvS3_
+  - inCallID: 450
+    isvcall: false
+    targets:
+      - _ZN19AP_RangeFinder_NMEA6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN19AP_RangeFinder_Wasp6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN21AP_RangeFinder_BLPing6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN21AP_RangeFinder_Lanbao6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN23AP_RangeFinder_GYUS42v26createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN24AP_RangeFinder_LeddarOne6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN24AP_RangeFinder_LeddarVu86createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN26AP_RangeFinder_USD1_Serial6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN28AP_RangeFinder_Benewake_TF026createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN28AP_RangeFinder_Benewake_TF036createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN30AP_RangeFinder_Benewake_TFMini6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN30AP_RangeFinder_LightWareSerial6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN31AP_RangeFinder_MaxsonarSerialLV6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+      - _ZN32AP_RangeFinder_TeraRanger_Serial6createERN11RangeFinder17RangeFinder_StateER21AP_RangeFinder_Params
+  - inCallID: 534
+    isvcall: false
+    targets:
+      - _ZN17AP_Logger_MAVLink5probeER9AP_LoggerP30LoggerMessageWriter_DFLogStart
+      - _ZN14AP_Logger_File5probeER9AP_LoggerP30LoggerMessageWriter_DFLogStart
+      - _ZN19AP_Logger_DataFlash5probeER9AP_LoggerP30LoggerMessageWriter_DFLogStart
+  - inCallID: 603
+    isvcall: false
+    targets:
+      - _ZL27mavlink_msg_scaled_imu_send17mavlink_channel_tjssssssssss
+      - _ZL28mavlink_msg_scaled_imu2_send17mavlink_channel_tjssssssssss
+      - _ZL28mavlink_msg_scaled_imu3_send17mavlink_channel_tjssssssssss
+  - inCallID: 620
+    isvcall: false
+    targets:
+      - _ZL32mavlink_msg_scaled_pressure_send17mavlink_channel_tjffss
+      - _ZL33mavlink_msg_scaled_pressure2_send17mavlink_channel_tjffss
+      - _ZL33mavlink_msg_scaled_pressure3_send17mavlink_channel_tjffss
+  - inCallID: 769
+    isvcall: false
+    targets:
+      - _ZN7FunctorIbJRK24AP_Frsky_MAVlite_MessageEE14method_wrapperI26AP_Frsky_SPort_PassthroughXadL_ZNS5_12send_messageES2_EEEEbPvS2_
+  - inCallID: 852
+    isvcall: false
+    targets:
+      - _ZN7FunctorIvJK16AC_PolyFenceTypetEE14method_wrapperI19AC_PolyFence_loaderXadL_ZNS4_24scan_eeprom_index_fencesES0_tEEEEvPvS0_t
+  - inCallID: 1091
+    isvcall: false
+    targets:
+      - _ZN7FunctorIbJhjPhtEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS4_16_flash_read_dataEhjS0_tEEEEbPvhjS0_t
+  - inCallID: 1092
+    isvcall: false
+    targets:
+      - _ZN7FunctorIbJhjPKhtEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS5_17_flash_write_dataEhjS1_tEEEEbPvhjS1_t
+  - inCallID: 1093
+    isvcall: false
+    targets:
+      - _ZN7FunctorIbJEE14method_wrapperIN7HALSITL7StorageEXadL_ZNS3_15_flash_erase_okEvEEEEbPv
+  - inCallID: 1113
+    isvcall: false
+    targets:
+      - _ZL21failsafe_check_staticv
+  - inCallID: 1114
+    isvcall: false
+    targets:
+      - _ZL21failsafe_check_staticv
+  - inCallID: 1115
+    isvcall: false
+    targets:
+      - _ZN4SITL10BalanceBot6createEPKc
+      - _ZN4SITL10FlightAxis6createEPKc
+      - _ZN4SITL10Helicopter6createEPKc
+      - _ZN4SITL11Calibration6createEPKc
+      - _ZN4SITL11MultiCopter6createEPKc
+      - _ZN4SITL11SilentWings6createEPKc
+      - _ZN4SITL11last_letter6createEPKc
+      - _ZN4SITL12SingleCopter6createEPKc
+      - _ZN4SITL12WebotsPython6createEPKc
+      - _ZN4SITL4JSON6createEPKc
+      - _ZN4SITL5Blimp6createEPKc
+      - _ZN4SITL5Morse6createEPKc
+      - _ZN4SITL5Plane6createEPKc
+      - _ZN4SITL6AirSim6createEPKc
+      - _ZN4SITL6Gazebo6createEPKc
+      - _ZN4SITL6JSBSim6createEPKc
+      - _ZN4SITL6Webots6createEPKc
+      - _ZN4SITL6XPlane6createEPKc
+      - _ZN4SITL7Balloon6createEPKc
+      - _ZN4SITL7CRRCSim6createEPKc
+      - _ZN4SITL7Tracker6createEPKc
+      - _ZN4SITL8Sailboat6createEPKc
+      - _ZN4SITL8SimRover6createEPKc
+      - _ZN4SITL9MotorBoat6createEPKc
+      - _ZN4SITL9QuadPlane6createEPKc
+      - _ZN4SITL9Scrimmage6createEPKc
+      - _ZN4SITL9Submarine6createEPKc
+

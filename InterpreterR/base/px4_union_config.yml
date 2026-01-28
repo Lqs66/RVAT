@@ -1,0 +1,20 @@
+HeapVars:
+  - Hash: 10710885259526616978
+    StartOffset: 104
+    EndOffset: 3600
+    realType:
+      PX_ORBIT1: class.FlightTaskOrbit
+      PX_ORBIT2: class.FlightTaskOrbit
+      PX_ORBIT3: class.FlightTaskOrbit
+      PX_ORBIT4: class.FlightTaskOrbit
+      PX_ORBIT5: class.FlightTaskOrbit
+      PX_ORBIT6: class.FlightTaskOrbit
+      PX_ORBIT_P6: class.FlightTaskOrbit
+      PX_ORBIT_P7: class.FlightTaskOrbit
+      PX_LAND1: class.FlightTaskDescend
+      PX_ALTITUDE1: class.FlightTaskManualAltitude
+      PX_ALTITUDE_P2: class.FlightTaskManualAltitude
+      PX_ALTITUDE_P3: class.FlightTaskManualAltitude
+      PX_POSITION1: class.FlightTaskManualPosition
+      PX_HOLD1: class.FlightTaskAuto
+    

@@ -1,0 +1,36 @@
+property: PX_POSITION_P3
+flightControl: PX4
+LLVM_IR: verifyDataBase/ir_and_elf/px4_hitl_pi64.ll
+call_depth: 3
+entrypoints:
+  - _ZN24FlightTaskManualPosition12_scaleSticksEv
+isTime: false
+params:
+  - id: 0
+    type: ptr
+    value: heap + 101140
+queries:
+  - pname: roll_stick
+    cname: stick_xy(1)
+    file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+    line: 70
+    column: null
+    field: stick_xy + 4
+    scope: stack
+    type: float
+  - pname: y_velocity_setpoint
+    cname: vel_sp_xy(1)
+    file: src/modules/flight_mode_manager/tasks/ManualPosition/FlightTaskManualPosition.cpp
+    line: 92
+    column: null
+    field: vel_sp_xy + 4
+    scope: stack
+    type: float
+  - pname: MPC_VEL_MANUAL
+    cname: _param_mpc_vel_manual.get()
+    file: null
+    line: null
+    column: null
+    field: heap + 102376
+    scope: global
+    type: float

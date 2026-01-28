@@ -1,0 +1,24 @@
+总共有 401 个 heapAllocType
+      total   has heapAllocType
+_Znwm: 336        331
+_Znam: 58         58
+malloc: 13        11
+calloc: 0         0
+realloc: 1        1
+
+^(?!.*heapAllocType).*(malloc|calloc|realloc|_Znwm|_Znam).*$
+无法识别出具体内容的 new 操作符的caller：
+1. _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEPFiiPPcEEEE8allocateEmPKv -- %"struct.std::_Rb_tree_node"
+
+2. _ZN9__gnu_cxx13new_allocatorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEE8allocateEmPKv -- %"class.std::__cxx11::basic_string"
+
+3. _ZN9__gnu_cxx13new_allocatorIP8_IO_FILEE8allocateEmPKv -- %struct._IO_FILE -- i8
+
+4. _ZN9__gnu_cxx13new_allocatorISt13_Rb_tree_nodeISt4pairIKimEEE8allocateEmPKv -- %"struct.std::_Rb_tree_node.20566" -- i8
+
+5. _ZN9__gnu_cxx13new_allocatorI6pollfdE8allocateEmPKv -- %struct.pollfd
+
+无法识别出具体内容的 malloc 的caller：
+1. _ZL9read_testiP10sdb_configPhi
+      %29 = call noalias i8* @malloc(i64 noundef %28) #45, !dbg !293708 -- i8
+      %32 = call noalias i8* @malloc(i64 noundef %31) #45, !dbg !293713 -- i8

@@ -1,0 +1,933 @@
+AP_ACRO_P1:
+  vars:
+    - ACRO_TRAINER_is_geq_1
+    - roll_angle_is_neq_0
+    - roll_angle_is_gt_0
+    - roll_correction_is_lt_0
+    - roll_angle_is_lt_0
+    - roll_correction_is_gt_0
+  updates:
+    - ACRO_TRAINER_is_geq_1=is_greater_or_equal_const("ACRO_TRAINER", 1.0)
+    - roll_angle_is_neq_0=is_not_equal_const("roll_angle", 0)
+    - roll_angle_is_gt_0=is_greater_const("roll_angle", 0)
+    - roll_correction_is_lt_0=is_less_const("roll_correction", 0)
+    - roll_angle_is_lt_0=is_less_const("roll_angle", 0)
+    - roll_correction_is_gt_0=is_greater_const("roll_correction", 0)
+  uppaal_formula: (ACRO_TRAINER_is_geq_1 and roll_angle_is_neq_0) --> ((roll_angle_is_gt_0 and roll_correction_is_lt_0) or (roll_angle_is_lt_0 and roll_correction_is_gt_0))
+
+AP_ACRO_P2:
+  vars:
+    - ACRO_TRAINER_is_geq_1
+    - pitch_angle_is_neq_0
+    - pitch_angle_is_gt_0
+    - pitch_correction_is_lt_0
+    - pitch_angle_is_lt_0
+    - pitch_correction_is_gt_0
+  updates:
+    - ACRO_TRAINER_is_geq_1=is_greater_or_equal_const("ACRO_TRAINER", 1.0)
+    - pitch_angle_is_neq_0=is_not_equal_const("pitch_angle", 0)
+    - pitch_angle_is_gt_0=is_greater_const("pitch_angle", 0)
+    - pitch_correction_is_lt_0=is_less_const("pitch_correction", 0)
+    - pitch_angle_is_lt_0=is_less_const("pitch_angle", 0)
+    - pitch_correction_is_gt_0=is_greater_const("pitch_correction", 0)
+  uppaal_formula: (ACRO_TRAINER_is_geq_1 and pitch_angle_is_neq_0) --> ((pitch_angle_is_gt_0 and pitch_correction_is_lt_0) or (pitch_angle_is_lt_0 and pitch_correction_is_gt_0))
+
+PX_RCFS_P1:
+  vars:
+    - RC_valid_is_true
+    - manual_control_update_time_is_leq_COM_RC_LOSS_T
+    - manual_control_loss_failsafe_is_false
+  updates:
+    - RC_valid_is_true=is_true("RC_valid")
+    - manual_control_update_time_is_leq_COM_RC_LOSS_T=is_less_or_equal("manual_control_update_time", "COM_RC_LOSS_T")
+    - manual_control_loss_failsafe_is_false=is_false("manual_control_loss_failsafe")
+  uppaal_formula: RC_valid_is_true --> manual_control_update_time_is_leq_COM_RC_LOSS_T and manual_control_loss_failsafe_is_false
+
+AP_LAND_P4:
+  vars:
+   - landed
+   - motors_idle
+   - disarmed_is_true
+  updates:
+   - landed=bit_is_true("landed", 7)
+   - motors_idle=is_equal_const("motors_state", 1)
+   - disarmed_is_true=is_true("disarmed")
+  uppaal_formula: (landed and motors_idle) --> disarmed_is_true
+
+PX_BRAKE_P1:
+  vars:
+    - Vertical_Speed_Exceeded_is_true
+    - Emergency_Braking_activated_i_true
+    - vertical_speed_is_gt_max_vertical_speed
+    - max_vertical_speed_is_gt_0
+  updates:
+    - Vertical_Speed_Exceeded_is_true=is_true("Vertical_Speed_Exceeded")
+    - Emergency_Braking_activated_i_true=is_true("Emergency_Braking_activated")
+    - vertical_speed_is_gt_max_vertical_speed=is_greater("abs(vertical_speed)", "abs(max_vertical_speed)")
+    - max_vertical_speed_is_gt_0=is_greater_const("max_vertical_speed", 0)
+  uppaal_formula: (Vertical_Speed_Exceeded_is_true and Emergency_Braking_activated_i_true)--> (vertical_speed_is_gt_max_vertical_speed and max_vertical_speed_is_gt_0)
+
+AP_ALTHOLD_P2:
+  vars:
+    - throttle_stick_geq_0
+    - climb_rate_gt_0
+    - climb_rate_le_PILOT_SPEED_UP
+  updates:
+    - throttle_stick_geq_0=is_greater_or_equal_const("throttle_stick", 0)
+    - climb_rate_gt_0=is_greater_const("climb_rate", 0)
+    - climb_rate_le_PILOT_SPEED_UP=is_less_or_equal("climb_rate", "PILOT_SPEED_UP")
+  uppaal_formula: throttle_stick_geq_0 --> (climb_rate_gt_0 and climb_rate_le_PILOT_SPEED_UP)
+
+AP_RTL_P1:
+  vars:
+    - mode_is_RTL
+    - target_alt_geq_curr_alt
+  updates:
+    - mode_is_RTL=true
+    - target_alt_geq_curr_alt=is_greater_or_equal("target_alt", "curr_alt")
+  uppaal_formula: mode_is_RTL --> target_alt_geq_curr_alt
+
+AP_RTL_P2:
+  vars:
+    - mode_is_RTL
+    - target_alt_geq_30cm
+  updates:
+    - mode_is_RTL=true
+    - target_alt_geq_30cm=is_greater_or_equal("target_alt", 30)
+  uppaal_formula: mode_is_RTL --> target_alt_geq_30cm
+
+AP_RTL_P4:
+  vars:
+    - mode_is_RTL
+    - WPNAV_RFND_USE_is_1
+    - rangefinder_available
+    - alt_type_is_rangefinder
+  updates:
+    - mode_is_RTL=true
+    - WPNAV_RFND_USE_is_1=is_equal_const("WPNAV_RFND_USE", 1)
+    - rangefinder_available=is_equal_const("rangefinder_available", 1)
+    - alt_type_is_rangefinder=is_equal_const("alt_type", 1)
+  uppaal_formula: (mode_is_RTL and WPNAV_RFND_USE_is_1 and rangefinder_available) --> alt_type_is_rangefinder
+
+A_RTL1:
+  vars:
+    - curr_alt_le_RTL_ALT
+    - target_alt_geq_RTL_ALT
+  updates:
+    - curr_alt_le_RTL_ALT=is_less("curr_alt", "RTL_ALT")
+    - target_alt_geq_RTL_ALT=is_greater_or_equal("target_alt", "RTL_ALT")
+  uppaal_formula: curr_alt_le_RTL_ALT --> target_alt_geq_RTL_ALT
+
+A_RTL2:
+  vars:
+    - curr_alt_geq_RTL_ALT
+    - at_home_is_false
+    - target_alt_eq_curr_alt
+  updates:
+    - curr_alt_geq_RTL_ALT=is_greater_or_equal("curr_alt", "RTL_ALT")
+    - target_alt_eq_curr_alt=is_equal("target_alt", "curr_alt")
+    - at_home_is_false=is_false("at_home")
+  uppaal_formula: curr_alt_geq_RTL_ALT and at_home_is_false --> target_alt_eq_curr_alt
+
+A_RTL3:
+  vars:
+    - curr_alt_geq_RTL_ALT
+    - at_home_is_true
+    - mode_is_LAND
+  updates:
+    - curr_alt_geq_RTL_ALT=is_greater_or_equal("curr_alt", "RTL_ALT")
+    - at_home_is_true=is_true("at_home")
+    - mode_is_LAND=is_equal_const("mode", 5.0)
+  uppaal_formula: curr_alt_geq_RTL_ALT and at_home_is_true --> mode_is_LAND
+
+A_RTL4:
+  vars:
+    - on_ground_is_true
+    - motors_idle_is_true
+    - armed_is_false
+  updates:
+    - on_ground_is_true=bit_is_true("on_ground", 7)
+    - motors_idle_is_true=is_true("motors_idle")
+    - armed_is_false=is_false("armed")
+  uppaal_formula: (on_ground_is_true and motors_idle_is_true) --> armed_is_false
+
+AP_DRIFT_P1:
+  vars:
+    - throttle_input_is_zero
+    - motors_spin_rate_is_MOT_SPIN_ARMED
+  updates:
+    - throttle_input_is_zero=bit_is_true("throttle_input_is_zero", 15)
+    - motors_spin_rate_is_MOT_SPIN_ARMED=is_equal_const("motors_spin_rate_is_MOT_SPIN_ARMED", 1)
+  uppaal_formula: throttle_input_is_zero --> motors_spin_rate_is_MOT_SPIN_ARMED
+
+AP_DRIFT_P3:
+  vars:
+    - mode_is_DRIFT
+    - roll_angle_leq_45
+  updates:
+    - mode_is_DRIFT=true
+    - roll_angle_leq_45=is_less_or_equal("abs(roll_angle)", 4500)
+  uppaal_formula: mode_is_DRIFT --> roll_angle_leq_45
+
+A_CIRCLE1:
+  vars:
+    - RC_pitch_lt_0
+    - circle_radius_gt_0
+    - radius_change_lt_0
+  updates:
+    - RC_pitch_lt_0=is_less_const("RC_pitch", 0)
+    - circle_radius_gt_0=is_greater_const("circle_radius", 0)
+    - radius_change_lt_0=is_less_const("radius_change", 0)
+  uppaal_formula: (RC_pitch_lt_0 and circle_radius_gt_0) --> radius_change_lt_0
+
+A_CIRCLE2:
+  vars:
+    - RC_pitch_gt_0
+    - radius_change_gt_0
+  updates:
+    - RC_pitch_gt_0=is_greater_const("RC_pitch", 0)
+    - radius_change_gt_0=is_greater_const("radius_change", 0)
+  uppaal_formula: RC_pitch_gt_0 --> radius_change_gt_0
+
+A_CIRCLE3:
+  vars:
+    - roll_stick_gt_0
+    - clockwise_is_true
+    - next_speed_gt_current_speed
+  updates:
+    - roll_stick_gt_0=is_greater_const("roll_stick", 0)
+    - clockwise_is_true=is_true("clockwise")
+    - next_speed_gt_current_speed=is_greater("abs(next_speed)", "abs(current_speed)")
+  uppaal_formula: (roll_stick_gt_0 and clockwise_is_true) --> next_speed_gt_current_speed
+
+A_CIRCLE4:
+  vars:
+    - roll_stick_gt_0
+    - counterclockwise_is_true
+    - next_speed_lt_current_speed
+  updates:
+    - roll_stick_gt_0=is_greater_const("roll_stick", 0)
+    - counterclockwise_is_true=is_true("counterclockwise")
+    - next_speed_lt_current_speed=is_less("abs(next_speed)", "abs(current_speed)")
+  uppaal_formula: (roll_stick_gt_0 and counterclockwise_is_true) --> next_speed_lt_current_speed
+
+A_CIRCLE5:
+  vars:
+    - roll_stick_lt_0
+    - counterclockwise_is_true
+    - next_speed_gt_current_speed
+  updates:
+    - roll_stick_lt_0=is_less_const("roll_stick", 0)
+    - counterclockwise_is_true=is_true("counterclockwise")
+    - next_speed_gt_current_speed=is_greater("abs(next_speed)", "abs(current_speed)")
+  uppaal_formula: (roll_stick_lt_0 and counterclockwise_is_true) --> next_speed_gt_current_speed
+
+A_CIRCLE6:
+  vars:
+    - roll_stick_lt_0
+    - clockwise_is_true
+    - next_speed_lt_current_speed
+  updates:
+    - roll_stick_lt_0=is_less_const("roll_stick", 0)
+    - clockwise_is_true=is_true("clockwise")
+    - next_speed_lt_current_speed=is_less("abs(next_speed)", "abs(current_speed)")
+  uppaal_formula: (roll_stick_lt_0 and clockwise_is_true) --> next_speed_lt_current_speed
+
+A_CIRCLE7:
+  vars:
+    - user_control_enabled
+    - throttle_stick_gt_0
+    - radius_change_eq_0
+    - rate_change_eq_0
+    - climb_rate_gt_0
+  updates:
+    - user_control_enabled=is_false("user_control_enabled")
+    - throttle_stick_gt_0=is_greater_const("throttle_stick", 0)
+    - radius_change_eq_0=is_equal_const("radius_change", 0)
+    - rate_change_eq_0=is_equal_const("rate_change", 0)
+    - climb_rate_gt_0=is_greater_const("climb_rate", 0)
+  uppaal_formula: (user_control_enabled and throttle_stick_gt_0) --> (radius_change_eq_0 and rate_change_eq_0 and climb_rate_gt_0)
+
+A_LAND1:
+  vars:
+    - curr_alt_gt_10m
+    - descend_rate_eq_LAND_SPEED_HIGH
+  updates:
+    - curr_alt_gt_10m=is_greater_const("curr_alt", 1000)
+    - descend_rate_eq_LAND_SPEED_HIGH=is_less_or_equal_const("abs(descend_rate - LAND_SPEED_HIGH)", 0.000001)
+  uppaal_formula: curr_alt_gt_10m --> descend_rate_eq_LAND_SPEED_HIGH
+
+A_LAND2:
+  vars:
+    - curr_alt_lt_10m
+    - descend_rate_eq_LAND_SPEED
+  updates:
+    - curr_alt_lt_10m=is_less_const("curr_alt", 1000)
+    - descend_rate_eq_LAND_SPEED=is_less_or_equal_const("abs(descend_rate - LAND_SPEED)", 0.000001)
+  uppaal_formula: curr_alt_lt_10m --> descend_rate_eq_LAND_SPEED
+
+A_GUIDED1:
+  vars:
+    - is_wp_reached
+    - target_pos_matches_current
+    - target_yaw_matches_current
+  locations:
+    - is_wp_reached = init
+    - target_pos_matches_current = exit
+    - target_yaw_matches_current = exit
+  uppaal_formula: is_wp_reached --> (target_pos_matches_current and target_yaw_matches_current)
+
+A_AUTO1:
+  vars:
+    - mode_is_AUTO
+    - roll_input_disabled
+    - pitch_input_disabled
+    - throttle_input_disabled
+    - yaw_input_enabled
+  locations:
+    - mode_is_AUTO = init
+    - roll_input_disabled = exit
+    - pitch_input_disabled = exit
+    - throttle_input_disabled = exit
+    - yaw_input_enabled = exit
+  uppaal_formula: mode_is_AUTO --> (roll_input_disabled and pitch_input_disabled and throttle_input_disabled and yaw_input_enabled)
+
+A_SPORT1:
+  vars:
+    - throttle_stick_geq_0
+    - climb_rate_gt_0
+    - climb_rate_le_PILOT_SPEED_UP
+  updates:
+    - throttle_stick_geq_0=is_greater_or_equal_const("throttle_stick", 0)
+    - climb_rate_gt_0=is_greater_const("climb_rate", 0)
+    - climb_rate_le_PILOT_SPEED_UP=is_less_or_equal("climb_rate", "PILOT_SPEED_UP")
+  uppaal_formula: throttle_stick_geq_0 --> (climb_rate_gt_0 and climb_rate_le_PILOT_SPEED_UP)
+
+A_DRIFT1:
+  vars:
+    - mode_is_DRIFT
+    - GPS_loss_is_true
+    - FS_EKF_ACTION_is_1_or_2
+    - target_mode_is_LAND_or_ALT_HOLD
+  updates:
+    - mode_is_DRIFT=is_equal_const("mode", 11)
+    - GPS_loss_is_true=bit_is_true("GPS_loss", 2)
+    - FS_EKF_ACTION_is_1_or_2=is_equal_const("FS_EKF_ACTION", 1) or is_equal_const("FS_EKF_ACTION", 2)
+    - target_mode_is_LAND_or_ALT_HOLD=is_equal_const("target_mode", 9) or is_equal_const("target_mode", 2)
+  uppaal_formula: (mode_is_DRIFT and GPS_loss_is_true and FS_EKF_ACTION_is_1_or_2) --> target_mode_is_LAND_or_ALT_HOLD
+
+AP_LOITER_P2:
+  vars:
+    - throttle_stick_geq_0
+    - climb_rate_gt_0
+    - climb_rate_le_PILOT_SPEED_UP
+  updates:
+    - throttle_stick_geq_0=is_greater_or_equal_const("throttle_stick", 0)
+    - climb_rate_gt_0=is_greater_const("climb_rate", 0)
+    - climb_rate_le_PILOT_SPEED_UP=is_less_or_equal("climb_rate", "PILOT_SPEED_UP")
+  uppaal_formula: throttle_stick_geq_0 --> (climb_rate_gt_0 and climb_rate_le_PILOT_SPEED_UP)
+
+AP_LOITER_P3:
+  vars:
+    - mode_is_LOITER
+    - horizontal_speed_is_leq_LOIT_SPEED
+  updates:
+    - mode_is_LOITER=true
+    - horizontal_speed_is_leq_LOIT_SPEED=is_less_or_equal("hypot(horizontal_speed_x, horizontal_speed_y)", "LOIT_SPEED")
+  uppaal_formula: mode_is_LOITER --> horizontal_speed_is_leq_LOIT_SPEED
+
+AP_LOITER_P4:
+  vars:
+    - mode_is_LOITER
+    - LOIT_ACC_MAX_is_not_0
+    - acceleration_leq_LOIT_ACC_MAX
+  updates:
+    - mode_is_LOITER=true
+    - LOIT_ACC_MAX_is_not_0=is_not_equal_const("LOIT_ACC_MAX", 0)
+    - acceleration_leq_LOIT_ACC_MAX=is_less_or_equal("hypot(acceleration_x, acceleration_y)", "LOIT_ACC_MAX")
+  uppaal_formula: (mode_is_LOITER and LOIT_ACC_MAX_is_not_0) --> acceleration_leq_LOIT_ACC_MAX
+
+A_FLIP1:
+  vars:
+    - mode_is_FLIP
+    - previous_mode_is_ACRO_or_ALT_HOLD
+    - curr_alt_gt_10m
+    - roll_angle_lt_45
+    - throttle_geq_1500
+  updates:
+    - mode_is_FLIP=is_equal_const("mode", 0)
+    - previous_mode_is_ACRO_or_ALT_HOLD=is_equal_const("previous_mode", 1) or is_equal_const("previous_mode", 2)
+    - curr_alt_gt_10m=is_greater_const("curr_alt", 1000)
+    - roll_angle_lt_45=is_less_const("roll_angle", 4500)
+    - throttle_geq_1500=bit_is_true("throttle", 15)
+  uppaal_formula: mode_is_FLIP --> (previous_mode_is_ACRO_or_ALT_HOLD and curr_alt_gt_10m and roll_angle_lt_45 and throttle_geq_1500)
+
+A_FLIP2:
+  vars:
+    - roll_start
+    - roll_dir_is_right
+    - roll_angle_is_geq_neg90_and_le_45
+    - roll_rate_is_400
+  updates:
+    - roll_start=is_equal_const("roll_start", 0) or is_equal_const("roll_start", 1)
+    - roll_dir_is_right=is_equal_const("roll_dir_is_right", 1)
+    - roll_angle_is_geq_neg90_and_le_45=is_greater_or_equal_const("roll_angle", -9000) and is_less_or_equal_const("roll_angle", 4500)
+    - roll_rate_is_400=is_equal_const("roll_rate", 40000)
+  uppaal_formula: (roll_start and roll_dir_is_right and roll_angle_is_geq_neg90_and_le_45) --> roll_rate_is_400
+
+A_FLIP3:
+  vars:
+    - roll_finished
+  clocks:
+    - recover_time
+  updates:
+    - roll_finished=is_equal_const("roll_finished", 4)
+  uppaal_formula: roll_finished --> (recover_time <= 250000000)
+
+A_FLIPGeneral:
+  vars:
+    - roll_finished
+    - mode_is_previous_mode
+  clocks:
+    - time_to_complete_roll
+  updates:
+    - roll_finished=is_equal_const("roll_finished", 4)
+    - mode_is_previous_mode=is_equal("mode", "previous_mode")
+  uppaal_formula: roll_finished --> (time_to_complete_roll <= 250000000 and mode_is_previous_mode)
+
+AP_STABILIZE_P1:
+  vars:
+    - mode_is_STABILIZE
+    - roll_angle_leq_ANGLE_MAX
+  updates:
+    - mode_is_STABILIZE=true
+    - roll_angle_leq_ANGLE_MAX=is_less_or_equal("abs(roll_angle)", "ANGLE_MAX")
+  uppaal_formula: mode_is_STABILIZE --> roll_angle_leq_ANGLE_MAX
+
+AP_STABILIZE_P2:
+  vars:
+    - mode_is_STABILIZE
+    - pitch_angle_leq_ANGLE_MAX
+  updates:
+    - mode_is_STABILIZE=true
+    - pitch_angle_leq_ANGLE_MAX=is_less_or_equal("abs(pitch_angle)", "ANGLE_MAX")
+  uppaal_formula: mode_is_STABILIZE --> pitch_angle_leq_ANGLE_MAX
+
+A_LOITER1:
+  vars:
+    - target_x_eq_curr_x
+    - target_y_eq_curr_y
+    - target_z_eq_curr_z
+    - target_yaw_eq_curr_yaw
+  locations:
+    - mode_is_LOITER = exit
+  updates:
+    - target_x_eq_curr_x=is_less_or_equal_const("abs(target_x - curr_x)", 20.0) # cm
+    - target_y_eq_curr_y=is_less_or_equal_const("abs(target_y - curr_y)", 20.0) # cm
+    - target_z_eq_curr_z=is_less_or_equal_const("abs(target_z - curr_z)", 20.0) # cm
+    - target_yaw_eq_curr_yaw=is_less_or_equal_const("abs(target_yaw - curr_yaw)", 300.0) # centi-degrees
+  uppaal_formula: A[] (mode_is_LOITER imply (target_x_eq_curr_x and target_y_eq_curr_y and target_z_eq_curr_z and target_yaw_eq_curr_yaw))
+
+AP_ZIGZAG_P1:
+  vars:
+    - throttle_stick_geq_0
+    - climb_rate_gt_0
+    - climb_rate_le_PILOT_SPEED_UP
+  updates:
+    - throttle_stick_geq_0=is_greater_or_equal_const("throttle_stick", 0)
+    - climb_rate_gt_0=is_greater_const("climb_rate", 0)
+    - climb_rate_le_PILOT_SPEED_UP=is_less_or_equal("climb_rate", "PILOT_SPEED_UP")
+  uppaal_formula: throttle_stick_geq_0 --> (climb_rate_gt_0 and climb_rate_le_PILOT_SPEED_UP)
+
+
+A_ALT_HOLD1:
+  vars:
+    - alt_sensor_is_baro
+    - baro_has_data
+    - alt_measured_eq_baro_val
+  updates:
+    - alt_sensor_is_baro=is_equal_const("alt_sensor", 1) # 1 represents barometer
+    - baro_has_data=is_true("baro_has_data") # 1 represents true
+    - alt_measured_eq_baro_val=is_equal("alt_measured", "baro_val")
+  uppaal_formula: (alt_sensor_is_baro and baro_has_data) --> alt_measured_eq_baro_val
+
+A_ALT_HOLD2:
+  vars:
+    - mode_is_ALTHOLD
+    - throttle_stick_is_1500
+    - velocity_z_is_0
+  updates:
+    - mode_is_ALTHOLD=is_equal("mode", "ALT_HOLD + 13324")
+    - throttle_stick_is_1500=true
+    - velocity_z_is_0=is_equal_const("velocity_z", 0)
+  uppaal_formula: (mode_is_ALTHOLD and throttle_stick_is_1500) --> velocity_z_is_0
+
+A_RC_FS1:
+  vars:
+    - mode_is_ACRO
+    - throttle_input_lt_FS_THR_VALUE
+    - armed
+    - disarmed
+  updates:
+    - mode_is_ACRO=is_equal("mode", "ACRO + 13196")
+    - throttle_input_lt_FS_THR_VALUE=true
+    - armed=is_true("armed")
+    - disarmed=is_true("disarmed")
+  uppaal_formula: (mode_is_ACRO and throttle_input_lt_FS_THR_VALUE and armed) --> disarmed
+
+A_RC_FS2:
+  vars:
+    - throttle_input_lt_FS_THR_VALUE
+    - RC_failsafe_triggered
+  updates:
+    - throttle_input_lt_FS_THR_VALUE=is_less("throttle_input", "FS_THR_VALUE")
+    - RC_failsafe_triggered=is_true("RC_failsafe_triggered")
+  uppaal_formula: throttle_input_lt_FS_THR_VALUE --> RC_failsafe_triggered
+
+AP_RCFS_P3:
+  vars:
+    - RC_failsafe_triggered
+    - landed
+    - armed
+    - disarmed
+  updates:
+    - RC_failsafe_triggered=true
+    - landed=bit_is_true("landed", 7)
+    - armed=is_true("armed")
+    - disarmed=is_true("disarmed")
+  uppaal_formula: (RC_failsafe_triggered and landed and armed) --> disarmed
+
+AP_GCSFS_P1:
+  vars:
+    - mode_is_ACRO
+    - landed
+    - throttle_is_zero
+    - disarmed
+  locations:
+    - GCS_failsafe_triggered = exit
+  updates:
+    - mode_is_ACRO=is_equal("mode", "ACRO + 13196")
+    - landed=bit_is_true("landed", 7)
+    - throttle_is_zero=bit_is_true("throttle_is_zero", 15)
+    - disarmed=is_true("disarmed")
+  uppaal_formula: A[] ((mode_is_ACRO and GCS_failsafe_triggered and disarmed) imply (landed and throttle_is_zero))
+
+AP_GCSFS_P2:
+  vars:
+    - GCS_failsafe_triggered
+    - landed
+    - armed
+    - disarmed
+  updates:
+    - GCS_failsafe_triggered=true
+    - landed=bit_is_true("landed", 7)
+    - armed=is_true("armed")
+    - disarmed=is_true("disarmed")
+  uppaal_formula: (GCS_failsafe_triggered and landed and armed) --> disarmed
+
+A_GPS_FS1:
+  vars:
+    - GPS_satellite_count_lt_4
+    - GPS_failsafe_triggered
+  updates:
+    - GPS_satellite_count_lt_4=is_less_const("GPS_satellite_count", 4)
+    - GPS_failsafe_triggered=bit_is_true("GPS_failsafe_triggered", 4)
+  uppaal_formula: GPS_satellite_count_lt_4 --> GPS_failsafe_triggered
+
+A_GPS_FS2:
+  vars:
+    - GPS_failsafe_is_true
+    - has_secondary_alt_sensor_is_true
+    - alt_sensor_not_None_and_not_GPS
+  updates:
+    - GPS_failsafe_is_true=is_true("GPS_failsafe")
+    - has_secondary_alt_sensor_is_true=true
+    - alt_sensor_not_None_and_not_GPS=is_not_equal_const("alt_sensor", 0) and is_not_equal_const("alt_sensor", 3) # 0 represents None, 3 represents GPS
+  uppaal_formula: (GPS_failsafe_is_true and has_secondary_alt_sensor_is_true) --> alt_sensor_not_None_and_not_GPS
+
+AP_BATTFS_P1:
+  vars:
+    - battery_failsafe_triggered
+    - mode_is_ACRO
+    - mode_is_STABILIZE
+    - armed
+    - throttle_is_zero
+    - landed
+    - disarmed
+  updates:
+    - battery_failsafe_triggered=true
+    - mode_is_ACRO=is_equal("mode", "ACRO + 13196")
+    - mode_is_STABILIZE=is_equal("mode", "STABILIZE + 16364")
+    - armed=is_true("motors_armed")
+    - throttle_is_zero=bit_is_true("throttle_is_zero", 15)
+    - landed=bit_is_true("landed", 7)
+    - disarmed=is_true("disarmed")
+  uppaal_formula: (battery_failsafe_triggered and (mode_is_ACRO or mode_is_STABILIZE) and armed and (throttle_is_zero or landed)) --> disarmed
+
+A_BRAKE1:
+  locations:
+    - mode_is_BRAKE = init
+  clocks:
+    - stop_time
+  uppaal_formula: mode_is_BRAKE --> (stop_time <= 127000000)
+
+AP_POSHOLD_P1:
+  vars:
+    - mode_is_POSHOLD
+    - roll_angle_leq_ANGLE_MAX
+  updates:
+    - mode_is_POSHOLD=true
+    - roll_angle_leq_ANGLE_MAX=is_less_or_equal("abs(roll_angle)", "ANGLE_MAX")
+  uppaal_formula: mode_is_POSHOLD --> roll_angle_leq_ANGLE_MAX
+
+AP_POSHOLD_P2:
+  vars:
+    - mode_is_POSHOLD
+    - pitch_angle_leq_ANGLE_MAX
+  updates:
+    - mode_is_POSHOLD=true
+    - pitch_angle_leq_ANGLE_MAX=is_less_or_equal("abs(pitch_angle)", "ANGLE_MAX")
+  uppaal_formula: mode_is_POSHOLD --> pitch_angle_leq_ANGLE_MAX
+
+AP_POSHOLD_P3:
+  vars:
+    - throttle_stick_geq_0
+    - climb_rate_gt_0
+    - climb_rate_le_PILOT_SPEED_UP
+  updates:
+    - throttle_stick_geq_0=is_greater_or_equal_const("throttle_stick", 0)
+    - climb_rate_gt_0=is_greater_const("climb_rate", 0)
+    - climb_rate_le_PILOT_SPEED_UP=is_less_or_equal("climb_rate", "PILOT_SPEED_UP")
+  uppaal_formula: throttle_stick_geq_0 --> (climb_rate_gt_0 and climb_rate_le_PILOT_SPEED_UP)
+
+A_CHUTE1:
+  vars:
+    - armed
+    - mode_is_not_FLIP
+    - mode_is_not_ACRO
+    - not_climbing
+    - curr_alt_geq_CHUTE_ALT_MIN
+  locations:
+    - parachute_release = exit
+  updates:
+    - armed=is_true("armed")
+    - mode_is_not_FLIP=is_not_equal("mode", "FLIP")
+    - mode_is_not_ACRO=is_not_equal("mode", "ACRO")
+    - not_climbing=is_less_or_equal_const("not_climbing", 0)
+    - curr_alt_geq_CHUTE_ALT_MIN=is_greater_or_equal("curr_alt", "CHUTE_ALT_MIN * 100.0")
+  uppaal_formula: parachute_release --> (armed and mode_is_not_FLIP and mode_is_not_ACRO and not_climbing and curr_alt_geq_CHUTE_ALT_MIN)
+
+PX_ORBIT1:
+  vars:
+    - pitch_stick_geq_0
+    - next_radius_leq_current_radius
+  updates:
+    - pitch_stick_geq_0=is_greater_or_equal_const("pitch_stick", 0)
+    - next_radius_leq_current_radius=is_less_or_equal("next_radius", "current_radius")
+  uppaal_formula: pitch_stick_geq_0 --> next_radius_leq_current_radius
+
+PX_ORBIT2:
+  vars:
+    - pitch_stick_leq_0
+    - next_radius_geq_current_radius
+  updates:
+    - pitch_stick_leq_0=is_less_or_equal_const("pitch_stick", 0)
+    - next_radius_geq_current_radius=is_greater_or_equal("next_radius", "current_radius")
+  uppaal_formula: pitch_stick_leq_0 --> next_radius_geq_current_radius
+
+PX_ORBIT3:
+  vars:
+    - roll_stick_geq_0
+    - clockwise_is_true
+    - velocity_change_vector_geq_0
+  updates:
+    - roll_stick_geq_0=is_greater_or_equal_const("roll_stick", 0)
+    - clockwise_is_true=is_greater_const("current_speed", 0)
+    - velocity_change_vector_geq_0=is_greater_or_equal_const("velocity_change_vector", 0)
+  uppaal_formula: (roll_stick_geq_0 and clockwise_is_true) --> velocity_change_vector_geq_0
+
+PX_ORBIT4:
+  vars:
+    - roll_stick_geq_0
+    - counterclockwise_is_true
+    - velocity_change_vector_geq_0
+  updates:
+    - roll_stick_geq_0=is_greater_or_equal_const("roll_stick", 0)
+    - counterclockwise_is_true=is_less_const("current_speed", 0)
+    - velocity_change_vector_geq_0=is_greater_or_equal_const("velocity_change_vector", 0)
+  uppaal_formula: (roll_stick_geq_0 and counterclockwise_is_true) --> velocity_change_vector_geq_0
+
+PX_ORBIT5:
+  vars:
+    - circle_radius_leq_100
+  locations:
+    - is_outputting = exit
+  updates:
+    - circle_radius_leq_100=is_less_or_equal_const("circle_radius", 100)
+  uppaal_formula: A[] (is_outputting imply circle_radius_leq_100)
+
+PX_ORBIT6:
+  vars:
+    - circle_acceleration_leq_2 = true # We initialize it to true to prevent incorrect evaluation at the init location due to uninitialized states.
+  locations:
+    - is_outputting = exit
+  updates:
+    - circle_acceleration_leq_2=is_less_or_equal_const("circle_velocity * circle_velocity / circle_radius", 2)
+  uppaal_formula: A[] (is_outputting imply circle_acceleration_leq_2)
+
+PX_ORBIT_P6:
+  vars:
+    - circle_radius_geq_1
+  locations:
+    - is_outputting = exit
+  updates:
+    - circle_radius_geq_1=is_greater_or_equal_const("circle_radius", 1)
+  uppaal_formula: A[] (is_outputting imply circle_radius_geq_1)
+
+PX_ORBIT_P7:
+  vars:
+    - circle_radius_leq_MC_ORBIT_RAD_MAX
+  locations:
+    - is_outputting = exit
+  updates:
+    - circle_radius_leq_MC_ORBIT_RAD_MAX=is_less_or_equal("circle_radius", "MC_ORBIT_RAD_MAX")
+  uppaal_formula: A[] (is_outputting imply circle_radius_leq_MC_ORBIT_RAD_MAX)
+
+PX_HOLD1:
+  vars:
+    - mode_is_HOLD
+    - target_x_eq_curr_x
+    - target_y_eq_curr_y
+    - target_z_eq_curr_z
+    - target_yaw_eq_curr_yaw
+  updates:
+    - mode_is_HOLD=is_equal_const("mode", 2)
+    - target_x_eq_curr_x=is_less_or_equal_const("abs(target_x - curr_x)", 0.001)
+    - target_y_eq_curr_y=is_less_or_equal_const("abs(target_y - curr_y)", 0.001)
+    - target_z_eq_curr_z=is_less_or_equal_const("abs(target_z - curr_z)", 0.001)
+    - target_yaw_eq_curr_yaw=is_less_or_equal_const("abs(target_yaw - curr_yaw)", 0.001)
+  uppaal_formula: mode_is_HOLD --> (target_x_eq_curr_x and target_y_eq_curr_y and target_z_eq_curr_z and target_yaw_eq_curr_yaw)
+
+PX_RTL1:
+  vars:
+    - curr_alt_lt_RTL_RETURN_ALT
+    - target_alt_geq_RTL_RETURN_ALT
+  updates:
+    - curr_alt_lt_RTL_RETURN_ALT=is_less("curr_alt", "home_alt + rtl_climb_alt")
+    - target_alt_geq_RTL_RETURN_ALT=is_greater_or_equal("target_alt", "home_alt + rtl_climb_alt")
+  uppaal_formula: curr_alt_lt_RTL_RETURN_ALT --> target_alt_geq_RTL_RETURN_ALT
+
+PX_RTL2:
+  vars:
+    - curr_alt_geq_RTL_RETURN_ALT
+    - at_home_is_false
+    - target_alt_eq_RTL_RETURN_ALT
+  updates:
+    - curr_alt_geq_RTL_RETURN_ALT=is_greater_or_equal("curr_alt", "home_alt + rtl_climb_alt")
+    - at_home_is_false=is_false("at_home")
+    - target_alt_eq_RTL_RETURN_ALT=is_equal("target_alt", "home_alt + rtl_climb_alt")
+  uppaal_formula: (curr_alt_geq_RTL_RETURN_ALT and at_home_is_false) --> target_alt_eq_RTL_RETURN_ALT
+
+PX_RTL3:
+  vars:
+    - curr_alt_geq_RTL_RETURN_ALT
+    - at_home_is_true
+    - mode_is_LAND
+  updates:
+    - curr_alt_geq_RTL_RETURN_ALT=is_equal_const("curr_alt_geq_RTL_RETURN_ALT", 1)
+    - at_home_is_true=is_true("at_home")
+    - mode_is_LAND=is_equal_const("mode_is_LAND", 2)
+  uppaal_formula: (curr_alt_geq_RTL_RETURN_ALT and at_home_is_true) --> mode_is_LAND
+
+PX_RTL4:
+  vars:
+    - RTL_LAND_DELAY_is_neg_1
+    - target_alt_eq_RTL_DESCEND_ALT
+  updates:
+    - RTL_LAND_DELAY_is_neg_1=is_equal_const("RTL_LAND_DELAY", -1)
+    - target_alt_eq_RTL_DESCEND_ALT=is_equal("target_alt", "RTL_DESCEND_ALT")
+  uppaal_formula: RTL_LAND_DELAY_is_neg_1 --> target_alt_eq_RTL_DESCEND_ALT
+
+PX_RTL_P4:
+  vars:
+    - return_alt_is_geq_curr_alt
+    - mode_is_RTL
+  updates:
+    - return_alt_is_geq_curr_alt=is_greater_or_equal("return_alt", "curr_alt")
+    - mode_is_RTL=true
+  uppaal_formula: mode_is_RTL --> return_alt_is_geq_curr_alt
+
+PX_RTL_P5:
+  vars:
+    - RTL_CONE_ANG_is_zero
+    - return_alt_is_geq_RTL_RETURN_ALT
+  updates:
+    - RTL_CONE_ANG_is_zero=is_equal_const("RTL_CONE_ANG", 0)
+    - return_alt_is_geq_RTL_RETURN_ALT=is_greater_or_equal("return_alt", "RTL_RETURN_ALT")
+  uppaal_formula: RTL_CONE_ANG_is_zero --> return_alt_is_geq_RTL_RETURN_ALT
+
+PX_RTL_P6:
+  vars:
+    - RTL_CONE_ANG_is_90
+    - return_alt_is_geq_RTL_DESCEND_ALT
+    - return_alt_is_leq_curr_alt
+  updates:
+    - RTL_CONE_ANG_is_90=is_equal_const("RTL_CONE_ANG", 90)
+    - return_alt_is_geq_RTL_DESCEND_ALT=false
+    - return_alt_is_leq_curr_alt=is_less_or_equal("return_alt", "curr_alt")
+  uppaal_formula: RTL_CONE_ANG_is_90 --> (return_alt_is_geq_RTL_DESCEND_ALT or return_alt_is_leq_curr_alt)
+
+PX_RTL5:
+  vars:
+    - mode_is_LAND
+    - on_ground_is_true
+    - armed_is_false
+  updates:
+    - mode_is_LAND=is_equal_const("mode", 18)
+    - on_ground_is_true=is_true("on_ground")
+    - armed_is_false=is_equal_const("armed", 1)
+  uppaal_formula: (mode_is_LAND and on_ground_is_true) --> armed_is_false
+
+PX_LAND1:
+  vars:
+    - mode_is_LAND
+    - no_loss_control_is_true
+    - no_rc_input_is_true
+    - start_landing_is_true
+    - descend_rate_eq_MPC_LAND_SPEED
+  updates:
+    - mode_is_LAND=is_equal_const("mode", 18)
+    - no_loss_control_is_true=is_true("no_loss_control")
+    - no_rc_input_is_true=is_equal_const("no_rc_input", 0)
+    - start_landing_is_true=mode_is_LAND and no_loss_control_is_true and no_rc_input_is_true
+    - descend_rate_eq_MPC_LAND_SPEED=is_equal("descend_rate", "MPC_LAND_SPEED")
+  uppaal_formula: start_landing_is_true --> descend_rate_eq_MPC_LAND_SPEED
+
+PX_ALTITUDE1:
+  vars:
+    - throttle_stick_eq_1500
+    - stop_is_true
+    - target_alt_eq_current_alt
+  updates:
+    - throttle_stick_eq_1500=is_true("throttle_stick_eq_1500")
+    - stop_is_true=is_true("has_stopped")
+    - target_alt_eq_current_alt=is_equal("target_alt", "current_alt")
+  uppaal_formula: (throttle_stick_eq_1500 and stop_is_true) --> (target_alt_eq_current_alt)
+
+PX_ALTITUDE_P2:
+  vars:
+    - throttle_leq_0
+    - vertical_vel_geq_0
+    - abs_vertical_vel_leq_MPC_Z_VEL_MAX_UP
+  updates:
+    - throttle_leq_0=is_less_or_equal_const("throttle", 0)
+    - vertical_vel_geq_0=is_greater_or_equal_const("vertical_vel", 0)
+    - abs_vertical_vel_leq_MPC_Z_VEL_MAX_UP=is_less_or_equal("abs(vertical_vel)", "MPC_Z_VEL_MAX_UP")
+  uppaal_formula: throttle_leq_0 --> (vertical_vel_geq_0 and abs_vertical_vel_leq_MPC_Z_VEL_MAX_UP)
+
+PX_ALTITUDE_P3:
+  vars:
+    - throttle_geq_0
+    - vertical_vel_leq_0
+    - abs_vertical_vel_leq_MPC_Z_VEL_MAX_DN
+  updates:
+    - throttle_geq_0=is_greater_or_equal_const("throttle", 0)
+    - vertical_vel_leq_0=is_less_or_equal_const("vertical_vel", 0)
+    - abs_vertical_vel_leq_MPC_Z_VEL_MAX_DN=is_less_or_equal("abs(vertical_vel)", "MPC_Z_VEL_MAX_DN")
+  uppaal_formula: throttle_geq_0 --> (vertical_vel_leq_0 and abs_vertical_vel_leq_MPC_Z_VEL_MAX_DN)
+
+PX_POSITION1:
+  vars:
+    - sticks_centered
+    - has_stopped
+    - target_x_eq_curr_x
+    - target_y_eq_curr_y
+    - target_z_eq_curr_z
+  updates:
+    - sticks_centered=is_true("sticks_centered")
+    - has_stopped=is_true("has_stopped")
+    - target_x_eq_curr_x=is_less_or_equal_const("abs(target_x - curr_x)", 0.000001)
+    - target_y_eq_curr_y=is_less_or_equal_const("abs(target_y - curr_y)", 0.000001)
+    - target_z_eq_curr_z=is_less_or_equal_const("abs(target_z - curr_z)", 0.000001)
+  uppaal_formula: (sticks_centered and has_stopped) --> (target_x_eq_curr_x and target_y_eq_curr_y and target_z_eq_curr_z)
+
+PX_POSITION_P2:
+  vars:
+   - pitch_stick_geq_neg_1
+   - pitch_stick_leq_1
+   - abs_x_velocity_setpoint_leq_MPC_VEL_MANUAL
+  updates:
+    - pitch_stick_geq_neg_1=is_greater_or_equal_const("pitch_stick", -1)
+    - pitch_stick_leq_1=is_less_or_equal_const("pitch_stick", 1)
+    - abs_x_velocity_setpoint_leq_MPC_VEL_MANUAL=is_less_or_equal("abs(x_velocity_setpoint)", "MPC_VEL_MANUAL")
+  uppaal_formula: (pitch_stick_geq_neg_1 and pitch_stick_leq_1) --> abs_x_velocity_setpoint_leq_MPC_VEL_MANUAL
+
+PX_POSITION_P3:
+  vars:
+   - roll_stick_geq_neg_1
+   - roll_stick_leq_1
+   - abs_y_velocity_setpoint_leq_MPC_VEL_MANUAL
+  updates:
+    - roll_stick_geq_neg_1=is_greater_or_equal_const("roll_stick", -1)
+    - roll_stick_leq_1=is_less_or_equal_const("roll_stick", 1)
+    - abs_y_velocity_setpoint_leq_MPC_VEL_MANUAL=is_less_or_equal("abs(y_velocity_setpoint)", "MPC_VEL_MANUAL")
+  uppaal_formula: (roll_stick_geq_neg_1 and roll_stick_leq_1) --> abs_y_velocity_setpoint_leq_MPC_VEL_MANUAL
+
+PX_HOLD2:
+  vars:
+    - MIS_LTRMIN_ALT_neq_neg_1
+    - curr_alt_lt_MIS_LTRMIN_ALT
+    - target_alt_eq_MIS_LTRMIN_ALT
+  updates:
+    - MIS_LTRMIN_ALT_neq_neg_1=is_not_equal_const("MIS_LTRMIN_ALT", -1)
+    - curr_alt_lt_MIS_LTRMIN_ALT=is_less("curr_alt", "MIS_LTRMIN_ALT")
+    - target_alt_eq_MIS_LTRMIN_ALT=is_equal("target_alt", "MIS_LTRMIN_ALT")
+  uppaal_formula: (MIS_LTRMIN_ALT_neq_neg_1 and curr_alt_lt_MIS_LTRMIN_ALT) --> target_alt_eq_MIS_LTRMIN_ALT
+
+PX_TAKEOFF2:
+  vars:
+    - takingoff
+    - ascend_rate_eq_MPC_TKO_SPEED
+  updates:
+    - takingoff=is_equal_const("takingoff", 2)
+    - ascend_rate_eq_MPC_TKO_SPEED=is_equal("ascend_rate", "MPC_TKO_SPEED")
+  uppaal_formula: takingoff --> ascend_rate_eq_MPC_TKO_SPEED
+
+PX_GPS_FS3:
+  vars:
+    - curr_mode_is_Pos
+    - battery_ok
+    - failsafe_start
+    - gps_fail
+    - rc_loss
+    - mode_is_LAND
+  updates:
+    - curr_mode_is_Pos=is_equal_const("curr_mode", 2)
+    - battery_ok=is_equal_const("battery_ok", 0)
+    - failsafe_start=is_true("failsafe_start")
+    - gps_fail=is_true("gps_fail")
+    - rc_loss=is_equal_const("rc_loss", 1)
+    - mode_is_LAND=is_equal_const("mode", 18) and not is_equal_const("mode", 12)
+  uppaal_formula: (curr_mode_is_Pos and battery_ok and failsafe_start and gps_fail and rc_loss) --> mode_is_LAND
+
+PX_TAKEOFF1:
+  vars:
+    - default_alt_takeoff
+    - target_alt_eq_curr_alt_plus_MIS_TAKEOFF_ALT
+  updates:
+    - default_alt_takeoff=is_false("default_alt_takeoff")
+    - target_alt_eq_curr_alt_plus_MIS_TAKEOFF_ALT=is_equal("target_alt", "curr_alt + MIS_TAKEOFF_ALT")
+  uppaal_formula: default_alt_takeoff --> target_alt_eq_curr_alt_plus_MIS_TAKEOFF_ALT
+
+PX_GPS_FS1:
+  vars:
+    - gps_failsafe_triggered
+    - time_since_gps_loss_is_geq_COM_POS_FS_DELAY
+    - COM_POS_FS_DELAY_gt_0
+  clocks:
+    - time_since_gps_loss
+  updates:
+    - gps_failsafe_triggered=is_false("gps_failsafe_triggered")
+    - time_since_gps_loss_is_geq_COM_POS_FS_DELAY=is_true("time_since_gps_loss_is_geq_COM_POS_FS_DELAY")
+    - COM_POS_FS_DELAY_gt_0=is_greater_const("COM_POS_FS_DELAY", 0)
+  uppaal_formula: (gps_failsafe_triggered) --> (time_since_gps_loss_is_geq_COM_POS_FS_DELAY and COM_POS_FS_DELAY_gt_0)
