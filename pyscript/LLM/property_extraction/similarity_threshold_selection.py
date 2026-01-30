@@ -16,7 +16,7 @@ def plot_threshold_selection():
     Highlights the optimal threshold with consistent BOLD formatting.
     """
     # File paths
-    base_dir = "/home/lqs66/Desktop/modelCheckingFlightControl"
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
     ardupilot_file = os.path.join(base_dir, "verifyDataBase/LLM/ardupilot_threshold.csv")
     px4_file = os.path.join(base_dir, "verifyDataBase/LLM/px4_threshold.csv")
     
@@ -49,10 +49,10 @@ def plot_threshold_selection():
     plt.rcParams.update({
         "font.family": "serif",
         "font.serif": ["Times New Roman", "DejaVu Serif", "Liberation Serif", "serif"],
-        "font.size": 14,
-        "axes.labelsize": 14,
-        "xtick.labelsize": 11,
-        "ytick.labelsize": 11,
+        "font.size": 16,
+        "axes.labelsize": 18,
+        "xtick.labelsize": 16,
+        "ytick.labelsize": 16,
         "font.weight": "bold", 
         "axes.labelweight": "bold",
         "mathtext.fontset": "cm", 
@@ -61,7 +61,7 @@ def plot_threshold_selection():
 
     sns.set_theme(style="ticks", font="serif", rc={"font.serif": ["Times New Roman", "DejaVu Serif", "serif"]})
     
-    fig, ax = plt.subplots(figsize=(12, 3.5))
+    fig, ax = plt.subplots(figsize=(12, 5.5))
     
     # Get seaborn default colors
     seaborn_colors = sns.color_palette()
@@ -91,7 +91,7 @@ def plot_threshold_selection():
     ax.annotate(f'ArduPilot Optimal\n$\\mathbf{{\\theta}}$ = {ardupilot_optimal_threshold}\nScore = {ardupilot_optimal_silhouette:.4f}',
                 xy=(ardupilot_optimal_threshold, ardupilot_optimal_silhouette),
                 xytext=(ardupilot_optimal_threshold - 0.09, ardupilot_optimal_silhouette - 0.15),
-                fontsize=14, fontweight='bold', ha='center', va='bottom',
+                fontsize=18, fontweight='bold', ha='center', va='bottom',
                 bbox=dict(boxstyle='round,pad=0.3', facecolor=color_ardu, alpha=0.2, edgecolor=color_ardu),
                 arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=-0.1', 
                                color=color_ardu, lw=1.5))
@@ -100,14 +100,14 @@ def plot_threshold_selection():
     ax.annotate(f'PX4 Optimal\n$\\mathbf{{\\theta}}$ = {px4_optimal_threshold}\nScore = {px4_optimal_silhouette:.4f}',
                 xy=(px4_optimal_threshold, px4_optimal_silhouette),
                 xytext=(px4_optimal_threshold - 0.01, px4_optimal_silhouette - 0.4),
-                fontsize=14, fontweight='bold', ha='center', va='bottom',
+                fontsize=18, fontweight='bold', ha='center', va='bottom',
                 bbox=dict(boxstyle='round,pad=0.3', facecolor=color_px4, alpha=0.2, edgecolor=color_px4),
                 arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=-0.1', 
                                color=color_px4, lw=1.5))
     
     # --- Axis Styling ---
-    ax.set_xlabel(r'Similarity Threshold ($\mathbf{\theta}$)', fontsize=14, fontweight='bold')
-    ax.set_ylabel('Silhouette Score', fontsize=14, fontweight='bold')
+    ax.set_xlabel(r'Similarity Threshold ($\mathbf{\theta}$)', fontsize=22, fontweight='bold', labelpad=10)
+    ax.set_ylabel('Silhouette Score', fontsize=22, fontweight='bold')
     
     # Set background color using seaborn palette
     ax.set_facecolor(sns.color_palette("light:#e8ecf1", as_cmap=False)[0])
@@ -127,16 +127,16 @@ def plot_threshold_selection():
     x_ticks = np.arange(x_min, x_max + 0.02, 0.02)
     ax.set_xticks(x_ticks)
     ax.set_xticklabels([f'{x:.2f}' for x in x_ticks], rotation=45)
-    ax.tick_params(axis='both', which='major', labelsize=11) 
+    ax.tick_params(axis='both', which='major', labelsize=16) 
 
     # Legend
     ax.legend(
         loc='upper left',
         bbox_to_anchor=(0.02, 0.98),
         frameon=False,
-        fontsize=14,
+        fontsize=18,
         ncol=1,
-        prop={'weight': 'bold', 'size': 14, 'family': 'serif'}
+        prop={'weight': 'bold', 'size': 18, 'family': 'serif'}
     )
     
     # Limits

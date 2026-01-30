@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-# from scipy.stats import gaussian_kde  # 不需要这个库了
 
 def analyze_update_times(file_path):
     try:
@@ -55,10 +54,17 @@ def draw(data_series, timestamps=None, threshold=0.1, output_name='verifyDataBas
     })
 
     # Use Seaborn's ticks style
-    sns.set_theme(style="ticks", font="serif", rc={"font.serif": ["Times New Roman", "DejaVu Serif", "serif"]})
+    sns.set_theme(style="ticks", 
+              font="serif", 
+              rc={
+                    "xtick.labelsize": 12.5,
+                    "ytick.labelsize": 12.5,
+                  "font.serif": ["Times New Roman", "DejaVu Serif", "serif"]
+                  }
+             )
 
     # Create figure and axis
-    fig, ax = plt.subplots(figsize=(12, 3))
+    fig, ax = plt.subplots(figsize=(9, 3.5))
 
     if timestamps is not None:
         x = (timestamps[1:].values - timestamps.iloc[0]) / 1_000_000
@@ -88,18 +94,18 @@ def draw(data_series, timestamps=None, threshold=0.1, output_name='verifyDataBas
     ax.axhline(y=threshold, color='#c0392b', linestyle='--', linewidth=1.5, 
                label=f'COM_RC_LOSS_T', zorder=2)
 
-    ax.set_xlabel('Time (s)', fontsize=14)
-    ax.set_ylabel('Interval (s)', fontsize=14)
+    ax.set_xlabel('Time (s)', fontsize=15, fontweight='bold')
+    ax.set_ylabel('Interval (s)', fontsize=15, fontweight='bold')
 
     ax.set_ylim(bottom=0, top=fill_max)
 
     # Legend settings
     ax.legend(
         loc='upper center',           
-        bbox_to_anchor=(0.5, -0.25),
+        bbox_to_anchor=(0.5, -0.2),
         ncol=3,                      
         frameon=False,                
-        fontsize=14                 
+        fontsize=15                 
     )
 
     ax.grid(True, linestyle=':', alpha=0.6)

@@ -10,16 +10,24 @@ plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["Times New Roman", "DejaVu Serif", "Liberation Serif", "serif"],
     "font.size": 14,
-    "axes.labelsize": 14,
-    "xtick.labelsize": 11,
-    "ytick.labelsize": 11,
+    "axes.labelsize": 22,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
     "font.weight": "bold", 
     "axes.labelweight": "bold",
     "mathtext.fontset": "cm", 
     "axes.unicode_minus": False
 })
 
-sns.set_theme(style="ticks", font="serif", rc={"font.serif": ["Times New Roman", "DejaVu Serif", "serif"]})
+sns.set_theme(
+    style="ticks", 
+    font="serif", 
+    rc={
+        "xtick.labelsize": 15, 
+        "ytick.labelsize": 15,
+        "font.serif": ["Times New Roman", "DejaVu Serif", "serif"]
+        }
+    )
 
 
 def parse_ardupilot_log(log_path):
@@ -149,7 +157,7 @@ def plot_combined_figure(data, output_dir):
     """Plot combined figure with throttle input, motor output, and altitude"""
     
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 5.6), sharex=True,
-                                         gridspec_kw={'hspace': 0.1, 'left': 0.1})
+                                         gridspec_kw={'hspace': 0.2, 'left': 0.1})
     
     rcin = data['rcin']
     rcout = data['rcout']
@@ -255,9 +263,9 @@ def plot_combined_figure(data, output_dir):
     ax1.axhline(y=1000, color='gray', linestyle='--', linewidth=2, 
                 label='Zero Throttle Threshold', alpha=0.7)
     
-    ax1.set_ylabel('PWM (μs)', fontsize=14, fontweight='bold')
+    ax1.set_ylabel('PWM (μs)', fontsize=15.5, fontweight='bold')
     ax1.set_ylim(top=1700)
-    ax1.legend(loc='upper left', bbox_to_anchor=(0, 1.02), frameon=False, fontsize=12, ncol=2)
+    ax1.legend(loc='upper left', bbox_to_anchor=(0, 1.06), frameon=False, fontsize=14, ncol=2)
     ax1.grid(True, linestyle=':', alpha=0.6)
     ax1.set_xlim(left=0, right=rcin_times[-1])
     ax1.set_xticks(np.arange(0, rcin_times[-1] + 1, 5))
@@ -281,10 +289,10 @@ def plot_combined_figure(data, output_dir):
     ax2.plot(timestamps, m3, linewidth=4.5, color=sns.color_palette()[2], alpha=1, label='Motor 3')
     ax2.plot(timestamps, m4, linewidth=2, color=sns.color_palette("bright")[3], alpha=1, label='Motor 4')
     
-    ax2.set_ylabel(ylabel, fontsize=14, fontweight='bold')
+    ax2.set_ylabel(ylabel, fontsize=15.5, fontweight='bold')
     if not use_esc:  # Only set PWM limit for RCOUT data, not RPM
         ax2.set_ylim(top=2000)
-    ax2.legend(loc='upper left', bbox_to_anchor=(0, 1.02), frameon=False, fontsize=12, ncol=4, columnspacing=1.0)
+    ax2.legend(loc='upper left', bbox_to_anchor=(0, 1.06), frameon=False, fontsize=14, ncol=4, columnspacing=1.0)
     ax2.grid(True, linestyle=':', alpha=0.6)
     ax2.set_xlim(left=0, right=rcout_times[-1])
     ax2.set_xticks(np.arange(0, rcout_times[-1] + 1, 5))
@@ -299,13 +307,13 @@ def plot_combined_figure(data, output_dir):
         ax3.plot(alt_times, altitude, linewidth=2.5, color=colors_alt[1], 
                  marker='o', markersize=2, label='Altitude', alpha=0.8)
         
-        ax3.set_ylabel('Altitude (m)', fontsize=14, fontweight='bold')
-        ax3.legend(loc='upper left', bbox_to_anchor=(0, 1.02), frameon=False, fontsize=12)
+        ax3.set_ylabel('Altitude (m)', fontsize=15.5, fontweight='bold')
+        ax3.legend(loc='upper left', bbox_to_anchor=(0, 1.06), frameon=False, fontsize=14)
         ax3.grid(True, linestyle=':', alpha=0.6)
         ax3.set_xlim(left=0, right=alt_times[-1])
         ax3.set_xticks(np.arange(0, alt_times[-1] + 1, 5))
     
-    ax3.set_xlabel('Time (s)', fontsize=14, fontweight='bold')
+    ax3.set_xlabel('Time (s)', fontsize=16.5, fontweight='bold')
     
     plt.tight_layout()
     
@@ -316,7 +324,7 @@ def plot_combined_figure(data, output_dir):
         
         # Normal Flight text (green region)
         ax1.text(trigger_time / 2, y_text, 'Normal Flight', 
-                ha='center', va='bottom', fontsize=12, fontweight='bold', 
+                ha='center', va='bottom', fontsize=14, fontweight='bold', 
                 color='darkgreen', alpha=1.0, zorder=5)
         
         # Disarmed text (pink region)
@@ -325,20 +333,20 @@ def plot_combined_figure(data, output_dir):
         else:
             disarmed_center = (trigger_time + x_max) / 2
         ax1.text(disarmed_center, y_text, 'Disarm', 
-                ha='center', va='bottom', fontsize=12, fontweight='bold', 
+                ha='center', va='bottom', fontsize=14, fontweight='bold', 
                 color='darkred', alpha=1.0, zorder=5)
         
         # Crashed text (gray region)
         if gray_start is not None:
             crashed_center = (gray_start + x_max) / 2
             ax1.text(crashed_center, y_text, 'Crash', 
-                    ha='center', va='bottom', fontsize=12, fontweight='bold', 
+                    ha='center', va='bottom', fontsize=14, fontweight='bold', 
                     color='black', alpha=1.0, zorder=5)
     
     # Add annotations after tight_layout
     # Define annotation colors - lighter versions of background colors
     blue_color = (0.3, 0.5, 0.9)  # Light blue, slightly darker than background
-    yellow_color = (0.75, 0.6, 0.05)  # Darker yellow, more visible
+    green_color = (0.13, 0.55, 0.13)
     
     # Annotation 1: Throttle stick to zero in ax1 (blue region)
     if zero_throttle_after_30s is not None:
@@ -362,10 +370,10 @@ def plot_combined_figure(data, output_dir):
         point_y = rcin['C3'][idx_start]
         
         text_x = zero_throttle_after_30s * 0.8  # Place text in the middle of blue region
-        text_y = ax1.get_ylim()[1] * 0.7
+        text_y = ax1.get_ylim()[1] * 0.68
         ax1.annotate(f'Throttle stick to zero\nAt {point_x:.1f} s', 
                      xy=(point_x, point_y), xytext=(text_x, text_y),
-                     ha='center', fontsize=12, fontweight='bold', color=blue_color,
+                     ha='center', fontsize=14, fontweight='bold', color=blue_color,
                      bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor=blue_color, alpha=0.9),
                      arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0.3', color=blue_color, lw=2))
     
@@ -377,12 +385,12 @@ def plot_combined_figure(data, output_dir):
         point_y = m1[idx]  # Use motor 1 as reference
         text_x = zero_throttle_after_30s * 0.5
         text_x += 7
-        text_y = ax2.get_ylim()[0] + (ax2.get_ylim()[1] - ax2.get_ylim()[0]) * 0.2
+        text_y = ax2.get_ylim()[0] + (ax2.get_ylim()[1] - ax2.get_ylim()[0]) * 0.17
         ax2.annotate('Motors maintain low-level PWM\nto prevent shutdown when throttle is zero', 
                      xy=(point_x, point_y), xytext=(text_x, text_y),
-                     ha='center', fontsize=12, fontweight='bold', color=yellow_color,
-                     bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor=yellow_color, alpha=0.9),
-                     arrowprops=dict(arrowstyle='->', color=yellow_color, lw=2))
+                     ha='center', fontsize=14, fontweight='bold', color=green_color,
+                     bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor=green_color, alpha=0.9),
+                     arrowprops=dict(arrowstyle='->', color=green_color, lw=2))
     
     # Annotation 3: Disarm in ax2 (pink region, pointing to ~35s before trigger)
     if trigger_time is not None and trigger_time > 2:
@@ -397,11 +405,11 @@ def plot_combined_figure(data, output_dir):
             idx = idx + 8
             point_x = timestamps[idx]
             point_y = motor_avg[idx]
-            text_x = trigger_time + 6
-            text_y = trigger_time + 0.3 * (ax2.get_ylim()[1] - ax2.get_ylim()[0]) + ax2.get_ylim()[0]
+            text_x = trigger_time + 5.8
+            text_y = trigger_time + 0.32 * (ax2.get_ylim()[1] - ax2.get_ylim()[0]) + ax2.get_ylim()[0]
             ax2.annotate(f'Disarm after\nGCS Failsafe\nAt {point_x:.1f} s', 
                          xy=(point_x, point_y), xytext=(text_x, text_y),
-                         ha='center', fontsize=12, fontweight='bold', color=pink_color,
+                         ha='center', fontsize=14, fontweight='bold', color=pink_color,
                          bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor=pink_color, alpha=0.9),
                          arrowprops=dict(arrowstyle='->', color=pink_color, lw=2))
     
@@ -413,11 +421,11 @@ def plot_combined_figure(data, output_dir):
             point_x = alt_times[idx[0]]
             point_y = altitude[idx[0]]
             x_max = max(rcin_times[-1], rcout_times[-1])
-            text_x = trigger_time + (x_max - trigger_time) * 0.55
-            text_y = ax3.get_ylim()[1] * 0.75
+            text_x = trigger_time - (x_max - trigger_time) * 0.55
+            text_y = ax3.get_ylim()[1] * 0.5
             ax3.annotate('Thrust Lost', 
                          xy=(point_x, point_y), xytext=(text_x, text_y),
-                         ha='center', fontsize=12, fontweight='bold', color=pink_color,
+                         ha='center', fontsize=14, fontweight='bold', color=pink_color,
                          bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor=pink_color, alpha=0.9),
                          arrowprops=dict(arrowstyle='->', color=pink_color, lw=2))
     
@@ -608,7 +616,7 @@ def plot_pwm_changes(data, output_dir):
     ax.set_title('Motor Output Changes: Zero Throttle to Disarm', 
                  fontsize=15, fontweight='bold', pad=15)
     
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), frameon=False, fontsize=12, ncol=4)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), frameon=False, fontsize=14, ncol=4)
     ax.grid(True, linestyle=':', alpha=0.6)
     
     plt.tight_layout()
@@ -680,8 +688,8 @@ def plot_altitude_changes(data, output_dir):
 
 
 def main():
-    log_path = '/home/lqs66/Desktop/modelCheckingFlightControl/verifyDataBase/draw_datas/case2.bin'
-    output_dir = '/home/lqs66/Desktop/modelCheckingFlightControl/verifyDataBase/draw_datas'
+    log_path = 'verifyDataBase/draw_datas/case2.bin'
+    output_dir = 'verifyDataBase/draw_datas'
     
     data = parse_ardupilot_log(log_path)
     

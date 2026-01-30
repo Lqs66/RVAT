@@ -20,7 +20,14 @@ plt.rcParams.update({
     "axes.unicode_minus": False
 })
 
-sns.set_theme(style="ticks", font="serif", rc={"font.serif": ["Times New Roman", "DejaVu Serif", "serif"]})
+sns.set_theme(style="ticks", 
+              font="serif", 
+              rc={
+                    "xtick.labelsize": 12.5,
+                    "ytick.labelsize": 12.5,
+                  "font.serif": ["Times New Roman", "DejaVu Serif", "serif"]
+                  }
+             )
 
 THRESHOLD_COLOR = '#d62728'
 FAILSAFE_COLOR = '#ffcccc'
@@ -116,7 +123,7 @@ def get_flight_mode_label(nav_state, failsafe=None):
 
 
 def plot_time_series(data, output_dir, fault_time=12.5, time_range=(0, 20), zero_offset=0):
-    fig, ax = plt.subplots(1, 1, figsize=(12, 3))
+    fig, ax = plt.subplots(1, 1, figsize=(9, 3.5))
     
     t_start, t_end = time_range
     
@@ -193,9 +200,9 @@ def plot_time_series(data, output_dir, fault_time=12.5, time_range=(0, 20), zero
     ax.set_ylim(0.01, y_max)
     
     if first_failsafe_time is not None:
-        y_pos = y_max * 0.95
+        y_pos = y_max * 0.97
         
-        ax.text(x_min + (first_failsafe_time - x_min) * 0.05, y_pos, 
+        ax.text(x_min + (first_failsafe_time - x_min) * 0.025, y_pos, 
                'Loiter', fontsize=14, color='green', 
                fontweight='bold', ha='left', va='top')
         
@@ -209,21 +216,21 @@ def plot_time_series(data, output_dir, fault_time=12.5, time_range=(0, 20), zero
             spike_time = plot_times[idx]
             spike_value = plot_intervals[idx]
             
-            text_x = x_min + (first_failsafe_time - x_min) * 0.55
-            text_y = y_max * 0.83
+            text_x = x_min + (first_failsafe_time - x_min) * 0.5
+            text_y = y_max * 0.79
             ax.annotate(f'At {spike_time:.2f}s, manual_control_setpoint interval\nexceeds 0.1s, triggering erroneous RC Failsafe',
                        xy=(spike_time, spike_value), 
                        xytext=(text_x, text_y),
-                       fontsize=13, color='#4A90E2', fontweight='bold',
+                       fontsize=12, color='#4A90E2', fontweight='bold',
                        arrowprops=dict(arrowstyle='->', color='#4A90E2', lw=2, connectionstyle='arc3,rad=0.1'),
                        bbox=dict(boxstyle='round,pad=0.3', facecolor='#E6F2FF', alpha=0.95, edgecolor='#4A90E2', linewidth=1.5),
                        ha='center', va='center')
     
-    ax.set_xlabel('Time (s)', fontsize=14, fontweight='bold')
-    ax.set_ylabel('Interval (s)', fontsize=14, fontweight='bold')
+    ax.set_xlabel('Time (s)', fontsize=15, fontweight='bold')
+    ax.set_ylabel('Interval (s)', fontsize=15, fontweight='bold')
     ax.set_xlim(x_min, x_max)
     
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.25), frameon=False, fontsize=14, ncol=2)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), frameon=False, fontsize=15, ncol=2)
     
     ax.grid(True, linestyle=':', alpha=0.6)
     
@@ -244,8 +251,8 @@ def plot_time_series(data, output_dir, fault_time=12.5, time_range=(0, 20), zero
 
 
 def main():
-    ulog_path = '/home/lqs66/Desktop/modelCheckingFlightControl/verifyDataBase/draw_datas/case1.ulg'
-    output_dir = '/home/lqs66/Desktop/modelCheckingFlightControl/verifyDataBase/draw_datas'
+    ulog_path = 'verifyDataBase/draw_datas/case1.ulg'
+    output_dir = 'verifyDataBase/draw_datas'
     
     data = load_ulog_data(ulog_path)
     
