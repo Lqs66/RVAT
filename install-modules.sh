@@ -140,7 +140,7 @@ else
     echo "Checking out commit 7eaebf2..."
     git checkout 7eaebf2
     echo "Applying PGFuzz patch..."
-    git apply ../../git_patchs/pgfuzz.patch
+    git apply ../git_patchs/pgfuzz.patch
     cd "$SCRIPT_DIR"
     echo "PGFuzz installed successfully"
 fi
