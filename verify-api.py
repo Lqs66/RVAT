@@ -467,23 +467,11 @@ def create_inputs():
         ERROR(f"No valid .ktest files found in {ktests_dir} (excluding .err marked files)")
         return
 
-    # Randomly select 87-97 files, prioritizing unmarked over early
-    max_count = random.randint(87, 97)
-    selected_files = []
-    
-    # First, select from unmarked files
-    if unmarked_ktests:
-        unmarked_count = min(max_count, len(unmarked_ktests))
-        selected_files.extend(random.sample(unmarked_ktests, unmarked_count))
-    
-    # If we need more, select from early marked files
-    remaining = max_count - len(selected_files)
-    if remaining > 0 and early_ktests:
-        early_count = min(remaining, len(early_ktests))
-        selected_files.extend(random.sample(early_ktests, early_count))
+    # Select all non-.err marked ktest files
+    selected_files = unmarked_ktests + early_ktests
     
     total_available = len(unmarked_ktests) + len(early_ktests)
-    INFO(f"Selected {len(selected_files)} files out of {total_available} available files: {len([f for f in selected_files if f in unmarked_ktests])} unmarked, {len([f for f in selected_files if f in early_ktests])} early-marked")
+    INFO(f"Processing all {total_available} available files: {len(unmarked_ktests)} unmarked, {len(early_ktests)} early-marked")
 
     ktests = [os.path.join(ktests_dir, f) for f in selected_files]
     
