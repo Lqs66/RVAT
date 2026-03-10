@@ -4,57 +4,101 @@ In our LLVM IR-based implementation, we model data valuation $\nu$ as a mapping 
 
 Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $\nu[k \mapsto val]$ represents an update operation that assigns the value $val$ to the key $k$ (either a register or a memory address).
 
+---
+
 ## Semantic Mappings
 
-To further formalize these rules, we define the semantic mapping $\llbracket \cdot \rrbracket$ for binary operators ($op$) and comparison predicates ($cond$) as follows:
+To further formalize these rules, we define the semantic mapping $[\![ \cdot ]\!]$ for binary operators ($op$) and comparison predicates ($cond$) as follows.
 
-**Binary Operators** $\llbracket op \rrbracket$:
+### Binary Operators $[\![ op ]\!]$
 
-$$
-\llbracket op \rrbracket \in \{\ \texttt{add}\to+,\ \texttt{fadd}\to+_f,\ \texttt{sub}\to-,\ \texttt{fsub}\to-_f,\ \texttt{mul}\to\times,\ \texttt{fmul}\to\times_f,
-$$
-$$
-\texttt{udiv}\to\div_u,\ \texttt{sdiv}\to\div_s,\ \texttt{fdiv}\to\div_f,\ \texttt{urem}\to\%_u,\ \texttt{srem}\to\%_s,\ \texttt{frem}\to\%_f,
-$$
-$$
-\texttt{and}\to\land,\ \texttt{or}\to\lor,\ \texttt{xor}\to\oplus,\ \texttt{shl}\to\ll,\ \texttt{lshr}\to\gg_l,\ \texttt{ashr}\to\gg_a\ \}
-$$
+| LLVM Instruction | Semantic Operator |
+|:---:|:---:|
+| `add` | $+$ |
+| `fadd` | $+_f$ |
+| `sub` | $-$ |
+| `fsub` | $-_f$ |
+| `mul` | $\times$ |
+| `fmul` | $\times_f$ |
+| `udiv` | $\div_u$ |
+| `sdiv` | $\div_s$ |
+| `fdiv` | $\div_f$ |
+| `urem` | $\%_u$ |
+| `srem` | $\%_s$ |
+| `frem` | $\%_f$ |
+| `and` | $\land$ |
+| `or` | $\lor$ |
+| `xor` | $\oplus$ |
+| `shl` | $\ll$ |
+| `lshr` | $\gg_l$ |
+| `ashr` | $\gg_a$ |
 
-**Comparison Predicates** $\llbracket cond \rrbracket$:
+### Comparison Predicates $[\![ cond ]\!]$
 
-$$
-\llbracket cond \rrbracket \in \{\ \texttt{eq}\to=,\ \texttt{ne}\to\neq,\ \texttt{ugt}\to>_u,\ \texttt{uge}\to\ge_u,\ \texttt{ult}\to<_u,\ \texttt{ule}\to\le_u,
-$$
-$$
-\texttt{sgt}\to>_s,\ \texttt{sge}\to\ge_s,\ \texttt{slt}\to<_s,\ \texttt{sle}\to\le_s,\ \texttt{oeq}\to=_o,\ \texttt{one}\to\neq_o,
-$$
-$$
-\texttt{ogt}\to>_o,\ \texttt{oge}\to\ge_o,\ \texttt{olt}\to<_o,\ \texttt{ole}\to\le_o,\ \texttt{ueq}\to=_u,\ \texttt{une}\to\neq_u,
-$$
-$$
-\texttt{true}\to\top,\ \texttt{false}\to\bot,\ \texttt{ord}\to \lambda xy.\neg(\text{NaN}_x \lor \text{NaN}_y),\ \texttt{uno}\to \lambda xy.(\text{NaN}_x \lor \text{NaN}_y)\ \}
-$$
+| LLVM Predicate | Semantic Operator |
+|:---:|:---:|
+| `eq` | $=$ |
+| `ne` | $\neq$ |
+| `ugt` | $>_u$ |
+| `uge` | $\ge_u$ |
+| `ult` | $<_u$ |
+| `ule` | $\le_u$ |
+| `sgt` | $>_s$ |
+| `sge` | $\ge_s$ |
+| `slt` | $<_s$ |
+| `sle` | $\le_s$ |
+| `oeq` | $=_o$ |
+| `one` | $\neq_o$ |
+| `ogt` | $>_o$ |
+| `oge` | $\ge_o$ |
+| `olt` | $<_o$ |
+| `ole` | $\le_o$ |
+| `ueq` | $=_u$ |
+| `une` | $\neq_u$ |
+| `true` | $\top$ |
+| `false` | $\bot$ |
+| `ord` | $\lambda xy.\ \neg(\text{NaN}_x \lor \text{NaN}_y)$ |
+| `uno` | $\lambda xy.\ (\text{NaN}_x \lor \text{NaN}_y)$ |
+
+---
 
 ## Type Casting Instructions
 
-For the following LLVM IR type casting instructions, we use $\text{convert}(v, \tau)$ to denote the casting of value $val$ to type $\tau$:
+For the following LLVM IR type casting instructions, we use $\text{convert}(v, \tau)$ to denote the casting of value $v$ to type $\tau$:
 
-$$
-conv \in \{\ \texttt{trunc, zext, sext, fptosi, fpext, uitofp, sitofp, fptoui, fptrunc, ptrtoint, inttoptr, bitcast}\ \}
-$$
+```
+conv ∈ { trunc, zext, sext, fptosi, fpext, uitofp, sitofp,
+         fptoui, fptrunc, ptrtoint, inttoptr, bitcast }
+```
+
+---
 
 ## Instruction Semantics
 
-We formalize the semantics for the remaining LLVM IR instruction categories as follows:
+We formalize the semantics for the remaining LLVM IR instruction categories as follows.
 
-- **Select:** The $\text{ite}(c, t, f)$ evaluates to $t$ if the condition $c$ is true (non-zero), and $f$ otherwise.
+### Select
 
-- **Memory Access:** For `load`, the value is retrieved by dereferencing the pointer $p$ (i.e., $\nu(\nu(p))$). For `store`, the valuation is updated at the address key $\nu(p)$ with value $v$.
+The $\text{ite}(c,\ t,\ f)$ expression evaluates to $t$ if the condition $c$ is true (non-zero), and $f$ otherwise.
 
-- **Getelementptr:** $\text{gep}(base, idx)$ computes and returns the memory address offset based on the base pointer and indices.
+### Memory Access
 
-- **Alloc:** $\text{alloc}(\text{sizeof}(\tau))$ reserves a contiguous memory block of the size determined by type $\tau$ and returns its unique base address.
+- **`load`** — The value is retrieved by dereferencing the pointer $p$, i.e., $\nu(\nu(p))$.
+- **`store`** — The valuation is updated at the address key $\nu(p)$ with value $v$.
 
-- **Extract and Insert:** $\nu(a).i$ represents extracting the $i$-th member of aggregate $a$, and $a[i \leftarrow v]$ represents creating a new aggregate with the $i$-th member updated.
+### Getelementptr
 
-> **Note:** Function calls (`call`) are handled as external invocations and are discussed separately in the Implementation Section.
+$\text{gep}(base,\ idx)$ computes and returns the memory address offset based on the base pointer and indices.
+
+### Alloc
+
+$\text{alloc}(\text{sizeof}(\tau))$ reserves a contiguous memory block of the size determined by type $\tau$ and returns its unique base address.
+
+### Extract and Insert
+
+- $\nu(a).i$ — Extracts the $i$-th member of aggregate $a$.
+- $a[i \leftarrow v]$ — Creates a new aggregate with the $i$-th member updated to $v$.
+
+---
+
+> **Note:** Function calls (`call`) are handled as external invocations and are discussed separately in the [Implementation Section](#implementation).
