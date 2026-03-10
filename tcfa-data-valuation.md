@@ -1,6 +1,6 @@
 # Update Rules of TCFA Data Valuation on LLVM-IR
 
-In our LLVM IR-based implementation, we model data valuation $\nu$ as a mapping from LLVM virtual registers (`Reg`) and memory (`Addr`) to the value space $\mathcal{D}$, i.e., $\nu: (\text{Reg} \cup \text{Addr}) \to \mathcal{D}$. Based on this, we view the location switch $(l, \nu, \mu) \xrightarrow{\sigma} (l', \nu', \mu')$ as an update on \$\nu\$'s value space induced by executing the LLVM instruction sequence \$\sigma\$.
+In our LLVM IR-based implementation, we model data valuation $\nu$ as a mapping from LLVM virtual registers (`Reg`) and memory (`Addr`) to the value space $\mathcal{D}$, i.e., $\nu: (\text{Reg} \cup \text{Addr}) \to \mathcal{D}$. Based on this, we view the location switch $(l, \nu, \mu) \xrightarrow{\sigma} (l', \nu', \mu')$ as an update on $\ \nu\ $'s value space induced by executing the LLVM instruction sequence $\ \sigma\ $.
 
 Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $⟦\cdot⟧$ represents an update operation that assigns the value $val$ to the key $k$ (either a register or a memory address).
 
@@ -24,7 +24,7 @@ Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $⟦\cdot�
 
 ## Semantic Mappings
 
-To further formalize these rules, we define the semantic mapping $⟦ \cdot ⟧$ for binary operators ($op$) and comparison predicates ($cond$) as follows.
+To further formalize these rules, we define the semantic mapping $⟦ \cdot ⟧$ for binary operators ($\ op\ $) and comparison predicates ($\ cond\ $) as follows.
 
 ### Binary Operators $⟦ op ⟧$
 
