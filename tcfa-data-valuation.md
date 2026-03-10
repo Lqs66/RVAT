@@ -2,7 +2,23 @@
 
 In our LLVM IR-based implementation, we model data valuation $\nu$ as a mapping from LLVM virtual registers ($\text{Reg}$) and memory ($\text{Addr}$) to the value space $\mathcal{D}$, i.e., $\nu: (\text{Reg} \cup \text{Addr}) \to \mathcal{D}$. Based on this, we view the location switch $(l, \nu, \mu) \xrightarrow{\sigma} (l', \nu', \mu')$ as an update on $\nu$'s value space induced by executing the LLVM instruction sequence $\sigma$.
 
-Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $\nu[k \mapsto val]$ represents an update operation that assigns the value $val$ to the key $k$ (either a register or a memory address).
+Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $⟦\cdot⟧$ represents an update operation that assigns the value $val$ to the key $k$ (either a register or a memory address).
+
+**Table 1: Operational Semantics Update Rules for LLVM IR**
+
+| **Category** | **Instruction Syntax** | **Update Rule** ($\nu \to \nu'$) |
+|:---|:---|:---|
+| Binary Op | `%r` $= op$ `%a, %b` | $\nu' = \nu[$ `%r` $\mapsto \nu($ `%a` $)\ ⟦op⟧\ \nu($ `%b` $)]$ |
+| Unary Op | `%r` $=$ `fneg %a` | $\nu' = \nu[$ `%r` $\mapsto -_f\, \nu($ `%a` $)]$ |
+| Comparison | `%r` $=$ `cmp` $cond$ `%a, %b` | $\nu' = \nu[$ `%r` $\mapsto \mathbb{I}(\nu($ `%a` $)\ ⟦cond⟧\ \nu($ `%b` $))]$ |
+| Alloc | `%r` $=$ `alloca` $\tau$ | $\nu' = \nu[$ `%r` $\mapsto \text{alloc}(\text{sizeof}(\tau))]$ |
+| Load | `%r` $=$ `load` $\tau$, `ptr %p` | $\nu' = \nu[$ `%r` $\mapsto \nu(\nu($ `%p` $))]$ |
+| Store | `store` $\tau$ `%v`, `ptr %p` | $\nu' = \nu[\nu($ `%p` $) $\mapsto \nu($ `%v` $)]$ |
+| Conversion | `%r` $= conv\ \tau_1$ `%a to` $\tau_2$ | $\nu' = \nu[$ `%r` $\mapsto \text{convert}(\nu($ `%a` $), \tau_2)]$ |
+| Select | `%r` $=$ `select %c, %t, %f` | $\nu' = \nu[$ `%r` $\mapsto \text{ite}(\nu($ `%c` $), \nu($ `%t` $), \nu($ `%f` $))]$ |
+| Getelementptr | `%r` $=$ `getelementptr` $\tau$, `%p, %idx` | $\nu' = \nu[$ `%r` $\mapsto \text{gep}(\nu($ `%p` $), \nu($ `%idx` $))]$ |
+| Extract | `%r` $=$ `extractvalue %a`, $i$ | $\nu' = \nu[$ `%r` $\mapsto \nu($ `%a` $).i]$ |
+| Insert | `%r` $=$ `insertvalue %a, %v`, $i$ | $\nu' = \nu[$ `%r` $\mapsto \nu($ `%a` $)[i \leftarrow \nu($ `%v` $)]]$ |
 
 ---
 
@@ -96,8 +112,8 @@ $\text{alloc}(\text{sizeof}(\tau))$ reserves a contiguous memory block of the si
 
 ### Extract and Insert
 
-- $\nu(a).i$ — Extracts the $i$-th member of aggregate $a$.
-- $a[i \leftarrow v]$ — Creates a new aggregate with the $i$-th member updated to $v$.
+- $\nu(a).i$ — Extracts the i-th member of aggregate a.
+- $a[i \leftarrow v]$ — Creates a new aggregate with the i-th member updated to v.
 
 ---
 
