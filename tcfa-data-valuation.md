@@ -1,6 +1,6 @@
 # Update Rules of TCFA Data Valuation on LLVM-IR
 
-In our LLVM IR-based implementation, we model data valuation $\nu$ as a mapping from LLVM virtual registers ($\text{Reg}$) and memory ($\text{Addr}$) to the value space $\mathcal{D}$, i.e., $\nu: (\text{Reg} \cup \text{Addr}) \to \mathcal{D}$. Based on this, we view the location switch $(l, \nu, \mu) \xrightarrow{\sigma} (l', \nu', \mu')$ as an update on $\nu$'s value space induced by executing the LLVM instruction sequence $\sigma$.
+In our LLVM IR-based implementation, we model data valuation $\nu$ as a mapping from LLVM virtual registers ($\text{Reg}$) and memory ($\text{Addr}$) to the value space $\mathcal{D}$, i.e., $\nu: (\text{Reg} \cup \text{Addr}) \to \mathcal{D}$. Based on this, we view the location switch $(l, \nu, \mu) \xrightarrow{\sigma} (l', \nu', \mu')$ as an update on $\nu$'s value space induced by executing the LLVM instruction sequence $\sigma$\.
 
 Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $⟦\cdot⟧$ represents an update operation that assigns the value $val$ to the key $k$ (either a register or a memory address).
 
@@ -13,7 +13,7 @@ Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $⟦\cdot�
 | Comparison | `%r` $=$ `cmp` $cond$ `%a, %b` | $\nu' = \nu[$ `%r` $\mapsto \mathbb{I}(\nu($ `%a` $)\ ⟦cond⟧\ \nu($ `%b` $))]$ |
 | Alloc | `%r` $=$ `alloca` $\tau$ | $\nu' = \nu[$ `%r` $\mapsto \text{alloc}(\text{sizeof}(\tau))]$ |
 | Load | `%r` $=$ `load` $\tau$, `ptr %p` | $\nu' = \nu[$ `%r` $\mapsto \nu(\nu($ `%p` $))]$ |
-| Store | `store` $\tau$ `%v`, `ptr %p` | $\nu' = \nu[\nu($ `%p` $) $\mapsto \nu($ `%v` $)]$ |
+| Store | `store` $\tau$ `%v`, `ptr %p` | $\nu'$ = $\nu[\nu($ `%p` $)$ $\mapsto \nu($ `%v` $)]$ |
 | Conversion | `%r` $= conv\ \tau_1$ `%a to` $\tau_2$ | $\nu' = \nu[$ `%r` $\mapsto \text{convert}(\nu($ `%a` $), \tau_2)]$ |
 | Select | `%r` $=$ `select %c, %t, %f` | $\nu' = \nu[$ `%r` $\mapsto \text{ite}(\nu($ `%c` $), \nu($ `%t` $), \nu($ `%f` $))]$ |
 | Getelementptr | `%r` $=$ `getelementptr` $\tau$, `%p, %idx` | $\nu' = \nu[$ `%r` $\mapsto \text{gep}(\nu($ `%p` $), \nu($ `%idx` $))]$ |
@@ -39,9 +39,9 @@ To further formalize these rules, we define the semantic mapping $⟦ \cdot ⟧$
 | `udiv` | $\div_u$ |
 | `sdiv` | $\div_s$ |
 | `fdiv` | $\div_f$ |
-| `urem` | $\\%_u$ |
-| `srem` | $\\%_s$ |
-| `frem` | $\\%_f$ |
+| `urem` | %u |
+| `srem` | %s |
+| `frem` | %f |
 | `and` | $\land$ |
 | `or` | $\lor$ |
 | `xor` | $\oplus$ |
