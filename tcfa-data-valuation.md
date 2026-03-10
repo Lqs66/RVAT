@@ -8,9 +8,9 @@ Table 1 defines the update rules of TCFA data valuation $\nu$. Here, $\nu[k \map
 
 ## Semantic Mappings
 
-To further formalize these rules, we define the semantic mapping $\llbracket \cdot \rrbracket$ for binary operators ($op$) and comparison predicates ($cond$) as follows.
+To further formalize these rules, we define the semantic mapping $⟦ \cdot ⟧$ for binary operators ($op$) and comparison predicates ($cond$) as follows.
 
-### Binary Operators $\llbracket op \rrbracket$
+### Binary Operators $⟦ op ⟧$
 
 | LLVM Instruction | Semantic Operator |
 |:---:|:---:|
@@ -23,9 +23,9 @@ To further formalize these rules, we define the semantic mapping $\llbracket \cd
 | `udiv` | $\div_u$ |
 | `sdiv` | $\div_s$ |
 | `fdiv` | $\div_f$ |
-| `urem` | $\mathop{\%}_u$ |
-| `srem` | $\mathop{\%}_s$ |
-| `frem` | $\mathop{\%}_f$ |
+| `urem` | $\\%_u$ |
+| `srem` | $\\%_s$ |
+| `frem` | $\\%_f$ |
 | `and` | $\land$ |
 | `or` | $\lor$ |
 | `xor` | $\oplus$ |
@@ -33,7 +33,7 @@ To further formalize these rules, we define the semantic mapping $\llbracket \cd
 | `lshr` | $\gg_l$ |
 | `ashr` | $\gg_a$ |
 
-### Comparison Predicates $\llbracket cond \rrbracket$
+### Comparison Predicates $⟦ cond ⟧$
 
 | LLVM Predicate | Semantic Operator |
 |:---:|:---:|
@@ -101,4 +101,4 @@ $\text{alloc}(\text{sizeof}(\tau))$ reserves a contiguous memory block of the si
 
 ---
 
-> **Note:** Function calls (`call`) are handled as external invocations and are discussed separately in the [Implementation Section](#implementation).
+> **Note:** Function calls (`call`) are handled as external invocations and are discussed separately in the Implementation Section.
