@@ -52,11 +52,11 @@ AP_ACRO_P1:
 
     - pname: roll_angle
       cname: roll_angle
-      file: ../../ArduCopter/mode_acro.cpp
-      line: 138
-      column: null
-      field: roll_angle + 0
-      scope: stack
+      file: ../../libraries/AP_Math/AP_Math.cpp
+      line: 304
+      column: 9
+      field: null
+      scope: register
       type: i32
 
     - pname: roll_correction
@@ -205,7 +205,7 @@ AP_ZIGZAG_P1:
   LLVM_IR: verifyDataBase/ir_and_elf/arducopter_sitl_pi64.ll
   call_depth: 3
   entrypoints:
-    - _ZN10ModeZigZag14manual_controlEv
+    - _ZN10ModeZigZag3runEv
   isTime: false
   params:
     - id: 0
@@ -213,13 +213,13 @@ AP_ZIGZAG_P1:
       value: copter + 36544
   queries:
     - pname: throttle_stick
-      cname: channel_throttle->get_control_in()
-      file: ../../ArduCopter/mode_zigzag.cpp
-      line: 309
-      column: 76
-      field: null
-      scope: register
-      type: i16
+      cname: throttle_control
+      file: ../../ArduCopter/Attitude.cpp
+      line: 60
+      column: null
+      field: throttle_control + 0
+      scope: stack
+      type: float
 
     - pname: PILOT_SPEED_UP
       cname: g.pilot_speed_up
