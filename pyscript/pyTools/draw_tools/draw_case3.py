@@ -154,6 +154,11 @@ def plot_case3_roll_figure(data, output_dir):
                 roll_turning_point = time_segment[i]
                 print(f"  Roll turning point found at: {roll_turning_point:.2f}s, Roll change: {roll_diffs[i]:.2f} deg")
                 break
+
+    if roll_turning_point is not None:
+        print(f"  Red-gray boundary time: {roll_turning_point:.2f}s")
+    else:
+        print("  Red-gray boundary time: not found")
     
     # Draw background regions with three colors
     if param_change_time is not None:
@@ -326,6 +331,11 @@ def plot_case3_pitch_figure(data, output_dir):
                 pitch_turning_point = time_segment[i]
                 print(f"  Pitch turning point found at: {pitch_turning_point:.2f}s, Pitch change: {pitch_diffs[i]:.2f} deg")
                 break
+
+    if pitch_turning_point is not None:
+        print(f"  Red-gray boundary time: {pitch_turning_point:.2f}s")
+    else:
+        print("  Red-gray boundary time: not found")
     
     # Draw background regions with three colors
     if param_change_time is not None:

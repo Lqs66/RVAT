@@ -92,7 +92,18 @@ def draw(data_series, timestamps=None, threshold=0.1, output_name='verifyDataBas
     
     ax.axhspan(ymin=threshold, ymax=fill_max, color='#e74c3c', alpha=0.15, lw=0, zorder=0)
     ax.axhline(y=threshold, color='#c0392b', linestyle='--', linewidth=1.5, 
-               label=f'COM_RC_LOSS_T', zorder=2)
+               label=f'Safety Threshold COM_RC_LOSS_T', zorder=2)
+    
+    # Add label pointing to the red dashed line
+    # ax.annotate('Safety threshold COM_RC_LOSS_T', 
+    #             xy=(x[-1] * 0.7, threshold), 
+    #             xytext=(x[-1] * 0.7, threshold * 1.15),
+    #             fontsize=12, 
+    #             ha='center',
+    #             color='#c0392b',
+    #             bbox=dict(boxstyle='round,pad=0.5', facecolor='#ffe6e6', edgecolor='#c0392b', linewidth=1.5),
+    #             arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0', color='#c0392b', lw=1.5, relpos=(0.5, 0)),
+    #             zorder=3)
 
     ax.set_xlabel('Time (s)', fontsize=15, fontweight='bold')
     ax.set_ylabel('Interval (s)', fontsize=15, fontweight='bold')

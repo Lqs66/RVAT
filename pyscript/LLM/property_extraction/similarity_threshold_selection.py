@@ -61,7 +61,7 @@ def plot_threshold_selection():
 
     sns.set_theme(style="ticks", font="serif", rc={"font.serif": ["Times New Roman", "DejaVu Serif", "serif"]})
     
-    fig, ax = plt.subplots(figsize=(12, 5.5))
+    fig, ax = plt.subplots(figsize=(12, 4.5))
     
     # Get seaborn default colors
     seaborn_colors = sns.color_palette()
@@ -91,7 +91,7 @@ def plot_threshold_selection():
     ax.annotate(f'ArduPilot Optimal\n$\\mathbf{{\\theta}}$ = {ardupilot_optimal_threshold}\nScore = {ardupilot_optimal_silhouette:.4f}',
                 xy=(ardupilot_optimal_threshold, ardupilot_optimal_silhouette),
                 xytext=(ardupilot_optimal_threshold - 0.09, ardupilot_optimal_silhouette - 0.15),
-                fontsize=18, fontweight='bold', ha='center', va='bottom',
+                fontsize=12, fontweight='bold', ha='center', va='bottom',
                 bbox=dict(boxstyle='round,pad=0.3', facecolor=color_ardu, alpha=0.2, edgecolor=color_ardu),
                 arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=-0.1', 
                                color=color_ardu, lw=1.5))
@@ -100,7 +100,7 @@ def plot_threshold_selection():
     ax.annotate(f'PX4 Optimal\n$\\mathbf{{\\theta}}$ = {px4_optimal_threshold}\nScore = {px4_optimal_silhouette:.4f}',
                 xy=(px4_optimal_threshold, px4_optimal_silhouette),
                 xytext=(px4_optimal_threshold - 0.01, px4_optimal_silhouette - 0.4),
-                fontsize=18, fontweight='bold', ha='center', va='bottom',
+                fontsize=12, fontweight='bold', ha='center', va='bottom',
                 bbox=dict(boxstyle='round,pad=0.3', facecolor=color_px4, alpha=0.2, edgecolor=color_px4),
                 arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=-0.1', 
                                color=color_px4, lw=1.5))
