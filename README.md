@@ -1,4 +1,4 @@
-# RVAT: Detecting Logic Vulnerabilities in Robotic Vehicles through Timed-Automata-based Testing
+# RVAT: Detecting Logic Vulnerabilities in Robotic Vehicles through Timed-Automata-based Simulation
 
 **RVAT** (Robotic Vehicle Automata-based Testing) is a comprehensive framework for testing of flight control software. This project provides automated tools for property specification extraction, code analysis, model generation, and testing of flight control systems including ArduPilot and PX4.
 
