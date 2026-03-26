@@ -19,6 +19,7 @@
   - [Environment Configuration](#environment-configuration)
 - [Build](#build)
 - [Quick Start](#quick-start)
+- [Reproduce the Figure Results](#reproduce-the-figure-results)
 - [Usage](#usage)
   - [Global Setup (Execute Once)](#global-setup-execute-once)
   - [Property Testing Workflow](#property-testing-workflow)
@@ -216,6 +217,19 @@ Execute testing for the specified property:
 ```bash
 ./run_verify.sh -u verify
 ```
+
+## Reproduce the Figure Results
+
+| Figure | Command | Data |
+| --- | --- | --- |
+| Figure 2 | `python pyscript/LLM/property_extraction/similarity_threshold_selection.py` | `pyscript/LLM/property_extraction/` |
+| Figure 3 (a) | `python pyscript/initializer/plotBlockSizeCDF.py` | `verifyDataBase/model_inputs/times/` |
+| Figure 3 (b) | `python pyscript/initializer/plotCoverageLinechart.py` | `verifyDataBase/model_inputs/times/` |
+| Figure 4 (a) | `python pyscript/pyTools/draw_tools/draw_fs_time_series.py` | `verifyDataBase/draw_datas/` |
+| Figure 4 (b) | `python /home/lqs66/RVAT/pyscript/pyTools/draw_tools/manual_control_setpoint_plot.py` | `verifyDataBase/draw_datas/case_1_manual_control_setpoint.csv` |
+| Figure 5 | `python pyscript/pyTools/draw_tools/draw_case2_failsafe_on.py` | `verifyDataBase/draw_datas/case2_failsafe_on.bin` |
+| Figure 6 | `python pyscript/pyTools/draw_tools/draw_case2.py` | `verifyDataBase/draw_datas/case2.bin` |
+| Figure 7 (a-b) | `python pyscript/pyTools/draw_tools/draw_case3.py` | `verifyDataBase/draw_datas/case3_roll/pitch.bin` |
 
 ## Usage
 
