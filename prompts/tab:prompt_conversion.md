@@ -5,6 +5,18 @@ You are an expert in Temporal Logic (TL) with years of experience in formal veri
 
 ---
 
+## Policy Constraint Preservation
+LLMs may omit some policy constraints during extraction, which can lead to over-simplified policy descriptions and formulas. To avoid this issue, you must preserve all policy constraints expressed in the given text segment when deriving the UPPAAL-TCTL formula.
+
+These policy constraints include:
+1. **Configuration constraints**: constraints on system states, modes, parameters, thresholds, or enabling conditions.
+2. **Behavioral constraints**: required or forbidden system behaviors.
+3. **Timing constraints**: deadlines, durations, time bounds, or ordering requirements.
+
+Do not abstract, weaken, or omit these constraints. If the text contains multiple independent policies, extract them separately and generate one formula for each policy.
+
+---
+
 ## UPPAAL-TCTL Syntax
 
 ```
