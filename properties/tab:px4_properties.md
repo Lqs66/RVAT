@@ -265,7 +265,7 @@ This document lists all specifications and properties discovered by RVAT for PX4
     <td class="tg-0lax">PX.GPS.FS2</td>
     <td class="tg-0lax">If the GPS failsafe is triggered and a remote controller is available, then the flight mode must be changed to ALTITUDE mode.</td>
     <td class="tg-0lax">(curr_mode == POSITION and battery_ok and failsafe_start and gps_fail and rc_available) --&gt; mode == ALTITUDE</td>
-    <td class="tg-0lax">satisfied</td>
+    <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
   </tr>
@@ -273,7 +273,7 @@ This document lists all specifications and properties discovered by RVAT for PX4
     <td class="tg-0lax">PX.GPS.FS3</td>
     <td class="tg-0lax">If a GPS failsafe occurs while the RC link is lost, then the system shall automatically transition to LAND mode.</td>
     <td class="tg-0lax">(curr_mode == POSITION and battery_ok and failsafe_start and gps_fail and rc_lost) --&gt; mode == LAND</td>
-    <td class="tg-0lax">satisfied</td>
+    <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
   </tr>
