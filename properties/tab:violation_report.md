@@ -3,17 +3,6 @@
 This document summarizes the policies that have been reported to the upstream projects.
 Because several policies are closely related or concern the same subsystem, documentation page, or implementation behavior, they were reported together in the same GitHub issue or pull request. As a result, multiple policy IDs may share the same report link.
 
-## Notes
-
-* `ID` denotes the policy identifier used in our study.
-* `Link` points to the corresponding upstream GitHub issue or pull request where the policy was reported.
-* `State` records the current status of the report:
-
-  * `confirmed`: the issue has been acknowledged or confirmed by the maintainers.
-  * `fixed`: the issue has been addressed through a pull request or documentation update.
-  * `pending`: the issue has been reported but has not yet been confirmed or resolved.
-* Multiple policies may appear under the same GitHub issue or pull request. This is intentional: related policies were grouped into a single report to avoid duplicate discussions and to help maintainers review related problems together.
-
 ## Full Policy Tracking Table
 
 | ID             | Link                                                    | State     |
