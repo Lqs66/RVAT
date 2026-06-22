@@ -23,8 +23,8 @@ This document lists all specifications and properties discovered by RVAT for Ard
   <tr>
     <td class="tg-baqh" rowspan="6">RTL</td>
     <td class="tg-0lax">AP_RTL_P1</td>
-    <td class="tg-0lax">If the mode is set to RTL, then the return target altitude must be greater than or equal to its current altitude.</td>
-    <td class="tg-0lax">mode == RTL --&gt; target_alt &gt;= curr_alt</td>
+    <td class="tg-0lax">If the vehicle is in RTL mode and no RTL cone or altitude fence limit applies, then the target return altitude shall be at least the greater of the current altitude plus RTL_CLIMB_MIN, RTL_ALT_M, and the minimum RTL altitude.</td>
+    <td class="tg-0lax">(mode == RTL and RTL_CONE_SLOPE == 0 and no_altitude_fence) --> target_alt >= max(curr_alt + RTL_CLIMB_MIN, RTL_ALT_M, 30cm)</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -47,8 +47,8 @@ This document lists all specifications and properties discovered by RVAT for Ard
   </tr>
   <tr>
     <td class="tg-0lax">AP_RTL_P3</td>
-    <td class="tg-0lax">If during RTL, WPNAV_RFND_USE is 1, and the rangefinder is available, then the rangefinder is used instead of the terrain database as alt type.</td>
-    <td class="tg-0lax">(mode == RTL and WPNAV_RFND_USE == 1 and rangefinder_available == true) --&gt; alt_type == rangefinder</td>
+    <td class="tg-0lax">During RTL, if terrain-based RTL altitude is enabled, WP_RFND_USE is set to 1, and the rangefinder is healthy and within range, then the rangefinder is used instead of the terrain database as the altitude reference.</td>
+    <td class="tg-0lax">(mode == RTL and RTL_ALT_TYPE == Terrain and WP_RFND_USE == 1 and rangefinder_healthy == true and target_alt_within_rangefinder_range == true) --> alt_ref == rangefinder</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -96,8 +96,8 @@ This document lists all specifications and properties discovered by RVAT for Ard
   </tr>
   <tr>
     <td class="tg-0lax">AP_LAND_P1</td>
-    <td class="tg-0lax">If the drone has landed and the motors are in the idle state, then the motors are disarmed.</td>
-    <td class="tg-0lax">(landed and motors_state == idle) --&gt; disarmed</td>
+    <td class="tg-0lax">If the vehicle has landed in Land mode and the pilot throttle is at minimum, then the motors shall shut down and the vehicle shall disarm.</td>
+    <td class="tg-0lax">(mode == LAND and landed_detected and throttle_min) --> disarmed</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -264,8 +264,8 @@ This document lists all specifications and properties discovered by RVAT for Ard
   <tr>
     <td class="tg-baqh" rowspan="3">DRIFT</td>
     <td class="tg-0lax">AP_DRIFT_P1</td>
-    <td class="tg-0lax">In DRIFT mode, if the throttle stick is at the lowest position, then the motors shall spin at MOT_SPIN_ARMED.</td>
-    <td class="tg-0lax">throttle_input == 0 --&gt; motors_spin_rate == MOT_SPIN_ARMED</td>
+    <td class="tg-0lax">In Drift mode, if the pilot puts the throttle completely down, then the motors shall go to their minimum rate MOT_SPIN_MIN.</td>
+    <td class="tg-0lax">(mode == DRIFT and throttle_input == 0) --> motors_spin_rate == MOT_SPIN_MIN</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -423,8 +423,8 @@ This document lists all specifications and properties discovered by RVAT for Ard
   </tr>
   <tr>
     <td class="tg-0lax">AP_BATTFS_P1</td>
-    <td class="tg-0lax">In battery failsafe, if the vehicle is in Stabilize or Acro mode and either the throttle is at zero or the vehicle has landed, then the drone shall disarm.</td>
-    <td class="tg-0lax">(battery_failsafe_triggered and (mode == STABILIZE or mode == ACRO) and armed and (throttle_input == 0 or landed)) --&gt; disarmed</td>
+    <td class="tg-0lax">In battery failsafe, the vehicle shall disarm if it is armed and either it is in Stabilize/Acro mode with throttle at zero, or it has landed.</td>
+    <td class="tg-0lax">(battery_failsafe_triggered and armed and (((mode == STABILIZE or mode == ACRO) and throttle_input == 0) or landed)) --> disarmed</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>

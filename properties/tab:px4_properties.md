@@ -56,15 +56,15 @@ This document lists all specifications and properties discovered by RVAT for PX4
   </tr>
   <tr>
     <td class="tg-0lax">PX_RTL_P1</td>
-    <td class="tg-0lax">If the vehicle is in RTL mode, then the target altitude shall never be lower than the current altitude during the return phase.</td>
-    <td class="tg-0lax">mode == RTL --&gt; return_alt &gt;= curr_alt</td>
+    <td class="tg-0lax">For non-mission-path RTL return types, during the pre-arrival return phase, the computed return altitude shall not be lower than the current altitude.</td>
+    <td class="tg-0lax">(mode == RTL and rtl_phase == RETURN_TO_DESTINATION and  RTL_TYPE != MISSION_PATH) --> return_alt >= curr_alt</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
   </tr>
   <tr>
     <td class="tg-0lax">PX_RTL_P2</td>
-    <td class="tg-0lax">If RTL_CONE_ANG is 0, then return target alt must be greater than or euqal to RTL_RETURN_ALT. </td>
+    <td class="tg-0lax">If RTL_CONE_ANG is 0, then return target alt must be greater than or equal to RTL_RETURN_ALT. </td>
     <td class="tg-0lax">RTL_CONE_ANG == 0 --&gt; return_alt &gt;= RTL_RETURN_ALT</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -72,8 +72,8 @@ This document lists all specifications and properties discovered by RVAT for PX4
   </tr>
   <tr>
     <td class="tg-0lax">PX_RTL_P3</td>
-    <td class="tg-0lax">If RTL_CONE_ANG is 90,then the target return altitude must be greater than or equal to either the current altitude or RTL_DESCEND_ALT.</td>
-    <td class="tg-0lax">RTL_CONE_ANG == 90 --&gt; (return_alt &gt;= RTL_DESCEND_ALT or return_alt &gt;= curr_alt)</td>
+    <td class="tg-0lax">If RTL_CONE_ANG is 90, then the target return altitude shall be at least the higher altitude between the current altitude and RTL_DESCEND_ALT.</td>
+    <td class="tg-0lax">RTL_CONE_ANG == 90 --> (return_alt >= curr_alt and return_alt >= RTL_DESCEND_ALT)</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
