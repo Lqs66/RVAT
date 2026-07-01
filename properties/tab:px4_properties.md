@@ -247,8 +247,8 @@ This document lists all specifications and properties discovered by RVAT for PX4
   <tr>
     <td class="tg-baqh" rowspan="4">Failsafe</td>
     <td class="tg-0lax">PX_RCFS_P1</td>
-    <td class="tg-0lax">The RC failsafe mode is triggered only when the physical link is lost and the RC message update time exceeds COM_RC_LOSS_T.</td>
-    <td class="tg-0lax">A[] (RC_failsafe == true imply RC_physical_link_loss and rc_update_time &gt; COM_RC_LOSS_T)</td>
+    <td class="tg-0lax">As long as the physical RC link remains healthy, the drone should not enter RC-loss failsafe solely because the RC update time exceeds COM_RC_LOSS_T.</td>
+    <td class="tg-0lax">A[] ((rc_link_ok && rc_update_time > COM_RC_LOSS_T) imply !rc_loss_failsafe)</td> 
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
