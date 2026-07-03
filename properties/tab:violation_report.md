@@ -23,4 +23,3 @@ Because several policies are closely related or concern the same subsystem, docu
 | PX_POSITION_P2 | https://github.com/PX4/PX4-Autopilot/issues/24930       | confirmed |
 | PX_RCFS_P1     | https://github.com/PX4/PX4-Autopilot/issues/25045       | fixed     |
 | PX_BRAKE_P1    | https://github.com/PX4/PX4-Autopilot/issues/24937       | pending   |
-| A.RC.FS1       | https://github.com/ArduPilot/ardupilot/issues/31798     | confirmed |
