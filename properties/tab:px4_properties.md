@@ -23,7 +23,7 @@ This document lists all specifications and properties discovered by RVAT for PX4
 <tbody>
   <tr>
     <td class="tg-baqh" rowspan="7">RTL</td>
-    <td class="tg-0lax">PX.RTL1</td>
+    <td class="tg-0lax">PX.RTL1<br>(outdated-doc policy)</td>
     <td class="tg-0lax">If the current altitude is below RTL_RETURN_ALT, then the drone increases the altitude to at least the RTL_RETURN_ALT value.</td>
     <td class="tg-0lax">curr_alt &lt; RTL_RETURN_ALT --&gt; target_alt &gt;= RTL_RETURN_ALT</td>
     <td class="tg-0lax">unsatisfied</td>
@@ -129,7 +129,7 @@ This document lists all specifications and properties discovered by RVAT for PX4
     <td class="tg-0lax">satisfied</td>
   </tr>
   <tr>
-    <td class="tg-0lax">PX.ORBIT5</td>
+    <td class="tg-0lax">PX.ORBIT5<br>(outdated-doc policy)</td>
     <td class="tg-0lax">The maximum radius output must be 100 meters.</td>
     <td class="tg-0lax">A[] (is_outputting imply circle_radius &lt;= 100)</td>
     <td class="tg-0lax">unsatisfied</td>
