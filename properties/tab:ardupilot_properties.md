@@ -62,7 +62,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
     <td class="tg-0lax">satisfied</td>
   </tr>
   <tr>
-    <td class="tg-0lax">A.RTL1</td>
+    <td class="tg-0lax">A.RTL1<br>(outdated-doc policy)</td>
     <td class="tg-0lax">If the current altitude is less than RTL_ALT, then altitude must be increased until the altitude is greater or equal to the RTL_ALT.</td>
     <td class="tg-0lax">curr_alt &lt; RTL_ALT --&gt; target_alt &gt;= RTL_ALT</td>
     <td class="tg-0lax">unsatisfied</td>
@@ -254,7 +254,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
   </tr>
   <tr>
     <td class="tg-baqh">BRAKE</td>
-    <td class="tg-0lax">A.BRAKE1</td>
+    <td class="tg-0lax">A.BRAKE1<br>(non-doc-derived)</td>
     <td class="tg-0lax">When the vehicle is in BRAKE mode, it must stop within k seconds. (in PGFuzz, k=12.7s)</td>
     <td class="tg-0lax">mode_is_BRAKE --&gt; stop_time &lt;= 12.7s</td>
     <td class="tg-0lax">satisfied</td>
