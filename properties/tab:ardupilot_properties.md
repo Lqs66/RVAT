@@ -148,7 +148,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
   <tr>
     <td class="tg-0lax">AP_ALTHOLD_P1</td>
     <td class="tg-0lax">If the throttle stick is pushed upward in AltHold mode, then the vehicle's climb rate must be capped at the PILOT_SPEED_UP value.</td>
-    <td class="tg-0lax">(mode == ALT_HOLD and throttle_stick &gt;= 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
+    <td class="tg-0lax">(mode == ALT_HOLD and throttle_stick &gt; 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -181,7 +181,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
   <tr>
     <td class="tg-0lax">AP_POSHOLD_P3</td>
     <td class="tg-0lax">If the throttle stick is advanced upward in PosHold mode, then the vehicle's vertical ascent rate must be capped by the PILOT_SPEED_UP parameter.</td>
-    <td class="tg-0lax">(mode == PosHold and throttle_stick &gt;= 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
+    <td class="tg-0lax">(mode == PosHold and throttle_stick &gt; 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -298,7 +298,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
   <tr>
     <td class="tg-0lax">AP_LOITER_P1</td>
     <td class="tg-0lax">If the throttle stick is advanced upward in Loiter mode, then the vehicle's ascent rate must be restricted to a maximum of the PILOT_SPEED_UP parameter.</td>
-    <td class="tg-0lax">(mode == LOITER and throttle_stick &gt;= 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
+    <td class="tg-0lax">(mode == LOITER and throttle_stick &gt; 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -332,7 +332,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
     <td class="tg-baqh">SPORT</td>
     <td class="tg-0lax">A.SPORT1</td>
     <td class="tg-0lax">In SPORT mode, if the throttle stick is moved upward, then the vehicle must climb at a rate that does not exceed the PILOT_SPEED_UP limit.</td>
-    <td class="tg-0lax">(mode == SPORT and throttle_stick &gt;= 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
+    <td class="tg-0lax">(mode == SPORT and throttle_stick &gt; 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
     <td class="tg-0lax">satisfied</td>
@@ -375,7 +375,7 @@ This document lists all specifications and properties discovered by RVAT for Ard
     <td class="tg-baqh">ZIGZAG</td>
     <td class="tg-0lax">AP_ZIGZAG_P1</td>
     <td class="tg-0lax">If the throttle stick is pushed upward in ZigZag mode, then the aircraft's climb speed must be limited to the PILOT_SPEED_UP maximum.</td>
-    <td class="tg-0lax">(mode == ZigZag and throttle_stick &gt;= 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
+    <td class="tg-0lax">(mode == ZigZag and throttle_stick &gt; 0) --&gt; (climb_rate &gt; 0 and climb_rate &lt;= PILOT_SPEED_UP)</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">unsatisfied</td>
     <td class="tg-0lax">satisfied</td>
