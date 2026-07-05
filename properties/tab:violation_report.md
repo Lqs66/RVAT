@@ -27,4 +27,4 @@ Because several policies are closely related or concern the same subsystem, docu
 
 # Verification Note
 
-As of July 5, 2026, we verified that `PX.ORBIT3` and `PX.ORBIT4` have been fixed by PX4 pull request `#26116`, which fixes issue `#26107` and has been merged into the PX4 main branch. Therefore, their states have been updated from `pending` to `fixed`.
+As of July 7, 2026, we verified that `PX.ORBIT3` and `PX.ORBIT4` have been fixed by PX4 pull request `#26116`, which fixes issue `#26107` and has been merged into the PX4 main branch. Therefore, their states have been updated from `pending` to `fixed`.
