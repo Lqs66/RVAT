@@ -218,6 +218,12 @@ Execute testing for the specified property:
 ./run_verify.sh -u verify
 ```
 
+To test all policies in a batch with an inlining depth of 3, 4, or 5 (default: 3):
+
+```bash
+python run_testing.py --depth 3/4/5
+```
+
 ## Reproduce the Figure Results
 
 | Figure | Command | Data |

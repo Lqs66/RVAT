@@ -12,4 +12,6 @@ This directory contains all properties and specifications discovered by RVAT for
 
 ### Analysis
 
+- **[Testing Results](tab%3Atesting_results.md)** - Results, model sizes, and testing times at depths 3, 4, and 5
+
 - **[Violation Report](tab%3Aviolation_report.md)** - Detailed violation reports for discovered properties
