@@ -1,6 +1,6 @@
 # Testing Results
 
-✓: no violation found; ✗: violation found; Timeout: time limit reached (shown in the Time column); Incomplete: analysis not completed; —: no result or unavailable data. Time (s) uses `testing_time_s`, rounded to two decimal places. First violation depth refers to tested depths 3/4/5.
+✓: no violation found; ✗: violation found; Timeout: time limit reached (shown in the Time column); —: inconclusive due to timeout (in Result) or no violation detected across tested depths 3, 4, and 5 (in First violation depth). Time (in seconds) is rounded to two decimal places.
 
 <table>
 <thead>
