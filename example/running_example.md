@@ -220,28 +220,3 @@ The transition from $L_3$ to $L_r$ executes `x = y - 1` followed by `y = x * 10`
 In [Figure 10](#figure-10) and [Figure 11](#figure-11), green labels show the data constraints $\psi$ and blue labels show the instruction sequences $\sigma$. 
 At this stage every transition has $\phi=\mathrm{true}$ and $R=\emptyset$, so the figures omit these labels. 
 In the subsequent timing stage, RVat uses execution time bounds estimated from hardware measurements to set the time constraints on transitions and the clock invariants on locations.
-
-<!-- 草稿备忘
-在上述定义下，公式被违反，当且仅当存在一个可达状态使得：
-```text
-rc_link_ok && rc_update_time > COM_RC_LOSS_T && rc_loss_failsafe
-```
-
-
-
-
-
-
-
-
-
-
-
-
-HealthAndArmingChecks::update()——以这个作为入口函数
-  - RcAndDataLinkChecks::checkAndReport()
-
-如何抽象源码中的时间调用，在不向外部函数传递 UPPAAL 时钟的情况下，探索不同分支并检查时间相关属性？
-
-    考虑到 lli 仅负责解释执行 LLVM IR，无法获知目标机上的准确执行时间，且 UPPAAL 的时钟变量不支持作为普通数据变量按值传递给外部函数，lli 在执行 get_time()、hrt_elapsed_time() 等时间调用时无法获取精确的当前时间戳。为此，RVat 在 lli 执行这类外部调用时，依据函数返回类型显式枚举其合法最小值和最大值作为候选返回值，并通过外部调用接口回写至 TCFA 的数据变量，以此触发源码中依赖该返回值的不同控制流分支。TCFA 中的时间流逝则受 TCFA 的时钟约束控制，policy对应的 TCTL 公式中的时间条件中的时间条件通过全局时钟 T_global 检查。
--->
