@@ -220,3 +220,23 @@ The transition from $L_3$ to $L_r$ executes `x = y - 1` followed by `y = x * 10`
 In [Figure 10](#figure-10) and [Figure 11](#figure-11), green labels show the data constraints $\psi$ and blue labels show the instruction sequences $\sigma$. 
 At this stage every transition has $\phi=\mathrm{true}$ and $R=\emptyset$, so the figures omit these labels. 
 In the subsequent timing stage, RVat uses execution time bounds estimated from hardware measurements to set the time constraints on transitions and the clock invariants on locations.
+
+### Adding timing constraints
+
+RVat incorporates the estimated execution-time bounds into the time-unspecified TCFA by adding transition guards, location invariants, and clock resets. The BCET specifies the earliest time at which a transition may execute its instruction sequence, whereas the WCET limits the time spent at the source location. Together, these constraints restrict the modeled execution time of the instruction sequence to the estimated interval.
+
+To illustrate this step, consider the time-unspecified TCFA in [Figure 10](#figure-10) and suppose that the execution-time intervals for `x = 0` and `x = y - 1; y = x * 10` are $[1,2]$ and $[2,4]$ time units, respectively. [Figure 12](#figure-12) shows the resulting TCFA with timing constraints. For this example, a clock $t$, initialized to zero, is reused to measure the time spent at each location and reset on every transition.
+
+<a id="figure-12"></a>
+
+![TCFA with timing constraints](images/tcfa.svg)
+
+*Figure 12. TCFA obtained by adding timing constraints to the automaton in Figure 10.*
+
+As shown in [Figure 12](#figure-12), the transition from `init` to $L_2$ is assigned the time constraint $\phi=(t\geq 1)$, and its source location receives the invariant $I(\mathrm{init})=(t\leq 2)$. 
+Since the original data constraint is $\psi=\mathrm{true}$, the resulting guard is simply $g=(t\geq 1)$. 
+The transition therefore executes `x = 0` after between one and two time units at `init` and resets $t$ to zero, represented by the reset set $R=\{t\}$.
+
+Similarly, the transition from $L_3$ to $L_r$ is assigned the time constraint $\phi=(t\geq 2)$ and the reset set $R=\{t\}$, while $L_3$ receives the invariant $I(L_3)=(t\leq 4)$. 
+The clock is reset on the incoming transition from $L_2$ to $L_3$, so these bounds measure the time spent at $L_3$. 
+Upon taking the outgoing transition, the model executes `x = y - 1` followed by `y = x * 10` and resets the clock. 
