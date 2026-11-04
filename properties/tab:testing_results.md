@@ -1,6 +1,6 @@
 # Testing Results
 
-✓: no violation found; ✗: violation found; Timeout: testing time limit reached (shown in the Testing time column); —: inconclusive due to timeout (in Result) or no violation detected across tested depths 3, 4, and 5 (in First violation depth). Modeling time (`model_time_s`) and testing time (`testing_time_s`) are reported separately, in seconds, and rounded to two decimal places. Testing time excludes modeling time.
+✓: no violation found; ✗: violation found; Timeout: testing time limit reached (shown in the Testing time column); —: inconclusive due to timeout (in Result) or no violation detected across tested depths 3, 4, and 5 (in First violation depth). Modeling time and testing time are reported in seconds to two decimal places.
 
 <table>
 <thead>
