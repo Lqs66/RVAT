@@ -95,11 +95,9 @@ The candidate targets at this call site include the following.
 }
 ```
 
-The following pseudocode illustrates the expansion in [Figure 3](#figure-3) by comparing the function pointer of the virtual call with each candidate function's address. Here, `resolve_virtual_target` denotes obtaining the callee's code address, and `&Class::checkAndReport` denotes a candidate function's address.
+The following pseudocode illustrates the expansion in [Figure 3](#figure-3) by comparing the function pointer `fp` loaded for the virtual call with each candidate function's code address.
 
 ```cpp
-auto *check = _checks[i]
-
 if (fp == &RcAndDataLinkChecks::checkAndReport) {
     _rc_and_data_link_checks.RcAndDataLinkChecks::checkAndReport(_context, _reporter)
 } else if (fp == &ManualControlChecks::checkAndReport) {

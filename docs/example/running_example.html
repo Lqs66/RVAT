@@ -99,10 +99,8 @@ Control then continues with the statements after the original call.</p>
     ...
 }
 </code></pre>
-<p>The following pseudocode illustrates the expansion in <a href="#figure-3">Figure 3</a> by comparing the function pointer of the virtual call with each candidate function's address. Here, <code>resolve_virtual_target</code> denotes obtaining the callee's code address, and <code>&amp;Class::checkAndReport</code> denotes a candidate function's address.</p>
-<pre><code class="language-cpp">auto *check = _checks[i]
-
-if (fp == &amp;RcAndDataLinkChecks::checkAndReport) {
+<p>The following pseudocode illustrates the expansion in <a href="#figure-3">Figure 3</a> by comparing the function pointer <code>fp</code> loaded for the virtual call with each candidate function's code address.</p>
+<pre><code class="language-cpp">if (fp == &amp;RcAndDataLinkChecks::checkAndReport) {
     _rc_and_data_link_checks.RcAndDataLinkChecks::checkAndReport(_context, _reporter)
 } else if (fp == &amp;ManualControlChecks::checkAndReport) {
     _manual_control_checks.ManualControlChecks::checkAndReport(_context, _reporter)
