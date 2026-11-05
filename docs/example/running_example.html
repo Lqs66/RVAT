@@ -32,7 +32,7 @@
 </code></pre>
 <p>The formula requires that rc_loss_failsafe be false in every reachable state where the physical link is healthy and the RC update interval exceeds the threshold.
 To derive slicing criteria, RVat uses retrieval-augmented generation (RAG) to retrieve function definitions relevant to the policy and propose mappings from the formula to source code.
-Each criterion is a pair <span data-display="false" data-math="(var, loc)">(var, loc)</span> that identifies a program variable or expression and its source location.
+Each criterion is a pair <span data-display="false" data-math="(var, loc)">(var, loc)</span> that identifies a program variable and its source location.
 <a href="#table-1">Table 1</a> maps the formula variables to the slicing criteria.</p>
 <p><a id="table-1"></a></p>
 <p><strong>Table 1. Mapping from formula variables to slicing criteria</strong></p>
@@ -214,6 +214,7 @@ In the subsequent timing stage, RVat uses execution time bounds estimated from h
 <p>As shown in <a href="#figure-12">Figure 12</a>, the transition from <code>init</code> to <span data-display="false" data-math="L_2">L_2</span> is assigned the time constraint <span data-display="false" data-math="\phi=(t\geq 1)">\phi=(t\geq 1)</span>, and its source location receives the invariant <span data-display="false" data-math="I(\mathrm{init})=(t\leq 2)">I(\mathrm{init})=(t\leq 2)</span>.
 Since the original data constraint is <span data-display="false" data-math="\psi=\mathrm{true}">\psi=\mathrm{true}</span>, the resulting guard is simply <span data-display="false" data-math="g=(t\geq 1)">g=(t\geq 1)</span>.
 The transition therefore executes <code>x = 0</code> after between one and two time units at <code>init</code> and resets <span data-display="false" data-math="t">t</span> to zero, represented by the reset set <span data-display="false" data-math="R=\{t\}">R=\{t\}</span>.</p>
+<p>For the CBB location <span data-display="false" data-math="L_2">L_2</span>, we add the invariant <span data-display="false" data-math="I(L_2)=(t\leq0)">I(L_2)=(t\leq0)</span>. The incoming transition resets <span data-display="false" data-math="t">t</span> to zero, so no positive time may elapse at <span data-display="false" data-math="L_2">L_2</span>. The automaton immediately follows the outgoing transition whose data constraint is satisfied.</p>
 <p>Similarly, the transition from <span data-display="false" data-math="L_3">L_3</span> to <span data-display="false" data-math="L_r">L_r</span> is assigned the time constraint <span data-display="false" data-math="\phi=(t\geq 2)">\phi=(t\geq 2)</span> and the reset set <span data-display="false" data-math="R=\{t\}">R=\{t\}</span>, while <span data-display="false" data-math="L_3">L_3</span> receives the invariant <span data-display="false" data-math="I(L_3)=(t\leq 4)">I(L_3)=(t\leq 4)</span>.
 The clock is reset on the incoming transition from <span data-display="false" data-math="L_2">L_2</span> to <span data-display="false" data-math="L_3">L_3</span>, so these bounds measure the time spent at <span data-display="false" data-math="L_3">L_3</span>.
 Upon taking the outgoing transition, the model executes <code>x = y - 1</code> followed by <code>y = x * 10</code> and resets <span data-display="false" data-math="t">t</span>.</p>

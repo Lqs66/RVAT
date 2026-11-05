@@ -14,7 +14,7 @@ A[] ((rc_link_ok && rc_update_time > COM_RC_LOSS_T) imply !rc_loss_failsafe)
 
 The formula requires that rc_loss_failsafe be false in every reachable state where the physical link is healthy and the RC update interval exceeds the threshold.
 To derive slicing criteria, RVat uses retrieval-augmented generation (RAG) to retrieve function definitions relevant to the policy and propose mappings from the formula to source code.
-Each criterion is a pair \((var, loc)\) that identifies a program variable or expression and its source location.
+Each criterion is a pair \((var, loc)\) that identifies a program variable and its source location.
 [Table 1](#table-1) maps the formula variables to the slicing criteria.
 
 <a id="table-1"></a>
@@ -236,6 +236,8 @@ To illustrate this step, consider the time-unspecified TCFA in [Figure 10](#figu
 As shown in [Figure 12](#figure-12), the transition from `init` to $L_2$ is assigned the time constraint $\phi=(t\geq 1)$, and its source location receives the invariant $I(\mathrm{init})=(t\leq 2)$. 
 Since the original data constraint is $\psi=\mathrm{true}$, the resulting guard is simply $g=(t\geq 1)$. 
 The transition therefore executes `x = 0` after between one and two time units at `init` and resets $t$ to zero, represented by the reset set $R=\{t\}$.
+
+For the CBB location $L_2$, we add the invariant $I(L_2)=(t\leq0)$. The incoming transition resets $t$ to zero, so no positive time may elapse at $L_2$. The automaton immediately follows the outgoing transition whose data constraint is satisfied.
 
 Similarly, the transition from $L_3$ to $L_r$ is assigned the time constraint $\phi=(t\geq 2)$ and the reset set $R=\{t\}$, while $L_3$ receives the invariant $I(L_3)=(t\leq 4)$. 
 The clock is reset on the incoming transition from $L_2$ to $L_3$, so these bounds measure the time spent at $L_3$. 
