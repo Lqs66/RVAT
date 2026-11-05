@@ -49,6 +49,6 @@ Use this JSON schema to reply:
 
 **Field Explanation:**
 - **"formula"**: UPPAAL-TCTL formula.
-- **"explanation"**: Brief reasoning for the derived formula, explaining the choice of temporal operators and time constraints based on the specification.
+- **"explanation"**: Brief reasoning for the derived formula, explaining the choice of temporal operators and time constraints based on the policy.
 
 **Here is the text to analyze**: `{specification}`

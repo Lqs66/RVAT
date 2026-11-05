@@ -1,10 +1,10 @@
 # Prompt Template for Formula Correction
 
 ## Overview
-You are an expert in UPPAAL, proficient in analyzing the syntax and semantics of temporal logic formulas. You will receive a natural language description of a behavioral specification and a corresponding UPPAAL-TCTL formula.
+You are an expert in UPPAAL, proficient in analyzing the syntax and semantics of temporal logic formulas. You will receive a natural language description of a behavioral policy and a corresponding UPPAAL-TCTL formula.
 
 ## Input
-- **Behavioral specification**: `{description}`
+- **Behavioral policy**: `{description}`
 - **Corresponding UPPAAL-TCTL formula**: `{formula}`
 
 ---

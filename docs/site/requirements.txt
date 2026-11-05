@@ -1,0 +1,4 @@
+markdown-it-py>=2.2,<5
+mdit-py-plugins>=0.3,<1
+beautifulsoup4>=4.12,<5
+linkify-it-py>=2,<3

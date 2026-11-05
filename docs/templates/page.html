@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{DESCRIPTION}}">
+  <title>{{TITLE}} · RVAT</title>
+  <link rel="icon" href="{{ROOT}}assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ROOT}}assets/site.css">
+{{MATH_ASSETS}}
+  <script defer src="{{ROOT}}assets/site.js"></script>
+</head>
+<body class="{{BODY_CLASS}}">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{{ROOT}}index.html" aria-label="RVAT home">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-name">RVAT</span>
+        <span class="brand-caption">Research &amp; documentation</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">{{NAVIGATION}}</nav>
+    </div>
+  </header>
+  {{MAIN}}
+  <footer class="site-footer">
+    <span>RVAT · Robotic Vehicle Automata-based Testing</span>
+    <a href="https://github.com/Lqs66/RVAT">Source code ↗</a>
+  </footer>
+</body>
+</html>

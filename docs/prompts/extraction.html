@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Convert natural-language policies into UPPAAL-TCTL formulas.">
+  <title>Property Extraction · RVAT</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/site.css">
+
+  <script defer src="../assets/site.js"></script>
+</head>
+<body class="document-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="RVAT home">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-name">RVAT</span>
+        <span class="brand-caption">Research &amp; documentation</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation"><a href="../index.html">Home</a><a href="index.html" aria-current="page">Prompts</a><a href="../properties/index.html">Properties</a><a href="../example/running_example.html">Running Example</a><a href="../results/testing_results.html">Results</a><a href="https://github.com/Lqs66/RVAT">GitHub ↗</a></nav>
+    </div>
+  </header>
+  <div class="site-shell"><aside class="sidebar"><nav class="sidebar-group" aria-label="Prompts pages"><h2>Prompts</h2><ul><li><a href="index.html">Prompts</a></li><li><a href="extraction.html" aria-current="page">Property Extraction</a></li><li><a href="rag.html">RAG Slicing Criteria</a></li><li><a href="correction.html">Formula Correction</a></li></ul></nav></aside><main id="main-content" class="main-content"><header class="page-header"><p class="eyebrow">Prompts</p><h1>Property Extraction</h1><p class="page-description">Convert natural-language policies into UPPAAL-TCTL formulas.</p></header><article id="article" class="document-content">
+<h2 id="overview">Overview</h2>
+<p>You are an expert in Temporal Logic (TL) with years of experience in formal verification and testing. For each extracted piece of information, provide the corresponding UPPAAL-TCTL formula that represents it.</p>
+<hr/>
+<h2 id="policy-constraint-preservation">Policy Constraint Preservation</h2>
+<p>LLMs may omit some policy constraints during extraction, which can lead to over-simplified policy descriptions and formulas. To avoid this issue, you must preserve all policy constraints expressed in the given text segment when extracting information and deriving the corresponding UPPAAL-TCTL formula.</p>
+<p>These policy constraints include:</p>
+<ol>
+<li><strong>Configuration constraints</strong>: constraints on system states, modes, parameters, thresholds, or enabling conditions.</li>
+<li><strong>Behavioral constraints</strong>: required or forbidden system behaviors.</li>
+<li><strong>Timing constraints</strong>: deadlines, durations, time bounds, or ordering requirements.</li>
+</ol>
+<p>Do not abstract, weaken, or omit these constraints. If the text contains multiple independent policies, extract them separately and generate one formula for each policy.</p>
+<hr/>
+<h2 id="uppaal-tctl-syntax">UPPAAL-TCTL Syntax</h2>
+<pre><code>formula := A[] expr | E[] expr | A&lt;&gt; expr | E&lt;&gt; expr | expr → expr
+</code></pre>
+<h2 id="uppaal-tctl-semantics">UPPAAL-TCTL Semantics</h2>
+<ol>
+<li>
+<p><strong>UPPAAL strictly prohibits nesting of temporal operators</strong> (A[], A&lt;&gt;, E[], E&lt;&gt;, →). As a hard rule, <code>expr</code> must be a basic expression and must not contain any temporal operators. When generating formulas, enforce this restriction without exception.</p>
+</li>
+<li>
+<p><strong>Possibly</strong> (E&lt;&gt; p): There exists a path where expr p eventually holds.</p>
+</li>
+<li>
+<p><strong>Always</strong> (A[] p): expr p holds in all states along all paths.</p>
+</li>
+<li>
+<p><strong>Potentially Always</strong> (E[] p): There exists a path where expr p holds in all states.</p>
+</li>
+<li>
+<p><strong>Eventually</strong> (A&lt;&gt; p): Along all paths, expr p eventually holds.</p>
+</li>
+<li>
+<p><strong>Leads to</strong> (p → q): Whenever expr p holds, expr q will eventually hold along all paths.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="response-format">Response Format</h2>
+<p>Use this JSON schema to reply:</p>
+<pre><code class="language-json">{'formula': str, 'explanation': str}
+</code></pre>
+<p><strong>Field Explanation:</strong></p>
+<ul>
+<li><strong>"formula"</strong>: UPPAAL-TCTL formula.</li>
+<li><strong>"explanation"</strong>: Brief reasoning for the derived formula, explaining the choice of temporal operators and time constraints based on the policy.</li>
+</ul>
+<p><strong>Here is the text to analyze</strong>: <code>{specification}</code></p>
+</article></main><aside class="toc"><nav aria-label="On this page"><h2>On this page</h2><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#policy-constraint-preservation">Policy Constraint Preservation</a></li><li class="toc-level-2"><a href="#uppaal-tctl-syntax">UPPAAL-TCTL Syntax</a></li><li class="toc-level-2"><a href="#uppaal-tctl-semantics">UPPAAL-TCTL Semantics</a></li><li class="toc-level-2"><a href="#response-format">Response Format</a></li></ul></nav></aside></div>
+  <footer class="site-footer">
+    <span>RVAT · Robotic Vehicle Automata-based Testing</span>
+    <a href="https://github.com/Lqs66/RVAT">Source code ↗</a>
+  </footer>
+</body>
+</html>

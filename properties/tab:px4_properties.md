@@ -1,6 +1,6 @@
 # PX4 Properties Discovered by RVAT
 
-This document lists all specifications and properties discovered by RVAT for PX4.
+This document lists all policies and properties discovered by RVAT for PX4.
 
 ## Naming Convention
 
@@ -14,7 +14,7 @@ This document lists all specifications and properties discovered by RVAT for PX4
   <tr>
     <th class="tg-amwm">Mode</th>
     <th class="tg-1wig">ID</th>
-    <th class="tg-1wig">Specification Description</th>
+    <th class="tg-1wig">Policy Description</th>
     <th class="tg-0lax">UPPAAL Formula</th>
     <th class="tg-0lax">RVAT</th>
     <th class="tg-0lax">PGFuzz</th>

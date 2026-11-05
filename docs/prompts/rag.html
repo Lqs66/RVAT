@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Map property formulas to source code variables and slicing criteria.">
+  <title>RAG Slicing Criteria · RVAT</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.css" integrity="sha384-WwGtaC6ywCHxA5cstpj/3+xIZvTez8dq2IcBQaXRkenHZ7FVVq1ZROtURwfbtTlG" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.js" integrity="sha384-a1WQdjRj162i159OYq041X6I4K8NenkrI09LlPmiHg0YOb7CR+wJOraXwK9abpnE" crossorigin="anonymous"></script>
+  <script defer src="../assets/site.js"></script>
+</head>
+<body class="document-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="RVAT home">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-name">RVAT</span>
+        <span class="brand-caption">Research &amp; documentation</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation"><a href="../index.html">Home</a><a href="index.html" aria-current="page">Prompts</a><a href="../properties/index.html">Properties</a><a href="../example/running_example.html">Running Example</a><a href="../results/testing_results.html">Results</a><a href="https://github.com/Lqs66/RVAT">GitHub ↗</a></nav>
+    </div>
+  </header>
+  <div class="site-shell"><aside class="sidebar"><nav class="sidebar-group" aria-label="Prompts pages"><h2>Prompts</h2><ul><li><a href="index.html">Prompts</a></li><li><a href="extraction.html">Property Extraction</a></li><li><a href="rag.html" aria-current="page">RAG Slicing Criteria</a></li><li><a href="correction.html">Formula Correction</a></li></ul></nav></aside><main id="main-content" class="main-content"><header class="page-header"><p class="eyebrow">Prompts</p><h1>RAG Slicing Criteria</h1><p class="page-description">Map property formulas to source code variables and slicing criteria.</p></header><article id="article" class="document-content">
+<h2 id="overview">Overview</h2>
+<p>You are an expert in model checking and program slicing.</p>
+<p>Your task is to analyze a UPPAAL-TCTL formula and multiple source code snippet groups (each with code, start/end line numbers, and source file path) to identify slicing criteria corresponding to the formula.</p>
+<h2 id="input">Input</h2>
+<ul>
+<li><strong>UPPAAL-TCTL formula</strong>: <code>{formula}</code></li>
+<li><strong>Source Code Snippet Groups</strong>: <code>{code_snippet_list}</code></li>
+</ul>
+<h2 id="analysis-steps">Analysis Steps</h2>
+<ol>
+<li>
+<p>Parse the TCTL formula and extract all key variables/expressions.</p>
+</li>
+<li>
+<p>For each snippet group, scan the given lines in the specified file, focusing on multi-copter flight control semantics. Match formula terms by variable name similarity and semantic relevance.</p>
+</li>
+<li>
+<p>Map correspondences: For each formula, identify the closest matching slicing criterion <span data-display="false" data-math="(stmt, Vars)">(stmt, Vars)</span>, where:</p>
+<ul>
+<li><span data-display="false" data-math="stmt">stmt</span> is the line number of the related code statement.</li>
+<li><span data-display="false" data-math="Vars">Vars</span> is the variables from the code that correspond to the formula.</li>
+</ul>
+</li>
+<li>
+<p>If no exact match, infer the closest semantic equivalent.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="uppaal-tctl-syntax">UPPAAL-TCTL Syntax</h2>
+<pre><code>formula := A[] expr | E[] expr | A&lt;&gt; expr | E&lt;&gt; expr | expr → expr
+</code></pre>
+<h2 id="uppaal-tctl-semantics">UPPAAL-TCTL Semantics</h2>
+<ol>
+<li>
+<p><strong>UPPAAL strictly prohibits nesting of temporal operators</strong> (A[], A&lt;&gt;, E[], E&lt;&gt;, →). As a hard rule, <code>expr</code> must be a basic expression and must not contain any temporal operators. When generating formulas, enforce this restriction without exception.</p>
+</li>
+<li>
+<p><strong>Possibly</strong> (E&lt;&gt; p): There exists a path where expr p eventually holds.</p>
+</li>
+<li>
+<p><strong>Always</strong> (A[] p): expr p holds in all states along all paths.</p>
+</li>
+<li>
+<p><strong>Potentially Always</strong> (E[] p): There exists a path where expr p holds in all states.</p>
+</li>
+<li>
+<p><strong>Eventually</strong> (A&lt;&gt; p): Along all paths, expr p eventually holds.</p>
+</li>
+<li>
+<p><strong>Leads to</strong> (p → q): Whenever expr p holds, expr q will eventually hold along all paths.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="response-format">Response Format</h2>
+<p>Use this JSON schema to reply:</p>
+<pre><code class="language-json">{
+    "slicing_criteria": [
+        {
+            "formula_term": "[string: term from formula]",
+            "slicing_criterion": {
+                "program_statement": [integer: line number in code],
+                "variables": ["[string: variable name(s)]"],
+                "source_file": "[string: file path]"
+            },
+            "explanation": "[string: brief reason for the match]"
+        }
+    ]
+}
+</code></pre>
+</article></main><aside class="toc"><nav aria-label="On this page"><h2>On this page</h2><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#input">Input</a></li><li class="toc-level-2"><a href="#analysis-steps">Analysis Steps</a></li><li class="toc-level-2"><a href="#uppaal-tctl-syntax">UPPAAL-TCTL Syntax</a></li><li class="toc-level-2"><a href="#uppaal-tctl-semantics">UPPAAL-TCTL Semantics</a></li><li class="toc-level-2"><a href="#response-format">Response Format</a></li></ul></nav></aside></div>
+  <footer class="site-footer">
+    <span>RVAT · Robotic Vehicle Automata-based Testing</span>
+    <a href="https://github.com/Lqs66/RVAT">Source code ↗</a>
+  </footer>
+</body>
+</html>

@@ -26,7 +26,7 @@ Each criterion is a pair \((var, loc)\) that identifies a program variable or ex
 | `COM_RC_LOSS_T` | (`_param_com_rc_loss_t.get()`, `rcAndDataLinkCheck.cpp:50`) |
 | `rc_loss_failsafe` | (`reporter.failsafeFlags().manual_control_signal_lost`, `rcAndDataLinkCheck.cpp:58`) |
 
-The model treats `rc_link_ok` as an environmental assumption that the physical RC link remains healthy. The global clock $T_{global}$ represents `rc_update_time`.
+The model treats `rc_link_ok` as an environmental assumption that the physical RC link remains healthy. `rc_update_time` denotes the elapsed time since the latest `manual_control_setpoint` update.
 
 ## From slicing criteria to a function-level slice
 
@@ -225,7 +225,7 @@ In the subsequent timing stage, RVat uses execution time bounds estimated from h
 
 RVat incorporates the estimated execution-time bounds into the time-unspecified TCFA by adding transition guards, location invariants, and clock resets. The BCET specifies the earliest time at which a transition may execute its instruction sequence, whereas the WCET limits the time spent at the source location. Together, these constraints restrict the modeled execution time of the instruction sequence to the estimated interval.
 
-To illustrate this step, consider the time-unspecified TCFA in [Figure 10](#figure-10) and suppose that the execution-time intervals for `x = 0` and `x = y - 1; y = x * 10` are $[1,2]$ and $[2,4]$ time units, respectively. [Figure 12](#figure-12) shows the resulting TCFA with timing constraints. For this example, a clock $t$, initialized to zero, is reused to measure the time spent at each location and reset on every transition.
+To illustrate this step, consider the time-unspecified TCFA in [Figure 10](#figure-10) and suppose that the execution-time intervals for `x = 0` and `x = y - 1; y = x * 10` are $[1,2]$ and $[2,4]$ time units, respectively. [Figure 12](#figure-12) shows the resulting TCFA with timing constraints. For this example, the clock set is $C=\{t,T_{global}\}$, with both clocks initialized to zero. The local clock $t$ measures the time spent at each location and is reset on every transition. The global clock $T_{global}$ advances continuously and is never reset, so each transition has $R=\{t\}$ and leaves $T_{global}$ unchanged.
 
 <a id="figure-12"></a>
 
@@ -239,4 +239,6 @@ The transition therefore executes `x = 0` after between one and two time units a
 
 Similarly, the transition from $L_3$ to $L_r$ is assigned the time constraint $\phi=(t\geq 2)$ and the reset set $R=\{t\}$, while $L_3$ receives the invariant $I(L_3)=(t\leq 4)$. 
 The clock is reset on the incoming transition from $L_2$ to $L_3$, so these bounds measure the time spent at $L_3$. 
-Upon taking the outgoing transition, the model executes `x = y - 1` followed by `y = x * 10` and resets the clock. 
+Upon taking the outgoing transition, the model executes `x = y - 1` followed by `y = x * 10` and resets $t$.
+
+Both clocks increase by the same amount during a time elapse. For example, if the transition from `init` to $L_2$ occurs after $\delta \in [1,2]$ time units, then immediately after the transition $t=0$ and $T_{global}=\delta$. Along a path with successive delays $\delta_1,\ldots,\delta_k$, the global clock records $T_{global}=\sum_{i=1}^{k}\delta_i$, including time accumulated before each reset of $t$. This accumulated time connects the basic-block timing constraints to policy-level timing requirements, such as a deadline $T_{global}\leq T_{max}$. Figure 12 shows the local timing constraints and resets; the non-resetting global clock is implicit.

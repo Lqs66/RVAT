@@ -14,8 +14,8 @@ We employ UPPAAL as our property verifier. Consequently, when describing the pro
 
 We use three prompt templates in our approach:
 
-1. **[Prompt Template for Property Extraction](tab%3Aprompt_conversion.md)**: Converts natural language specifications into UPPAAL-TCTL formulas.
+1. **[Prompt Template for Property Extraction](tab%3Aprompt_conversion.md)**: Converts natural language policies into UPPAAL-TCTL formulas.
 
 2. **[Prompt Template for RAG](tab%3Aprompt_rag.md)**: Analyzes UPPAAL-TCTL formulas and source code snippets to identify slicing criteria.
 
-3. **[Prompt Template for Formula Correction](tab%3Aprompt_refine.md)**: Validates and corrects UPPAAL-TCTL formulas against behavioral specifications.
+3. **[Prompt Template for Formula Correction](tab%3Aprompt_refine.md)**: Validates and corrects UPPAAL-TCTL formulas against behavioral policies.

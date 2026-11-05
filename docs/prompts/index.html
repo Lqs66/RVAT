@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TCTL–UPPAAL correspondence and the prompt templates used by RVAT.">
+  <title>Prompts · RVAT</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.css" integrity="sha384-WwGtaC6ywCHxA5cstpj/3+xIZvTez8dq2IcBQaXRkenHZ7FVVq1ZROtURwfbtTlG" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.js" integrity="sha384-a1WQdjRj162i159OYq041X6I4K8NenkrI09LlPmiHg0YOb7CR+wJOraXwK9abpnE" crossorigin="anonymous"></script>
+  <script defer src="../assets/site.js"></script>
+</head>
+<body class="document-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="RVAT home">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-name">RVAT</span>
+        <span class="brand-caption">Research &amp; documentation</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation"><a href="../index.html">Home</a><a href="index.html" aria-current="page">Prompts</a><a href="../properties/index.html">Properties</a><a href="../example/running_example.html">Running Example</a><a href="../results/testing_results.html">Results</a><a href="https://github.com/Lqs66/RVAT">GitHub ↗</a></nav>
+    </div>
+  </header>
+  <div class="site-shell"><aside class="sidebar"><nav class="sidebar-group" aria-label="Prompts pages"><h2>Prompts</h2><ul><li><a href="index.html" aria-current="page">Prompts</a></li><li><a href="extraction.html">Property Extraction</a></li><li><a href="rag.html">RAG Slicing Criteria</a></li><li><a href="correction.html">Formula Correction</a></li></ul></nav></aside><main id="main-content" class="main-content"><header class="page-header"><p class="eyebrow">Prompts</p><h1>Prompts</h1><p class="page-description">TCTL–UPPAAL correspondence and the prompt templates used by RVAT.</p></header><article id="article" class="document-content"><p>Mapping Between TCTL and UPPAAL Formulas</p>
+<p>We employ UPPAAL as our property verifier. Consequently, when describing the prompt template, we utilize the syntax and semantics of the TCTL logic supported by UPPAAL. For the correspondence between UPPAAL and the standard definition, refer to the table below.</p>
+<div aria-label="Prompts table 1" class="table-scroll" role="region" tabindex="0"><table class="data-table">
+<thead>
+<tr>
+<th scope="col"><strong>TCTL Formula</strong></th>
+<th scope="col"><strong>UPPAAL Formula</strong></th>
+<th scope="col"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span data-display="false" data-math="\forall \Box \varphi">\forall \Box \varphi</span></td>
+<td>A[] <span data-display="false" data-math="\varphi">\varphi</span></td>
+<td><span data-display="false" data-math="\varphi">\varphi</span> should be true in all reachable states.</td>
+</tr>
+<tr>
+<td><span data-display="false" data-math="\exists \Box \varphi">\exists \Box \varphi</span></td>
+<td>E[] <span data-display="false" data-math="\varphi">\varphi</span></td>
+<td>There should exist a maximal path for which <span data-display="false" data-math="\varphi">\varphi</span> is always true.</td>
+</tr>
+<tr>
+<td><span data-display="false" data-math="\forall \Diamond \varphi">\forall \Diamond \varphi</span></td>
+<td>A&lt;&gt; <span data-display="false" data-math="\varphi">\varphi</span></td>
+<td>For all paths, <span data-display="false" data-math="\varphi">\varphi</span> should be eventually true.</td>
+</tr>
+<tr>
+<td><span data-display="false" data-math="\exists \Diamond \varphi">\exists \Diamond \varphi</span></td>
+<td>E&lt;&gt; <span data-display="false" data-math="\varphi">\varphi</span></td>
+<td>There should exist at least one path for which <span data-display="false" data-math="\varphi">\varphi</span> is eventually true.</td>
+</tr>
+<tr>
+<td><span data-display="false" data-math="\forall \Box (\varphi_1 \to \forall \Diamond \varphi_2)">\forall \Box (\varphi_1 \to \forall \Diamond \varphi_2)</span></td>
+<td><span data-display="false" data-math="\varphi_1">\varphi_1</span> --&gt; <span data-display="false" data-math="\varphi_2">\varphi_2</span></td>
+<td>For all reachable states, whenever <span data-display="false" data-math="\varphi_1">\varphi_1</span> is true, then eventually <span data-display="false" data-math="\varphi_2">\varphi_2</span> will be true.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="prompt-templates">Prompt Templates</h2>
+<p>We use three prompt templates in our approach:</p>
+<ol>
+<li>
+<p><strong><a href="extraction.html">Prompt Template for Property Extraction</a></strong>: Converts natural language policies into UPPAAL-TCTL formulas.</p>
+</li>
+<li>
+<p><strong><a href="rag.html">Prompt Template for RAG</a></strong>: Analyzes UPPAAL-TCTL formulas and source code snippets to identify slicing criteria.</p>
+</li>
+<li>
+<p><strong><a href="correction.html">Prompt Template for Formula Correction</a></strong>: Validates and corrects UPPAAL-TCTL formulas against behavioral policies.</p>
+</li>
+</ol>
+</article></main><aside class="toc"><nav aria-label="On this page"><h2>On this page</h2><ul><li class="toc-level-2"><a href="#prompt-templates">Prompt Templates</a></li></ul></nav></aside></div>
+  <footer class="site-footer">
+    <span>RVAT · Robotic Vehicle Automata-based Testing</span>
+    <a href="https://github.com/Lqs66/RVAT">Source code ↗</a>
+  </footer>
+</body>
+</html>

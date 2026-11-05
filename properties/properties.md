@@ -1,14 +1,14 @@
 # RVAT Properties Documentation
 
-This directory contains all properties and specifications discovered by RVAT for UAV flight control systems.
+This directory contains all properties and policies discovered by RVAT for UAV autopilots.
 
 ## Documentation Index
 
-### Flight Controller Properties
+### Autopilot Properties
 
-- **[ArduPilot Properties](tab%3Aardupilot_properties.md)** - Complete list of ArduPilot flight controller properties discovered by RVAT
+- **[ArduPilot Properties](tab%3Aardupilot_properties.md)** - Complete list of ArduPilot autopilot properties discovered by RVAT
 
-- **[PX4 Properties](tab%3Apx4_properties.md)** - Complete list of PX4 flight controller properties discovered by RVAT
+- **[PX4 Properties](tab%3Apx4_properties.md)** - Complete list of PX4 autopilot properties discovered by RVAT
 
 ### Analysis
 

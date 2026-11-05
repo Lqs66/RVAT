@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Check and correct property formulas against their behavioral policies.">
+  <title>Formula Correction · RVAT</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/site.css">
+
+  <script defer src="../assets/site.js"></script>
+</head>
+<body class="document-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="RVAT home">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-name">RVAT</span>
+        <span class="brand-caption">Research &amp; documentation</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation"><a href="../index.html">Home</a><a href="index.html" aria-current="page">Prompts</a><a href="../properties/index.html">Properties</a><a href="../example/running_example.html">Running Example</a><a href="../results/testing_results.html">Results</a><a href="https://github.com/Lqs66/RVAT">GitHub ↗</a></nav>
+    </div>
+  </header>
+  <div class="site-shell"><aside class="sidebar"><nav class="sidebar-group" aria-label="Prompts pages"><h2>Prompts</h2><ul><li><a href="index.html">Prompts</a></li><li><a href="extraction.html">Property Extraction</a></li><li><a href="rag.html">RAG Slicing Criteria</a></li><li><a href="correction.html" aria-current="page">Formula Correction</a></li></ul></nav></aside><main id="main-content" class="main-content"><header class="page-header"><p class="eyebrow">Prompts</p><h1>Formula Correction</h1><p class="page-description">Check and correct property formulas against their behavioral policies.</p></header><article id="article" class="document-content">
+<h2 id="overview">Overview</h2>
+<p>You are an expert in UPPAAL, proficient in analyzing the syntax and semantics of temporal logic formulas. You will receive a natural language description of a behavioral policy and a corresponding UPPAAL-TCTL formula.</p>
+<h2 id="input">Input</h2>
+<ul>
+<li><strong>Behavioral policy</strong>: <code>{description}</code></li>
+<li><strong>Corresponding UPPAAL-TCTL formula</strong>: <code>{formula}</code></li>
+</ul>
+<hr/>
+<h2 id="follow-these-steps-strictly">Follow these steps strictly</h2>
+<h3 id="step-1-syntax-check">Step 1: Syntax Check</h3>
+<ul>
+<li>Analyze whether the formula adheres to UPPAAL-TCTL syntax rules.
+<ul>
+<li>If the syntax is correct, retain the original formula.</li>
+<li>If the syntax is incorrect, fix only syntax issues without altering the intended semantics.</li>
+</ul>
+</li>
+</ul>
+<h3 id="step-2-semantics-check">Step 2: Semantics Check</h3>
+<ul>
+<li>Use the formula from Step 1 (if incorrect, use the corrected version).</li>
+<li>Compare whether the formula's semantics fully match the natural language description.
+<ul>
+<li>If semantics match, return the original/corrected formula.</li>
+<li>If semantics do not match, explain the mismatch and return "N/A".</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2 id="uppaal-tctl-syntax">UPPAAL-TCTL Syntax</h2>
+<pre><code>formula := A[] expr | E[] expr | A&lt;&gt; expr | E&lt;&gt; expr | expr → expr
+</code></pre>
+<h2 id="uppaal-tctl-semantics">UPPAAL-TCTL Semantics</h2>
+<ol>
+<li>
+<p><strong>UPPAAL strictly prohibits nesting of temporal operators</strong> (A[], A&lt;&gt;, E[], E&lt;&gt;, →). As a hard rule, <code>expr</code> must be a basic expression and must not contain any temporal operators. When generating formulas, enforce this restriction without exception.</p>
+</li>
+<li>
+<p><strong>Possibly</strong> (E&lt;&gt; p): There exists a path where expr p eventually holds.</p>
+</li>
+<li>
+<p><strong>Always</strong> (A[] p): expr p holds in all states along all paths.</p>
+</li>
+<li>
+<p><strong>Potentially Always</strong> (E[] p): There exists a path where expr p holds in all states.</p>
+</li>
+<li>
+<p><strong>Eventually</strong> (A&lt;&gt; p): Along all paths, expr p eventually holds.</p>
+</li>
+<li>
+<p><strong>Leads to</strong> (p → q): Whenever expr p holds, expr q will eventually hold along all paths.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="response-format">Response Format</h2>
+<p>Use this JSON schema to reply:</p>
+<pre><code class="language-json">{
+    "description": "{description}",
+    "corrected_formula": "formula (same as original if syntax is correct; modified if syntax is fixed; N/A if semantics do not match)",
+    "semantics_mismatch_reason": "If semantics do not match, explain the reason; otherwise N/A"
+}
+</code></pre>
+</article></main><aside class="toc"><nav aria-label="On this page"><h2>On this page</h2><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#input">Input</a></li><li class="toc-level-2"><a href="#follow-these-steps-strictly">Follow these steps strictly</a></li><li class="toc-level-3"><a href="#step-1-syntax-check">Step 1: Syntax Check</a></li><li class="toc-level-3"><a href="#step-2-semantics-check">Step 2: Semantics Check</a></li><li class="toc-level-2"><a href="#uppaal-tctl-syntax">UPPAAL-TCTL Syntax</a></li><li class="toc-level-2"><a href="#uppaal-tctl-semantics">UPPAAL-TCTL Semantics</a></li><li class="toc-level-2"><a href="#response-format">Response Format</a></li></ul></nav></aside></div>
+  <footer class="site-footer">
+    <span>RVAT · Robotic Vehicle Automata-based Testing</span>
+    <a href="https://github.com/Lqs66/RVAT">Source code ↗</a>
+  </footer>
+</body>
+</html>
