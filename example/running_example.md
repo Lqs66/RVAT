@@ -128,6 +128,8 @@ In the figure, the callee's local variable `ret` becomes the global variable `ca
 Each loop in [Figure 5](#figure-5) has a direct call to `RcAndDataLinkChecks::checkAndReport()` on the corresponding dispatch branch. 
 Both calls are at depth 1 and are therefore inlined with the illustrative setting $D_{\max}=1$.
 
+For clarity, Figures 7, 9, and 11 show only a partial expansion, focusing on the two `RcAndDataLinkChecks::checkAndReport()` calls. Other depth-1 callees are retained as call nodes for compactness.
+
 <a id="figure-5"></a>
 
 ![CFG of HealthAndArmingChecks::update()](images/HealthAndArmingChecks_update_cfg.svg)
@@ -155,7 +157,7 @@ Member accesses through the bound `this` pointer still refer to the original obj
 
 ![Inlining and variable globalization](images/HealthAndArmingChecks_update_inlined_cfg.svg)
 
-*Figure 7. Inlining and variable globalization in HealthAndArmingChecks::update().*
+*Figure 7. Partial illustration of inlining and variable globalization in HealthAndArmingChecks::update().*
 
 ### Separating instructions from branch decisions
 

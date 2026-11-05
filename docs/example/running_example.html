@@ -123,6 +123,7 @@ In the figure, the callee's local variable <code>ret</code> becomes the global v
 <p><a href="#figure-5">Figure 5</a> and <a href="#figure-6">Figure 6</a> show the normalized CFGs of the caller and the callee.
 Each loop in <a href="#figure-5">Figure 5</a> has a direct call to <code>RcAndDataLinkChecks::checkAndReport()</code> on the corresponding dispatch branch.
 Both calls are at depth 1 and are therefore inlined with the illustrative setting <span data-display="false" data-math="D_{\max}=1">D_{\max}=1</span>.</p>
+<p>For clarity, Figures 7, 9, and 11 show only a partial expansion, focusing on the two <code>RcAndDataLinkChecks::checkAndReport()</code> calls. Other depth-1 callees are retained as call nodes for compactness.</p>
 <p><a id="figure-5"></a></p>
 <p><img alt="CFG of HealthAndArmingChecks::update()" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_cfg.svg"/></p>
 <p><em>Figure 5. CFG of HealthAndArmingChecks::update() after normalization.</em></p>
@@ -140,7 +141,7 @@ These names distinguish the variables of the two copies.
 Member accesses through the bound <code>this</code> pointer still refer to the original object.</p>
 <p><a id="figure-7"></a></p>
 <p><img alt="Inlining and variable globalization" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_inlined_cfg.svg"/></p>
-<p><em>Figure 7. Inlining and variable globalization in HealthAndArmingChecks::update().</em></p>
+<p><em>Figure 7. Partial illustration of inlining and variable globalization in HealthAndArmingChecks::update().</em></p>
 <h3 id="separating-instructions-from-branch-decisions">Separating instructions from branch decisions</h3>
 <p>RVat moves each conditional branch instruction at the end of a basic block into a separate conditional-branch basic block (CBB).
 In <a href="#figure-8">Figure 8</a>, the instructions that precede <code>if (x &gt;= y)</code> remain in the original block.
