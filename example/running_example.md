@@ -237,7 +237,7 @@ As shown in [Figure 12](#figure-12), the transition from `init` to $L_2$ is assi
 Since the original data constraint is $\psi=\mathrm{true}$, the resulting guard is simply $g=(t\geq 1)$. 
 The transition therefore executes `x = 0` after between one and two time units at `init` and resets $t$ to zero, represented by the reset set $R=\{t\}$.
 
-For the CBB location $L_2$, we add the invariant $I(L_2)=(t\leq0)$. The incoming transition resets $t$ to zero, so no positive time may elapse at $L_2$. The automaton immediately follows the outgoing transition whose data constraint is satisfied.
+Since the outgoing transitions of the CBB location $L_2$ have $\sigma=\emptyset$, we prevent time elapse at $L_2$ by adding the invariant $I(L_2)=(t\leq0)$. The incoming transition resets $t$ to zero.
 
 Similarly, the transition from $L_3$ to $L_r$ is assigned the time constraint $\phi=(t\geq 2)$ and the reset set $R=\{t\}$, while $L_3$ receives the invariant $I(L_3)=(t\leq 4)$. 
 The clock is reset on the incoming transition from $L_2$ to $L_3$, so these bounds measure the time spent at $L_3$. 
