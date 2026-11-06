@@ -23,10 +23,11 @@ Each criterion is a pair \((var, loc)\) that identifies a program variable and i
 
 | Formula variable | Slicing criterion `(var, loc)` |
 |---|---|
+| `rc_link_ok` | (`manual_control_setpoint.valid`, `rcAndDataLinkCheck.cpp:49`) |
 | `COM_RC_LOSS_T` | (`_param_com_rc_loss_t.get()`, `rcAndDataLinkCheck.cpp:50`) |
 | `rc_loss_failsafe` | (`reporter.failsafeFlags().manual_control_signal_lost`, `rcAndDataLinkCheck.cpp:58`) |
 
-The model treats `rc_link_ok` as an environmental assumption that the physical RC link remains healthy. `rc_update_time` denotes the elapsed time since the latest `manual_control_setpoint` update.
+`rc_update_time` is the global clock `T_global`, which tracks the total elapsed time of the modeled execution.
 
 ## From slicing criteria to a function-level slice
 
@@ -41,7 +42,7 @@ The edges that bind the actual arguments at the call site to the callee's parame
 
 *Figure 1. Program dependence graph and backward slicing for PX_RCFS_P1.*
 
-The two criteria (`_param_com_rc_loss_t.get()`, `rcAndDataLinkCheck.cpp:50`) and (`reporter.failsafeFlags().manual_control_signal_lost`, `rcAndDataLinkCheck.cpp:58`) map to the red boxes labeled SC1 and SC2, respectively. These two PDG nodes form $S_p=\{\mathrm{SC1},\mathrm{SC2}\}$.
+The three criteria (`_param_com_rc_loss_t.get()`, `rcAndDataLinkCheck.cpp:50`), (`reporter.failsafeFlags().manual_control_signal_lost`, `rcAndDataLinkCheck.cpp:58`), and (`manual_control_setpoint.valid`, `rcAndDataLinkCheck.cpp:49`) map to the red boxes labeled SC1, SC2, and SC3, respectively. These three PDG nodes form $S_p=\{\mathrm{SC1},\mathrm{SC2},\mathrm{SC3}\}$.
 RVat traverses the data and control dependence edges backward from $S_p$ and adds the nodes that affect the starting nodes to the slice. 
 In [Figure 1](#figure-1), orange nodes and red edges show the traversal. 
 Solid edges indicate data dependences or parameter bindings, and dashed edges indicate control dependences. 

@@ -45,6 +45,10 @@ Each criterion is a pair <span data-display="false" data-math="(var, loc)">(var,
 </thead>
 <tbody>
 <tr>
+<td><code>rc_link_ok</code></td>
+<td>(<code>manual_control_setpoint.valid</code>, <code>rcAndDataLinkCheck.cpp:49</code>)</td>
+</tr>
+<tr>
 <td><code>COM_RC_LOSS_T</code></td>
 <td>(<code>_param_com_rc_loss_t.get()</code>, <code>rcAndDataLinkCheck.cpp:50</code>)</td>
 </tr>
@@ -54,7 +58,7 @@ Each criterion is a pair <span data-display="false" data-math="(var, loc)">(var,
 </tr>
 </tbody>
 </table></div>
-<p>The model treats <code>rc_link_ok</code> as an environmental assumption that the physical RC link remains healthy. <code>rc_update_time</code> denotes the elapsed time since the latest <code>manual_control_setpoint</code> update.</p>
+<p><code>rc_update_time</code> is the global clock <code>T_global</code>, which tracks the total elapsed time of the modeled execution.</p>
 <h2 id="from-slicing-criteria-to-a-function-level-slice">From slicing criteria to a function-level slice</h2>
 <p>RVat constructs the program dependence graph (PDG) of the entire autopilot with LLVM-PDG and uses MLTA to refine the resolution of indirect and virtual calls in LLVM IR.
 <a href="#figure-1">Figure 1</a> shows the part of the PDG needed to explain the slice.
@@ -63,7 +67,7 @@ The edges that bind the actual arguments at the call site to the callee's parame
 <p><a id="figure-1"></a></p>
 <p><img alt="Program dependence graph and backward slicing for PX_RCFS_P1" loading="lazy" src="../assets/example/images/RcAndDataLinkChecks_checkAndReport_pdg.svg"/></p>
 <p><em>Figure 1. Program dependence graph and backward slicing for PX_RCFS_P1.</em></p>
-<p>The two criteria (<code>_param_com_rc_loss_t.get()</code>, <code>rcAndDataLinkCheck.cpp:50</code>) and (<code>reporter.failsafeFlags().manual_control_signal_lost</code>, <code>rcAndDataLinkCheck.cpp:58</code>) map to the red boxes labeled SC1 and SC2, respectively. These two PDG nodes form <span data-display="false" data-math="S_p=\{\mathrm{SC1},\mathrm{SC2}\}">S_p=\{\mathrm{SC1},\mathrm{SC2}\}</span>.
+<p>The three criteria (<code>_param_com_rc_loss_t.get()</code>, <code>rcAndDataLinkCheck.cpp:50</code>), (<code>reporter.failsafeFlags().manual_control_signal_lost</code>, <code>rcAndDataLinkCheck.cpp:58</code>), and (<code>manual_control_setpoint.valid</code>, <code>rcAndDataLinkCheck.cpp:49</code>) map to the red boxes labeled SC1, SC2, and SC3, respectively. These three PDG nodes form <span data-display="false" data-math="S_p=\{\mathrm{SC1},\mathrm{SC2},\mathrm{SC3}\}">S_p=\{\mathrm{SC1},\mathrm{SC2},\mathrm{SC3}\}</span>.
 RVat traverses the data and control dependence edges backward from <span data-display="false" data-math="S_p">S_p</span> and adds the nodes that affect the starting nodes to the slice.
 In <a href="#figure-1">Figure 1</a>, orange nodes and red edges show the traversal.
 Solid edges indicate data dependences or parameter bindings, and dashed edges indicate control dependences.
