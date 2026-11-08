@@ -19,88 +19,88 @@
 <!-- BB0 -->
 <g id="node1" class="node">
 <title>BB0</title>
-<polygon fill="#dbeafe" stroke="none" points="1882.66,-1707 1882.66,-1734.2 2235.34,-1734.2 2235.34,-1707 1882.66,-1707"/>
-<text xml:space="preserve" text-anchor="start" x="1889.66" y="-1718.3" font-family="Arial" font-weight="bold" font-size="11.00">BB0</text>
-<text xml:space="preserve" text-anchor="start" x="1889.66" y="-1689" font-family="Consolas" font-size="11.00">bool HealthAndArmingChecks::update(bool force_reporting)</text>
-<text xml:space="preserve" text-anchor="start" x="1889.66" y="-1675.8" font-family="Consolas" font-size="11.00">bool __rvat_ret;</text>
-<polygon fill="none" stroke="#64748b" points="1881.66,-1665.6 1881.66,-1735.2 2236.34,-1735.2 2236.34,-1665.6 1881.66,-1665.6"/>
+<polygon fill="#dbeafe" stroke="none" points="1864.66,-1707 1864.66,-1734.2 2217.34,-1734.2 2217.34,-1707 1864.66,-1707"/>
+<text xml:space="preserve" text-anchor="start" x="1871.66" y="-1718.3" font-family="Arial" font-weight="bold" font-size="11.00">BB0</text>
+<text xml:space="preserve" text-anchor="start" x="1871.66" y="-1689" font-family="Consolas" font-size="11.00">bool HealthAndArmingChecks::update(bool force_reporting)</text>
+<text xml:space="preserve" text-anchor="start" x="1871.66" y="-1675.8" font-family="Consolas" font-size="11.00">bool __rvat_ret;</text>
+<polygon fill="none" stroke="#64748b" points="1863.66,-1665.6 1863.66,-1735.2 2218.34,-1735.2 2218.34,-1665.6 1863.66,-1665.6"/>
 </g>
 <!-- BB1 -->
 <g id="node2" class="node">
 <title>BB1</title>
-<polygon fill="#f8fafc" stroke="none" points="1885.68,-1606.4 1885.68,-1633.6 2232.32,-1633.6 2232.32,-1606.4 1885.68,-1606.4"/>
-<text xml:space="preserve" text-anchor="start" x="1892.68" y="-1617.7" font-family="Arial" font-weight="bold" font-size="11.00">BB1</text>
-<text xml:space="preserve" text-anchor="start" x="1892.68" y="-1588.4" font-family="Consolas" font-size="11.00">L55: _reporter.reset();</text>
-<text xml:space="preserve" text-anchor="start" x="1892.68" y="-1575.2" font-family="Consolas" font-size="11.00">L57: _reporter.prepare(_context.status().vehicle_type);</text>
-<text xml:space="preserve" text-anchor="start" x="1892.68" y="-1562" font-family="Consolas" font-size="11.00">L59: unsigned i = 0;</text>
-<polygon fill="none" stroke="#64748b" points="1884.68,-1551.8 1884.68,-1634.6 2233.32,-1634.6 2233.32,-1551.8 1884.68,-1551.8"/>
+<polygon fill="#f8fafc" stroke="none" points="1867.68,-1606.4 1867.68,-1633.6 2214.32,-1633.6 2214.32,-1606.4 1867.68,-1606.4"/>
+<text xml:space="preserve" text-anchor="start" x="1874.68" y="-1617.7" font-family="Arial" font-weight="bold" font-size="11.00">BB1</text>
+<text xml:space="preserve" text-anchor="start" x="1874.68" y="-1588.4" font-family="Consolas" font-size="11.00">L55: _reporter.reset();</text>
+<text xml:space="preserve" text-anchor="start" x="1874.68" y="-1575.2" font-family="Consolas" font-size="11.00">L57: _reporter.prepare(_context.status().vehicle_type);</text>
+<text xml:space="preserve" text-anchor="start" x="1874.68" y="-1562" font-family="Consolas" font-size="11.00">L59: unsigned i = 0;</text>
+<polygon fill="none" stroke="#64748b" points="1866.68,-1551.8 1866.68,-1634.6 2215.32,-1634.6 2215.32,-1551.8 1866.68,-1551.8"/>
 </g>
 <!-- BB0&#45;&gt;BB1 -->
 <g id="edge23" class="edge">
 <title>BB0&#45;&gt;BB1</title>
-<path fill="none" stroke="#475569" d="M2059,-1665.82C2059,-1658.49 2059,-1650.59 2059,-1642.81"/>
-<polygon fill="#475569" stroke="#475569" points="2061.45,-1642.96 2059,-1635.96 2056.55,-1642.96 2061.45,-1642.96"/>
+<path fill="none" stroke="#475569" d="M2041,-1665.82C2041,-1658.49 2041,-1650.59 2041,-1642.81"/>
+<polygon fill="#475569" stroke="#475569" points="2043.45,-1642.96 2041,-1635.96 2038.55,-1642.96 2043.45,-1642.96"/>
 </g>
 <!-- BB2 -->
 <g id="node3" class="node">
 <title>BB2</title>
-<polygon fill="#f8fafc" stroke="none" points="1900.8,-1492.6 1900.8,-1519.8 2217.2,-1519.8 2217.2,-1492.6 1900.8,-1492.6"/>
-<text xml:space="preserve" text-anchor="start" x="1907.8" y="-1503.9" font-family="Arial" font-weight="bold" font-size="11.00">BB2</text>
-<text xml:space="preserve" text-anchor="start" x="1907.8" y="-1476.7" font-family="Consolas" font-weight="bold" font-size="11.00">L59: if (i &lt; sizeof(_checks) / sizeof(_checks[0]))</text>
-<polygon fill="none" stroke="#64748b" points="1899.8,-1464.4 1899.8,-1520.8 2218.2,-1520.8 2218.2,-1464.4 1899.8,-1464.4"/>
+<polygon fill="#f8fafc" stroke="none" points="1882.8,-1492.6 1882.8,-1519.8 2199.2,-1519.8 2199.2,-1492.6 1882.8,-1492.6"/>
+<text xml:space="preserve" text-anchor="start" x="1889.8" y="-1503.9" font-family="Arial" font-weight="bold" font-size="11.00">BB2</text>
+<text xml:space="preserve" text-anchor="start" x="1889.8" y="-1476.7" font-family="Consolas" font-weight="bold" font-size="11.00">L59: if (i &lt; sizeof(_checks) / sizeof(_checks[0]))</text>
+<polygon fill="none" stroke="#64748b" points="1881.8,-1464.4 1881.8,-1520.8 2200.2,-1520.8 2200.2,-1464.4 1881.8,-1464.4"/>
 </g>
 <!-- BB1&#45;&gt;BB2 -->
 <g id="edge22" class="edge">
 <title>BB1&#45;&gt;BB2</title>
-<path fill="none" stroke="#475569" d="M2059,-1551.81C2059,-1544.24 2059,-1536.38 2059,-1528.98"/>
-<polygon fill="#475569" stroke="#475569" points="2061.45,-1529.06 2059,-1522.06 2056.55,-1529.06 2061.45,-1529.06"/>
+<path fill="none" stroke="#475569" d="M2041,-1551.81C2041,-1544.24 2041,-1536.38 2041,-1528.98"/>
+<polygon fill="#475569" stroke="#475569" points="2043.45,-1529.06 2041,-1522.06 2038.55,-1529.06 2043.45,-1529.06"/>
 </g>
 <!-- BB3 -->
 <g id="node4" class="node">
 <title>BB3</title>
-<polygon fill="#f8fafc" stroke="none" points="1933.5,-1394.2 1933.5,-1421.4 2074.5,-1421.4 2074.5,-1394.2 1933.5,-1394.2"/>
-<text xml:space="preserve" text-anchor="start" x="1940.5" y="-1405.5" font-family="Arial" font-weight="bold" font-size="11.00">BB3</text>
-<text xml:space="preserve" text-anchor="start" x="1940.5" y="-1378.3" font-family="Consolas" font-weight="bold" font-size="11.00">L60: if (!_checks[i])</text>
-<polygon fill="none" stroke="#64748b" points="1932.5,-1366 1932.5,-1422.4 2075.5,-1422.4 2075.5,-1366 1932.5,-1366"/>
+<polygon fill="#f8fafc" stroke="none" points="1915.5,-1394.2 1915.5,-1421.4 2056.5,-1421.4 2056.5,-1394.2 1915.5,-1394.2"/>
+<text xml:space="preserve" text-anchor="start" x="1922.5" y="-1405.5" font-family="Arial" font-weight="bold" font-size="11.00">BB3</text>
+<text xml:space="preserve" text-anchor="start" x="1922.5" y="-1378.3" font-family="Consolas" font-weight="bold" font-size="11.00">L60: if (!_checks[i])</text>
+<polygon fill="none" stroke="#64748b" points="1914.5,-1366 1914.5,-1422.4 2057.5,-1422.4 2057.5,-1366 1914.5,-1366"/>
 </g>
 <!-- BB2&#45;&gt;BB3 -->
 <g id="edge20" class="edge">
 <title>BB2&#45;&gt;BB3</title>
-<path fill="none" stroke="#15803d" d="M2043.53,-1464.49C2037.33,-1453.62 2030.11,-1440.96 2023.55,-1429.46"/>
-<polygon fill="#15803d" stroke="#15803d" points="2025.7,-1428.29 2020.1,-1423.42 2021.44,-1430.71 2025.7,-1428.29"/>
-<text xml:space="preserve" text-anchor="middle" x="2037.85" y="-1440.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<path fill="none" stroke="#15803d" d="M2025.53,-1464.49C2019.33,-1453.62 2012.11,-1440.96 2005.55,-1429.46"/>
+<polygon fill="#15803d" stroke="#15803d" points="2007.7,-1428.29 2002.1,-1423.42 2003.44,-1430.71 2007.7,-1428.29"/>
+<text xml:space="preserve" text-anchor="middle" x="2019.85" y="-1440.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
 <!-- BB4 -->
 <g id="node5" class="node">
 <title>BB4</title>
-<polygon fill="#f8fafc" stroke="none" points="1862.06,-1207.4 1862.06,-1234.6 2365.94,-1234.6 2365.94,-1207.4 1862.06,-1207.4"/>
-<text xml:space="preserve" text-anchor="start" x="1869.06" y="-1218.7" font-family="Arial" font-weight="bold" font-size="11.00">BB4</text>
-<text xml:space="preserve" text-anchor="start" x="1869.06" y="-1191.5" font-family="Consolas" font-size="11.00">L67: const bool results_changed = _reporter.finalize();</text>
-<text xml:space="preserve" text-anchor="start" x="1869.06" y="-1180.5" font-family="Consolas" font-size="11.00">L68: const bool reported = _reporter.report(_context.isArmed(), force_reporting);</text>
-<text xml:space="preserve" text-anchor="start" x="1869.06" y="-1169.5" font-family="Consolas" font-weight="bold" font-size="11.00">L70: if (reported)</text>
-<polygon fill="none" stroke="#64748b" points="1861.06,-1159.4 1861.06,-1235.6 2366.94,-1235.6 2366.94,-1159.4 1861.06,-1159.4"/>
+<polygon fill="#f8fafc" stroke="none" points="1844.06,-1207.4 1844.06,-1234.6 2347.94,-1234.6 2347.94,-1207.4 1844.06,-1207.4"/>
+<text xml:space="preserve" text-anchor="start" x="1851.06" y="-1218.7" font-family="Arial" font-weight="bold" font-size="11.00">BB4</text>
+<text xml:space="preserve" text-anchor="start" x="1851.06" y="-1191.5" font-family="Consolas" font-size="11.00">L67: const bool results_changed = _reporter.finalize();</text>
+<text xml:space="preserve" text-anchor="start" x="1851.06" y="-1180.5" font-family="Consolas" font-size="11.00">L68: const bool reported = _reporter.report(_context.isArmed(), force_reporting);</text>
+<text xml:space="preserve" text-anchor="start" x="1851.06" y="-1169.5" font-family="Consolas" font-weight="bold" font-size="11.00">L70: if (reported)</text>
+<polygon fill="none" stroke="#64748b" points="1843.06,-1159.4 1843.06,-1235.6 2348.94,-1235.6 2348.94,-1159.4 1843.06,-1159.4"/>
 </g>
 <!-- BB2&#45;&gt;BB4 -->
 <g id="edge21" class="edge">
 <title>BB2&#45;&gt;BB4</title>
-<path fill="none" stroke="#b45309" d="M2070.3,-1464.65C2078.44,-1445.22 2088,-1422.4 2088,-1422.4 2088,-1422.4 2101.17,-1308.98 2108.76,-1243.59"/>
-<polygon fill="#b45309" stroke="#b45309" points="2111.16,-1244.21 2109.53,-1236.98 2106.29,-1243.65 2111.16,-1244.21"/>
-<text xml:space="preserve" text-anchor="middle" x="2100.5" y="-1342" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
+<path fill="none" stroke="#b45309" d="M2052.3,-1464.65C2060.44,-1445.22 2070,-1422.4 2070,-1422.4 2070,-1422.4 2083.17,-1308.98 2090.76,-1243.59"/>
+<polygon fill="#b45309" stroke="#b45309" points="2093.16,-1244.21 2091.53,-1236.98 2088.29,-1243.65 2093.16,-1244.21"/>
+<text xml:space="preserve" text-anchor="middle" x="2082.5" y="-1342" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB5 -->
 <g id="node6" class="node">
 <title>BB5</title>
-<polygon fill="#f8fafc" stroke="none" points="1979.74,-1294.8 1979.74,-1322 2060.26,-1322 2060.26,-1294.8 1979.74,-1294.8"/>
-<text xml:space="preserve" text-anchor="start" x="1986.74" y="-1306.1" font-family="Arial" font-weight="bold" font-size="11.00">BB5</text>
-<text xml:space="preserve" text-anchor="start" x="1986.74" y="-1276.8" font-family="Consolas" font-size="11.00">L61: break;</text>
-<polygon fill="none" stroke="#64748b" points="1978.74,-1266.6 1978.74,-1323 2061.26,-1323 2061.26,-1266.6 1978.74,-1266.6"/>
+<polygon fill="#f8fafc" stroke="none" points="1961.74,-1294.8 1961.74,-1322 2042.26,-1322 2042.26,-1294.8 1961.74,-1294.8"/>
+<text xml:space="preserve" text-anchor="start" x="1968.74" y="-1306.1" font-family="Arial" font-weight="bold" font-size="11.00">BB5</text>
+<text xml:space="preserve" text-anchor="start" x="1968.74" y="-1276.8" font-family="Consolas" font-size="11.00">L61: break;</text>
+<polygon fill="none" stroke="#64748b" points="1960.74,-1266.6 1960.74,-1323 2043.26,-1323 2043.26,-1266.6 1960.74,-1266.6"/>
 </g>
 <!-- BB3&#45;&gt;BB5 -->
 <g id="edge18" class="edge">
 <title>BB3&#45;&gt;BB5</title>
-<path fill="none" stroke="#15803d" d="M2008.46,-1366.07C2010.24,-1355.2 2012.32,-1342.53 2014.22,-1330.97"/>
-<polygon fill="#15803d" stroke="#15803d" points="2016.6,-1331.58 2015.32,-1324.28 2011.77,-1330.79 2016.6,-1331.58"/>
-<text xml:space="preserve" text-anchor="middle" x="2015.53" y="-1342" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<path fill="none" stroke="#15803d" d="M1990.46,-1366.07C1992.24,-1355.2 1994.32,-1342.53 1996.22,-1330.97"/>
+<polygon fill="#15803d" stroke="#15803d" points="1998.6,-1331.58 1997.32,-1324.28 1993.77,-1330.79 1998.6,-1331.58"/>
+<text xml:space="preserve" text-anchor="middle" x="1997.53" y="-1342" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
 <!-- BB6 -->
 <g id="node19" class="node">
@@ -113,27 +113,27 @@
 <!-- BB3&#45;&gt;BB6 -->
 <g id="edge19" class="edge">
 <title>BB3&#45;&gt;BB6</title>
-<path fill="none" stroke="#b45309" d="M1932.58,-1388.7C1710.74,-1374.71 1027.36,-1331.63 674.62,-1309.39"/>
-<polygon fill="#b45309" stroke="#b45309" points="675,-1306.96 667.86,-1308.97 674.69,-1311.85 675,-1306.96"/>
-<text xml:space="preserve" text-anchor="middle" x="1327.06" y="-1342" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
+<path fill="none" stroke="#b45309" d="M1914.65,-1388.65C1695.17,-1374.65 1023.82,-1331.83 674.82,-1309.57"/>
+<polygon fill="#b45309" stroke="#b45309" points="675.03,-1307.12 667.89,-1309.12 674.72,-1312.01 675.03,-1307.12"/>
+<text xml:space="preserve" text-anchor="middle" x="1316.98" y="-1342" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB7 -->
 <g id="node7" class="node">
 <title>BB7</title>
-<polygon fill="#f8fafc" stroke="none" points="1940.68,-1089.2 1940.68,-1116.4 2287.32,-1116.4 2287.32,-1089.2 1940.68,-1089.2"/>
-<text xml:space="preserve" text-anchor="start" x="1947.68" y="-1100.5" font-family="Arial" font-weight="bold" font-size="11.00">BB7</text>
-<text xml:space="preserve" text-anchor="start" x="1947.68" y="-1071.2" font-family="Consolas" font-size="11.00">L76: _reporter._mavlink_log_pub = &amp;_mavlink_log_pub;</text>
-<text xml:space="preserve" text-anchor="start" x="1947.68" y="-1058" font-family="Consolas" font-size="11.00">L77: _reporter.reset();</text>
-<text xml:space="preserve" text-anchor="start" x="1947.68" y="-1044.8" font-family="Consolas" font-size="11.00">L79: _reporter.prepare(_context.status().vehicle_type);</text>
-<text xml:space="preserve" text-anchor="start" x="1947.68" y="-1031.6" font-family="Consolas" font-size="11.00">L81: unsigned i = 0;</text>
-<polygon fill="none" stroke="#64748b" points="1939.68,-1021.4 1939.68,-1117.4 2288.32,-1117.4 2288.32,-1021.4 1939.68,-1021.4"/>
+<polygon fill="#f8fafc" stroke="none" points="1922.68,-1089.2 1922.68,-1116.4 2269.32,-1116.4 2269.32,-1089.2 1922.68,-1089.2"/>
+<text xml:space="preserve" text-anchor="start" x="1929.68" y="-1100.5" font-family="Arial" font-weight="bold" font-size="11.00">BB7</text>
+<text xml:space="preserve" text-anchor="start" x="1929.68" y="-1071.2" font-family="Consolas" font-size="11.00">L76: _reporter._mavlink_log_pub = &amp;_mavlink_log_pub;</text>
+<text xml:space="preserve" text-anchor="start" x="1929.68" y="-1058" font-family="Consolas" font-size="11.00">L77: _reporter.reset();</text>
+<text xml:space="preserve" text-anchor="start" x="1929.68" y="-1044.8" font-family="Consolas" font-size="11.00">L79: _reporter.prepare(_context.status().vehicle_type);</text>
+<text xml:space="preserve" text-anchor="start" x="1929.68" y="-1031.6" font-family="Consolas" font-size="11.00">L81: unsigned i = 0;</text>
+<polygon fill="none" stroke="#64748b" points="1921.68,-1021.4 1921.68,-1117.4 2270.32,-1117.4 2270.32,-1021.4 1921.68,-1021.4"/>
 </g>
 <!-- BB4&#45;&gt;BB7 -->
 <g id="edge14" class="edge">
 <title>BB4&#45;&gt;BB7</title>
-<path fill="none" stroke="#15803d" d="M2114,-1159.69C2114,-1149.04 2114,-1137.18 2114,-1125.67"/>
-<polygon fill="#15803d" stroke="#15803d" points="2116.45,-1125.89 2114,-1118.89 2111.55,-1125.89 2116.45,-1125.89"/>
-<text xml:space="preserve" text-anchor="middle" x="2117.05" y="-1135.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<path fill="none" stroke="#15803d" d="M2096,-1159.69C2096,-1149.04 2096,-1137.18 2096,-1125.67"/>
+<polygon fill="#15803d" stroke="#15803d" points="2098.45,-1125.89 2096,-1118.89 2093.55,-1125.89 2098.45,-1125.89"/>
+<text xml:space="preserve" text-anchor="middle" x="2099.05" y="-1135.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
 <!-- BB8 -->
 <g id="node8" class="node">
@@ -147,29 +147,29 @@
 <!-- BB4&#45;&gt;BB8 -->
 <g id="edge15" class="edge">
 <title>BB4&#45;&gt;BB8</title>
-<path fill="none" stroke="#b45309" d="M2201.48,-1159.5C2250.15,-1138.91 2301,-1117.4 2301,-1117.4 2301,-1117.4 2395,-1070.4 2395,-1070.4 2395,-1070.4 2395,-1070.4 2395,-601.2 2395,-601.2 2378.34,-540.27 2366.79,-498.06"/>
+<path fill="none" stroke="#b45309" d="M2183.69,-1159.52C2271.92,-1122.31 2395,-1070.4 2395,-1070.4 2395,-1070.4 2395,-1070.4 2395,-601.2 2395,-601.2 2378.34,-540.27 2366.79,-498.06"/>
 <polygon fill="#b45309" stroke="#b45309" points="2369.17,-497.46 2364.96,-491.35 2364.44,-498.75 2369.17,-497.46"/>
 <text xml:space="preserve" text-anchor="middle" x="2398.05" y="-843.2" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB5&#45;&gt;BB4 -->
 <g id="edge17" class="edge">
 <title>BB5&#45;&gt;BB4</title>
-<path fill="none" stroke="#475569" d="M2046.69,-1266.75C2054.45,-1258.88 2063.12,-1250.08 2071.6,-1241.49"/>
-<polygon fill="#475569" stroke="#475569" points="2073.19,-1243.37 2076.36,-1236.66 2069.7,-1239.92 2073.19,-1243.37"/>
+<path fill="none" stroke="#475569" d="M2028.69,-1266.75C2036.45,-1258.88 2045.12,-1250.08 2053.6,-1241.49"/>
+<polygon fill="#475569" stroke="#475569" points="2055.19,-1243.37 2058.36,-1236.66 2051.7,-1239.92 2055.19,-1243.37"/>
 </g>
 <!-- BB10 -->
 <g id="node9" class="node">
 <title>BB10</title>
-<polygon fill="#f8fafc" stroke="none" points="1955.8,-951.2 1955.8,-978.4 2272.2,-978.4 2272.2,-951.2 1955.8,-951.2"/>
-<text xml:space="preserve" text-anchor="start" x="1962.8" y="-962.5" font-family="Arial" font-weight="bold" font-size="11.00">BB10</text>
-<text xml:space="preserve" text-anchor="start" x="1962.8" y="-935.3" font-family="Consolas" font-weight="bold" font-size="11.00">L81: if (i &lt; sizeof(_checks) / sizeof(_checks[0]))</text>
-<polygon fill="none" stroke="#64748b" points="1954.8,-923 1954.8,-979.4 2273.2,-979.4 2273.2,-923 1954.8,-923"/>
+<polygon fill="#f8fafc" stroke="none" points="1937.8,-951.2 1937.8,-978.4 2254.2,-978.4 2254.2,-951.2 1937.8,-951.2"/>
+<text xml:space="preserve" text-anchor="start" x="1944.8" y="-962.5" font-family="Arial" font-weight="bold" font-size="11.00">BB10</text>
+<text xml:space="preserve" text-anchor="start" x="1944.8" y="-935.3" font-family="Consolas" font-weight="bold" font-size="11.00">L81: if (i &lt; sizeof(_checks) / sizeof(_checks[0]))</text>
+<polygon fill="none" stroke="#64748b" points="1936.8,-923 1936.8,-979.4 2255.2,-979.4 2255.2,-923 1936.8,-923"/>
 </g>
 <!-- BB7&#45;&gt;BB10 -->
 <g id="edge13" class="edge">
 <title>BB7&#45;&gt;BB10</title>
-<path fill="none" stroke="#475569" d="M2114,-1021.47C2114,-1010.14 2114,-998.22 2114,-987.52"/>
-<polygon fill="#475569" stroke="#475569" points="2116.45,-987.75 2114,-980.75 2111.55,-987.75 2116.45,-987.75"/>
+<path fill="none" stroke="#475569" d="M2096,-1021.47C2096,-1010.14 2096,-998.22 2096,-987.52"/>
+<polygon fill="#475569" stroke="#475569" points="2098.45,-987.75 2096,-980.75 2093.55,-987.75 2098.45,-987.75"/>
 </g>
 <!-- BB11 -->
 <g id="node10" class="node">
@@ -213,9 +213,9 @@
 <!-- BB10&#45;&gt;BB15 -->
 <g id="edge11" class="edge">
 <title>BB10&#45;&gt;BB15</title>
-<path fill="none" stroke="#15803d" d="M2092.98,-923.14C2082.88,-910.13 2070.67,-894.41 2059.98,-880.65"/>
-<polygon fill="#15803d" stroke="#15803d" points="2062.04,-879.3 2055.81,-875.28 2058.17,-882.31 2062.04,-879.3"/>
-<text xml:space="preserve" text-anchor="middle" x="2084.22" y="-899" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<path fill="none" stroke="#15803d" d="M2079.71,-923.14C2071.95,-910.25 2062.59,-894.69 2054.36,-881.03"/>
+<polygon fill="#15803d" stroke="#15803d" points="2056.67,-880.11 2050.96,-875.38 2052.47,-882.64 2056.67,-880.11"/>
+<text xml:space="preserve" text-anchor="middle" x="2073.61" y="-899" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
 <!-- BB16 -->
 <g id="node13" class="node">
@@ -234,9 +234,9 @@
 <!-- BB10&#45;&gt;BB16 -->
 <g id="edge12" class="edge">
 <title>BB10&#45;&gt;BB16</title>
-<path fill="none" stroke="#b45309" d="M2116.33,-923.26C2120.83,-871.25 2130.84,-755.36 2137.51,-678.25"/>
-<polygon fill="#b45309" stroke="#b45309" points="2139.93,-678.67 2138.1,-671.49 2135.05,-678.25 2139.93,-678.67"/>
-<text xml:space="preserve" text-anchor="middle" x="2131.36" y="-787.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
+<path fill="none" stroke="#b45309" d="M2104.57,-923.25C2110.75,-903.82 2118,-881 2118,-881 2118,-881 2129.29,-760.35 2136.99,-678.08"/>
+<polygon fill="#b45309" stroke="#b45309" points="2139.42,-678.44 2137.63,-671.25 2134.54,-677.99 2139.42,-678.44"/>
+<text xml:space="preserve" text-anchor="middle" x="2129.92" y="-787.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB17 -->
 <g id="node14" class="node">
@@ -269,32 +269,32 @@
 <!-- BB20 -->
 <g id="node16" class="node">
 <title>BB20</title>
-<polygon fill="#f8fafc" stroke="none" points="2016.74,-740.2 2016.74,-767.4 2097.26,-767.4 2097.26,-740.2 2016.74,-740.2"/>
-<text xml:space="preserve" text-anchor="start" x="2023.74" y="-751.5" font-family="Arial" font-weight="bold" font-size="11.00">BB20</text>
-<text xml:space="preserve" text-anchor="start" x="2023.74" y="-722.2" font-family="Consolas" font-size="11.00">L83: break;</text>
-<polygon fill="none" stroke="#64748b" points="2015.74,-712 2015.74,-768.4 2098.26,-768.4 2098.26,-712 2015.74,-712"/>
+<polygon fill="#f8fafc" stroke="none" points="2009.74,-740.2 2009.74,-767.4 2090.26,-767.4 2090.26,-740.2 2009.74,-740.2"/>
+<text xml:space="preserve" text-anchor="start" x="2016.74" y="-751.5" font-family="Arial" font-weight="bold" font-size="11.00">BB20</text>
+<text xml:space="preserve" text-anchor="start" x="2016.74" y="-722.2" font-family="Consolas" font-size="11.00">L83: break;</text>
+<polygon fill="none" stroke="#64748b" points="2008.74,-712 2008.74,-768.4 2091.26,-768.4 2091.26,-712 2008.74,-712"/>
 </g>
 <!-- BB15&#45;&gt;BB20 -->
 <g id="edge9" class="edge">
 <title>BB15&#45;&gt;BB20</title>
-<path fill="none" stroke="#15803d" d="M2039.98,-818.15C2042.8,-805.39 2046.21,-790 2049.23,-776.35"/>
-<polygon fill="#15803d" stroke="#15803d" points="2051.6,-776.96 2050.72,-769.6 2046.82,-775.9 2051.6,-776.96"/>
-<text xml:space="preserve" text-anchor="middle" x="2049.93" y="-787.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<path fill="none" stroke="#15803d" d="M2038.16,-818.15C2040.13,-805.39 2042.49,-790 2044.59,-776.35"/>
+<polygon fill="#15803d" stroke="#15803d" points="2046.99,-776.9 2045.63,-769.61 2042.14,-776.16 2046.99,-776.9"/>
+<text xml:space="preserve" text-anchor="middle" x="2046.01" y="-787.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
 <!-- BB21 -->
 <g id="node31" class="node">
 <title>BB21</title>
-<polygon fill="#ede9fe" stroke="none" points="1311.42,-740.2 1311.42,-767.4 1724.58,-767.4 1724.58,-740.2 1311.42,-740.2"/>
-<text xml:space="preserve" text-anchor="start" x="1318.42" y="-751.5" font-family="Arial" font-weight="bold" font-size="11.00">BB21</text>
-<text xml:space="preserve" text-anchor="start" x="1318.42" y="-722.2" font-family="Consolas" font-size="11.00">L86: fp_L86 = code address selected by _checks[i]&#45;&gt;checkAndReport;</text>
-<polygon fill="none" stroke="#64748b" points="1310.42,-712 1310.42,-768.4 1725.58,-768.4 1725.58,-712 1310.42,-712"/>
+<polygon fill="#ede9fe" stroke="none" points="1312.42,-740.2 1312.42,-767.4 1725.58,-767.4 1725.58,-740.2 1312.42,-740.2"/>
+<text xml:space="preserve" text-anchor="start" x="1319.42" y="-751.5" font-family="Arial" font-weight="bold" font-size="11.00">BB21</text>
+<text xml:space="preserve" text-anchor="start" x="1319.42" y="-722.2" font-family="Consolas" font-size="11.00">L86: fp_L86 = code address selected by _checks[i]&#45;&gt;checkAndReport;</text>
+<polygon fill="none" stroke="#64748b" points="1311.42,-712 1311.42,-768.4 1726.58,-768.4 1726.58,-712 1311.42,-712"/>
 </g>
 <!-- BB15&#45;&gt;BB21 -->
 <g id="edge10" class="edge">
 <title>BB15&#45;&gt;BB21</title>
-<path fill="none" stroke="#b45309" d="M1962.52,-830.79C1884.95,-815.16 1759.04,-789.78 1660.99,-770.02"/>
-<polygon fill="#b45309" stroke="#b45309" points="1661.62,-767.65 1654.27,-768.67 1660.65,-772.45 1661.62,-767.65"/>
-<text xml:space="preserve" text-anchor="middle" x="1794.53" y="-787.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
+<path fill="none" stroke="#b45309" d="M1962.66,-830.79C1885.24,-815.16 1759.57,-789.78 1661.71,-770.02"/>
+<polygon fill="#b45309" stroke="#b45309" points="1662.36,-767.65 1655.01,-768.67 1661.39,-772.45 1662.36,-767.65"/>
+<text xml:space="preserve" text-anchor="middle" x="1795" y="-787.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB16&#45;&gt;BB8 -->
 <g id="edge6" class="edge">
@@ -327,14 +327,14 @@
 <!-- BB18&#45;&gt;BB2 -->
 <g id="edge16" class="edge">
 <title>BB18&#45;&gt;BB2</title>
-<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M982.1,-623.24C1013.62,-642.92 1057,-670 1057,-670 1057,-670 2111,-712 2111,-712 2111,-712 2414,-784.4 2414,-784.4 2414,-784.4 2414,-1006.4 2414,-1006.4 2414,-1006.4 2379,-1235.6 2379,-1235.6 2379,-1235.6 2185.51,-1390.39 2099.45,-1459.24"/>
-<polygon fill="#475569" stroke="#475569" points="2098.06,-1457.21 2094.12,-1463.5 2101.12,-1461.04 2098.06,-1457.21"/>
+<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M982.1,-623.24C1013.62,-642.92 1057,-670 1057,-670 1057,-670 2104,-712 2104,-712 2104,-712 2414,-784.4 2414,-784.4 2414,-784.4 2414,-1006.4 2414,-1006.4 2414,-1006.4 2361,-1235.6 2361,-1235.6 2361,-1235.6 2167.51,-1390.39 2081.45,-1459.24"/>
+<polygon fill="#475569" stroke="#475569" points="2080.06,-1457.21 2076.12,-1463.5 2083.12,-1461.04 2080.06,-1457.21"/>
 </g>
 <!-- BB20&#45;&gt;BB16 -->
 <g id="edge8" class="edge">
 <title>BB20&#45;&gt;BB16</title>
-<path fill="none" stroke="#475569" d="M2074.4,-712.01C2081.01,-701.67 2088.89,-689.34 2096.94,-676.76"/>
-<polygon fill="#475569" stroke="#475569" points="2098.9,-678.24 2100.61,-671.03 2094.78,-675.6 2098.9,-678.24"/>
+<path fill="none" stroke="#475569" d="M2068.8,-712.01C2076.01,-701.58 2084.62,-689.11 2093.4,-676.41"/>
+<polygon fill="#475569" stroke="#475569" points="2095.18,-678.15 2097.14,-671 2091.15,-675.36 2095.18,-678.15"/>
 </g>
 <!-- BB29 -->
 <g id="node18" class="node">
@@ -347,8 +347,8 @@
 <!-- BB29&#45;&gt;BB10 -->
 <g id="edge7" class="edge">
 <title>BB29&#45;&gt;BB10</title>
-<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M2037.04,-49.85C2143.99,-65.36 2482,-114.4 2482,-114.4 2482,-114.4 2525,-212.8 2525,-212.8 2525,-212.8 2546,-324.4 2546,-324.4 2546,-324.4 2546,-380.8 2546,-380.8 2546,-380.8 2531,-492.4 2531,-492.4 2531,-492.4 2239.64,-812.27 2144.01,-917.26"/>
-<polygon fill="#475569" stroke="#475569" points="2142.45,-915.33 2139.55,-922.15 2146.07,-918.63 2142.45,-915.33"/>
+<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M2037.04,-49.85C2143.99,-65.36 2482,-114.4 2482,-114.4 2482,-114.4 2525,-212.8 2525,-212.8 2525,-212.8 2546,-324.4 2546,-324.4 2546,-324.4 2546,-380.8 2546,-380.8 2546,-380.8 2531,-492.4 2531,-492.4 2531,-492.4 2227.06,-812.27 2127.3,-917.26"/>
+<polygon fill="#475569" stroke="#475569" points="2125.68,-915.41 2122.63,-922.17 2129.23,-918.79 2125.68,-915.41"/>
 </g>
 <!-- BB9 -->
 <g id="node21" class="node">
@@ -425,19 +425,22 @@
 <polygon fill="#15803d" stroke="#15803d" points="411.88,-1071.85 418.88,-1069.4 411.88,-1066.95 411.88,-1071.85"/>
 <text xml:space="preserve" text-anchor="middle" x="395.25" y="-1075.4" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L64_0_test -->
+<!-- OtherChecksBeforeRcCal_Match_Pass1 -->
 <g id="node27" class="node">
-<title>omit_L64_0_test</title>
-<g id="a_node27"><a xlink:title="20 omitted candidate tests">
-<text xml:space="preserve" text-anchor="middle" x="193" y="-944" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksBeforeRcCal_Match_Pass1</title>
+<g id="a_node27"><a xlink:title="OtherChecksBeforeRcCal_Match_Pass1&#10;Summary of 20 candidate address tests: ExternalChecks, AccelerometerChecks, AirspeedChecks, ArmPermissionChecks, BaroChecks, CpuResourceChecks, DistanceSensorChecks, EscChecks, EstimatorChecks, FailureDetectorChecks, GyroChecks, ImuConsistencyChecks, MagnetometerChecks, HomePositionChecks, MissionChecks, OffboardChecks, ModeChecks, OpenDroneIDChecks, ParachuteChecks, PowerChecks">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="317.93,-978.4 68.07,-978.4 68.07,-924 317.93,-924 317.93,-978.4"/>
+<polygon fill="#fef3c7" stroke="none" points="68.07,-951.2 68.07,-978.4 317.93,-978.4 317.93,-951.2 68.07,-951.2"/>
+<text xml:space="preserve" text-anchor="start" x="75.07" y="-962.5" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksBeforeRcCal_Match_Pass1</text>
+<text xml:space="preserve" text-anchor="start" x="75.07" y="-933.2" font-family="Consolas" font-size="11.00">matches_other_checks_before_rc_cal(fp);</text>
 </a>
 </g>
 </g>
-<!-- BB14&#45;&gt;omit_L64_0_test -->
+<!-- BB14&#45;&gt;OtherChecksBeforeRcCal_Match_Pass1 -->
 <g id="edge37" class="edge">
-<title>BB14&#45;&gt;omit_L64_0_test</title>
-<path fill="none" stroke="#b45309" d="M193,-1041.45C193,-1020.84 193,-992.82 193,-973.71"/>
-<polygon fill="#b45309" stroke="#b45309" points="195.45,-973.87 193,-966.87 190.55,-973.87 195.45,-973.87"/>
+<title>BB14&#45;&gt;OtherChecksBeforeRcCal_Match_Pass1</title>
+<path fill="none" stroke="#b45309" d="M193,-1041.45C193,-1025.2 193,-1004.34 193,-986.87"/>
+<polygon fill="#b45309" stroke="#b45309" points="195.45,-987.12 193,-980.12 190.55,-987.12 195.45,-987.12"/>
 <text xml:space="preserve" text-anchor="middle" x="196.05" y="-997.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB19&#45;&gt;BB18 -->
@@ -470,19 +473,22 @@
 <polygon fill="#15803d" stroke="#15803d" points="411.88,-848.65 418.88,-846.2 411.88,-843.75 411.88,-848.65"/>
 <text xml:space="preserve" text-anchor="middle" x="395.25" y="-852.2" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L64_1_test -->
+<!-- OtherChecksAfterRcCal_Match_Pass1 -->
 <g id="node29" class="node">
-<title>omit_L64_1_test</title>
-<g id="a_node29"><a xlink:title="7 omitted candidate tests">
-<text xml:space="preserve" text-anchor="middle" x="193" y="-733" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksAfterRcCal_Match_Pass1</title>
+<g id="a_node29"><a xlink:title="OtherChecksAfterRcCal_Match_Pass1&#10;Summary of 7 candidate address tests: SdCardChecks, SystemChecks, BatteryChecks, WindChecks, GeofenceChecks, FlightTimeChecks, VtolChecks">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="314.91,-767.4 71.09,-767.4 71.09,-713 314.91,-713 314.91,-767.4"/>
+<polygon fill="#fef3c7" stroke="none" points="71.09,-740.2 71.09,-767.4 314.91,-767.4 314.91,-740.2 71.09,-740.2"/>
+<text xml:space="preserve" text-anchor="start" x="78.09" y="-751.5" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksAfterRcCal_Match_Pass1</text>
+<text xml:space="preserve" text-anchor="start" x="78.09" y="-722.2" font-family="Consolas" font-size="11.00">matches_other_checks_after_rc_cal(fp);</text>
 </a>
 </g>
 </g>
-<!-- BB23&#45;&gt;omit_L64_1_test -->
+<!-- BB23&#45;&gt;OtherChecksAfterRcCal_Match_Pass1 -->
 <g id="edge39" class="edge">
-<title>BB23&#45;&gt;omit_L64_1_test</title>
-<path fill="none" stroke="#b45309" d="M193,-818.15C193,-800.88 193,-778.81 193,-762.73"/>
-<polygon fill="#b45309" stroke="#b45309" points="195.45,-763 193,-756 190.55,-763 195.45,-763"/>
+<title>BB23&#45;&gt;OtherChecksAfterRcCal_Match_Pass1</title>
+<path fill="none" stroke="#b45309" d="M193,-818.15C193,-805.29 193,-789.76 193,-776.03"/>
+<polygon fill="#b45309" stroke="#b45309" points="195.45,-776.27 193,-769.27 190.55,-776.27 195.45,-776.27"/>
 <text xml:space="preserve" text-anchor="middle" x="196.05" y="-787.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB25&#45;&gt;BB18 -->
@@ -491,60 +497,66 @@
 <path fill="none" stroke="#475569" d="M709.78,-811.42C783.3,-760.51 914,-670 914,-670 914,-670 922.57,-654.11 931.34,-637.82"/>
 <polygon fill="#475569" stroke="#475569" points="933.48,-639.03 934.64,-631.7 929.16,-636.7 933.48,-639.03"/>
 </g>
-<!-- omit_L64_0_test&#45;&gt;BB23 -->
+<!-- OtherChecksBeforeRcCal_Match_Pass1&#45;&gt;BB23 -->
 <g id="edge38" class="edge">
-<title>omit_L64_0_test&#45;&gt;BB23</title>
-<path fill="none" stroke="#b45309" stroke-dasharray="5,2" d="M193,-937.15C193,-923.45 193,-901.3 193,-882.41"/>
-<polygon fill="#b45309" stroke="#b45309" points="195.45,-882.51 193,-875.51 190.55,-882.51 195.45,-882.51"/>
+<title>OtherChecksBeforeRcCal_Match_Pass1&#45;&gt;BB23</title>
+<path fill="none" stroke="#b45309" d="M193,-923.67C193,-911.14 193,-895.99 193,-882.5"/>
+<polygon fill="#b45309" stroke="#b45309" points="195.45,-882.87 193,-875.87 190.55,-882.87 195.45,-882.87"/>
 <text xml:space="preserve" text-anchor="middle" x="196.05" y="-899" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
-<!-- omit_L64_0_call -->
+<!-- OtherChecksBeforeRcCal_Call_Pass1 -->
 <g id="node28" class="node">
-<title>omit_L64_0_call</title>
-<g id="a_node28"><a xlink:title="20 omitted candidate direct calls">
-<text xml:space="preserve" text-anchor="middle" x="582" y="-944" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksBeforeRcCal_Call_Pass1</title>
+<g id="a_node28"><a xlink:title="OtherChecksBeforeRcCal_Call_Pass1&#10;Summary of 20 candidate direct calls: ExternalChecks, AccelerometerChecks, AirspeedChecks, ArmPermissionChecks, BaroChecks, CpuResourceChecks, DistanceSensorChecks, EscChecks, EstimatorChecks, FailureDetectorChecks, GyroChecks, ImuConsistencyChecks, MagnetometerChecks, HomePositionChecks, MissionChecks, OffboardChecks, ModeChecks, OpenDroneIDChecks, ParachuteChecks, PowerChecks. Each visit executes only the selected direct callee, including its full internal calls and effects.">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="741.79,-978.4 528.21,-978.4 528.21,-924 741.79,-924 741.79,-978.4"/>
+<polygon fill="#e0f2fe" stroke="none" points="528.21,-951.2 528.21,-978.4 741.79,-978.4 741.79,-951.2 528.21,-951.2"/>
+<text xml:space="preserve" text-anchor="start" x="535.21" y="-962.5" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksBeforeRcCal_Call_Pass1</text>
+<text xml:space="preserve" text-anchor="start" x="535.21" y="-933.2" font-family="Consolas" font-size="11.00">run_other_checks_before_rc_cal();</text>
 </a>
 </g>
 </g>
-<!-- omit_L64_0_test&#45;&gt;omit_L64_0_call -->
+<!-- OtherChecksBeforeRcCal_Match_Pass1&#45;&gt;OtherChecksBeforeRcCal_Call_Pass1 -->
 <g id="edge31" class="edge">
-<title>omit_L64_0_test&#45;&gt;omit_L64_0_call</title>
-<path fill="none" stroke="#15803d" stroke-dasharray="5,2" d="M212.56,-951.2C276.51,-951.2 479.62,-951.2 554.2,-951.2"/>
-<polygon fill="#15803d" stroke="#15803d" points="554.12,-953.65 561.12,-951.2 554.12,-948.75 554.12,-953.65"/>
-<text xml:space="preserve" text-anchor="middle" x="387.5" y="-957.2" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<title>OtherChecksBeforeRcCal_Match_Pass1&#45;&gt;OtherChecksBeforeRcCal_Call_Pass1</title>
+<path fill="none" stroke="#15803d" d="M318.18,-951.2C381.45,-951.2 457.72,-951.2 519.56,-951.2"/>
+<polygon fill="#15803d" stroke="#15803d" points="519.29,-953.65 526.29,-951.2 519.29,-948.75 519.29,-953.65"/>
+<text xml:space="preserve" text-anchor="middle" x="423.07" y="-957.2" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L64_0_call&#45;&gt;BB18 -->
+<!-- OtherChecksBeforeRcCal_Call_Pass1&#45;&gt;BB18 -->
 <g id="edge32" class="edge">
-<title>omit_L64_0_call&#45;&gt;BB18</title>
-<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M601.77,-946.08C673.25,-931.18 914,-881 914,-881 914,-881 935.72,-713.41 945.42,-638.57"/>
+<title>OtherChecksBeforeRcCal_Call_Pass1&#45;&gt;BB18</title>
+<path fill="none" stroke="#475569" d="M742.07,-923.64C820.75,-904.13 914,-881 914,-881 914,-881 935.72,-713.41 945.42,-638.57"/>
 <polygon fill="#475569" stroke="#475569" points="947.82,-639.1 946.29,-631.84 942.96,-638.47 947.82,-639.1"/>
 </g>
-<!-- omit_L64_1_test&#45;&gt;BB28 -->
+<!-- OtherChecksAfterRcCal_Match_Pass1&#45;&gt;BB28 -->
 <g id="edge40" class="edge">
-<title>omit_L64_1_test&#45;&gt;BB28</title>
-<path fill="none" stroke="#b45309" stroke-dasharray="5,2" d="M193,-726.16C193,-706.13 193,-667.1 193,-638.37"/>
-<polygon fill="#b45309" stroke="#b45309" points="195.45,-638.7 193,-631.7 190.55,-638.7 195.45,-638.7"/>
+<title>OtherChecksAfterRcCal_Match_Pass1&#45;&gt;BB28</title>
+<path fill="none" stroke="#b45309" d="M193,-712.65C193,-691.45 193,-661.55 193,-638.36"/>
+<polygon fill="#b45309" stroke="#b45309" points="195.45,-638.66 193,-631.66 190.55,-638.66 195.45,-638.66"/>
 <text xml:space="preserve" text-anchor="middle" x="196.05" y="-688" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
-<!-- omit_L64_1_call -->
+<!-- OtherChecksAfterRcCal_Call_Pass1 -->
 <g id="node30" class="node">
-<title>omit_L64_1_call</title>
-<g id="a_node30"><a xlink:title="7 omitted candidate direct calls">
-<text xml:space="preserve" text-anchor="middle" x="443" y="-733" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksAfterRcCal_Call_Pass1</title>
+<g id="a_node30"><a xlink:title="OtherChecksAfterRcCal_Call_Pass1&#10;Summary of 7 candidate direct calls: SdCardChecks, SystemChecks, BatteryChecks, WindChecks, GeofenceChecks, FlightTimeChecks, VtolChecks. Each visit executes only the selected direct callee, including its full internal calls and effects.">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="711.77,-767.4 504.23,-767.4 504.23,-713 711.77,-713 711.77,-767.4"/>
+<polygon fill="#e0f2fe" stroke="none" points="504.23,-740.2 504.23,-767.4 711.77,-767.4 711.77,-740.2 504.23,-740.2"/>
+<text xml:space="preserve" text-anchor="start" x="511.23" y="-751.5" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksAfterRcCal_Call_Pass1</text>
+<text xml:space="preserve" text-anchor="start" x="511.23" y="-722.2" font-family="Consolas" font-size="11.00">run_other_checks_after_rc_cal();</text>
 </a>
 </g>
 </g>
-<!-- omit_L64_1_test&#45;&gt;omit_L64_1_call -->
+<!-- OtherChecksAfterRcCal_Match_Pass1&#45;&gt;OtherChecksAfterRcCal_Call_Pass1 -->
 <g id="edge33" class="edge">
-<title>omit_L64_1_test&#45;&gt;omit_L64_1_call</title>
-<path fill="none" stroke="#15803d" stroke-dasharray="5,2" d="M212.62,-740.2C256.8,-740.2 364.19,-740.2 415.21,-740.2"/>
-<polygon fill="#15803d" stroke="#15803d" points="414.96,-742.65 421.96,-740.2 414.96,-737.75 414.96,-742.65"/>
-<text xml:space="preserve" text-anchor="middle" x="318" y="-746.2" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<title>OtherChecksAfterRcCal_Match_Pass1&#45;&gt;OtherChecksAfterRcCal_Call_Pass1</title>
+<path fill="none" stroke="#15803d" d="M315.27,-740.2C372.24,-740.2 439.58,-740.2 495.3,-740.2"/>
+<polygon fill="#15803d" stroke="#15803d" points="495.28,-742.65 502.28,-740.2 495.27,-737.75 495.28,-742.65"/>
+<text xml:space="preserve" text-anchor="middle" x="409.57" y="-746.2" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L64_1_call&#45;&gt;BB18 -->
+<!-- OtherChecksAfterRcCal_Call_Pass1&#45;&gt;BB18 -->
 <g id="edge34" class="edge">
-<title>omit_L64_1_call&#45;&gt;BB18</title>
-<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M462.58,-735.81C531.1,-723.94 756,-685 756,-685 756,-685 914,-670 914,-670 914,-670 922.57,-654.11 931.34,-637.82"/>
+<title>OtherChecksAfterRcCal_Call_Pass1&#45;&gt;BB18</title>
+<path fill="none" stroke="#475569" d="M680.7,-712.58C718.13,-698.87 756,-685 756,-685 756,-685 914,-670 914,-670 914,-670 922.57,-654.11 931.34,-637.82"/>
 <polygon fill="#475569" stroke="#475569" points="933.48,-639.03 934.64,-631.7 929.16,-636.7 933.48,-639.03"/>
 </g>
 <!-- BB24 -->
@@ -558,8 +570,8 @@
 <!-- BB21&#45;&gt;BB24 -->
 <g id="edge51" class="edge">
 <title>BB21&#45;&gt;BB24</title>
-<path fill="none" stroke="#475569" d="M1464.01,-712.01C1419.31,-689.49 1355.81,-657.5 1309.22,-634.04"/>
-<polygon fill="#475569" stroke="#475569" points="1310.6,-631.99 1303.25,-631.03 1308.4,-636.37 1310.6,-631.99"/>
+<path fill="none" stroke="#475569" d="M1464.81,-712.01C1419.95,-689.49 1356.21,-657.5 1309.45,-634.04"/>
+<polygon fill="#475569" stroke="#475569" points="1310.8,-631.98 1303.45,-631.03 1308.61,-636.36 1310.8,-631.98"/>
 </g>
 <!-- BB33 -->
 <g id="node32" class="node">
@@ -622,19 +634,22 @@
 <polygon fill="#15803d" stroke="#15803d" points="1466.88,-460.05 1473.88,-457.6 1466.88,-455.15 1466.88,-460.05"/>
 <text xml:space="preserve" text-anchor="middle" x="1450.25" y="-463.6" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L86_0_test -->
+<!-- OtherChecksBeforeRcCal_Match_Pass2 -->
 <g id="node39" class="node">
-<title>omit_L86_0_test</title>
-<g id="a_node39"><a xlink:title="20 omitted candidate tests">
-<text xml:space="preserve" text-anchor="middle" x="1248" y="-345.4" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksBeforeRcCal_Match_Pass2</title>
+<g id="a_node39"><a xlink:title="OtherChecksBeforeRcCal_Match_Pass2&#10;Summary of 20 candidate address tests: ExternalChecks, AccelerometerChecks, AirspeedChecks, ArmPermissionChecks, BaroChecks, CpuResourceChecks, DistanceSensorChecks, EscChecks, EstimatorChecks, FailureDetectorChecks, GyroChecks, ImuConsistencyChecks, MagnetometerChecks, HomePositionChecks, MissionChecks, OffboardChecks, ModeChecks, OpenDroneIDChecks, ParachuteChecks, PowerChecks">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="1372.93,-379.8 1123.07,-379.8 1123.07,-325.4 1372.93,-325.4 1372.93,-379.8"/>
+<polygon fill="#fef3c7" stroke="none" points="1123.07,-352.6 1123.07,-379.8 1372.93,-379.8 1372.93,-352.6 1123.07,-352.6"/>
+<text xml:space="preserve" text-anchor="start" x="1130.07" y="-363.9" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksBeforeRcCal_Match_Pass2</text>
+<text xml:space="preserve" text-anchor="start" x="1130.07" y="-334.6" font-family="Consolas" font-size="11.00">matches_other_checks_before_rc_cal(fp);</text>
 </a>
 </g>
 </g>
-<!-- BB27&#45;&gt;omit_L86_0_test -->
+<!-- BB27&#45;&gt;OtherChecksBeforeRcCal_Match_Pass2 -->
 <g id="edge53" class="edge">
-<title>BB27&#45;&gt;omit_L86_0_test</title>
-<path fill="none" stroke="#b45309" d="M1248,-429.54C1248,-412.54 1248,-390.92 1248,-375.1"/>
-<polygon fill="#b45309" stroke="#b45309" points="1250.45,-375.48 1248,-368.48 1245.55,-375.48 1250.45,-375.48"/>
+<title>BB27&#45;&gt;OtherChecksBeforeRcCal_Match_Pass2</title>
+<path fill="none" stroke="#b45309" d="M1248,-429.54C1248,-417.02 1248,-402 1248,-388.63"/>
+<polygon fill="#b45309" stroke="#b45309" points="1250.45,-388.64 1248,-381.64 1245.55,-388.64 1250.45,-388.64"/>
 <text xml:space="preserve" text-anchor="middle" x="1251.05" y="-398.8" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB30&#45;&gt;BB29 -->
@@ -667,19 +682,22 @@
 <polygon fill="#15803d" stroke="#15803d" points="1466.88,-250.05 1473.88,-247.6 1466.88,-245.15 1466.88,-250.05"/>
 <text xml:space="preserve" text-anchor="middle" x="1450.25" y="-253.6" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L86_1_test -->
+<!-- OtherChecksAfterRcCal_Match_Pass2 -->
 <g id="node41" class="node">
-<title>omit_L86_1_test</title>
-<g id="a_node41"><a xlink:title="7 omitted candidate tests">
-<text xml:space="preserve" text-anchor="middle" x="1248" y="-135.4" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksAfterRcCal_Match_Pass2</title>
+<g id="a_node41"><a xlink:title="OtherChecksAfterRcCal_Match_Pass2&#10;Summary of 7 candidate address tests: SdCardChecks, SystemChecks, BatteryChecks, WindChecks, GeofenceChecks, FlightTimeChecks, VtolChecks">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="1369.91,-169.8 1126.09,-169.8 1126.09,-115.4 1369.91,-115.4 1369.91,-169.8"/>
+<polygon fill="#fef3c7" stroke="none" points="1126.09,-142.6 1126.09,-169.8 1369.91,-169.8 1369.91,-142.6 1126.09,-142.6"/>
+<text xml:space="preserve" text-anchor="start" x="1133.09" y="-153.9" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksAfterRcCal_Match_Pass2</text>
+<text xml:space="preserve" text-anchor="start" x="1133.09" y="-124.6" font-family="Consolas" font-size="11.00">matches_other_checks_after_rc_cal(fp);</text>
 </a>
 </g>
 </g>
-<!-- BB31&#45;&gt;omit_L86_1_test -->
+<!-- BB31&#45;&gt;OtherChecksAfterRcCal_Match_Pass2 -->
 <g id="edge55" class="edge">
-<title>BB31&#45;&gt;omit_L86_1_test</title>
-<path fill="none" stroke="#b45309" d="M1248,-219.54C1248,-202.54 1248,-180.92 1248,-165.1"/>
-<polygon fill="#b45309" stroke="#b45309" points="1250.45,-165.48 1248,-158.48 1245.55,-165.48 1250.45,-165.48"/>
+<title>BB31&#45;&gt;OtherChecksAfterRcCal_Match_Pass2</title>
+<path fill="none" stroke="#b45309" d="M1248,-219.54C1248,-207.02 1248,-192 1248,-178.63"/>
+<polygon fill="#b45309" stroke="#b45309" points="1250.45,-178.64 1248,-171.64 1245.55,-178.64 1250.45,-178.64"/>
 <text xml:space="preserve" text-anchor="middle" x="1251.05" y="-188.8" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
 <!-- BB32&#45;&gt;BB29 -->
@@ -688,61 +706,67 @@
 <path fill="none" stroke="#475569" d="M1765.08,-212.81C1829.75,-168.28 1938.26,-93.56 1966.21,-74.14"/>
 <polygon fill="#475569" stroke="#475569" points="1967.29,-76.38 1971.61,-70.36 1964.48,-72.37 1967.29,-76.38"/>
 </g>
-<!-- omit_L86_0_test&#45;&gt;BB31 -->
+<!-- OtherChecksBeforeRcCal_Match_Pass2&#45;&gt;BB31 -->
 <g id="edge54" class="edge">
-<title>omit_L86_0_test&#45;&gt;BB31</title>
-<path fill="none" stroke="#b45309" stroke-dasharray="5,2" d="M1248,-338.55C1248,-324.85 1248,-302.7 1248,-283.81"/>
-<polygon fill="#b45309" stroke="#b45309" points="1250.45,-283.91 1248,-276.91 1245.55,-283.91 1250.45,-283.91"/>
+<title>OtherChecksBeforeRcCal_Match_Pass2&#45;&gt;BB31</title>
+<path fill="none" stroke="#b45309" d="M1248,-325.07C1248,-312.54 1248,-297.39 1248,-283.9"/>
+<polygon fill="#b45309" stroke="#b45309" points="1250.45,-284.27 1248,-277.27 1245.55,-284.27 1250.45,-284.27"/>
 <text xml:space="preserve" text-anchor="middle" x="1251.05" y="-300.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
-<!-- omit_L86_0_call -->
+<!-- OtherChecksBeforeRcCal_Call_Pass2 -->
 <g id="node40" class="node">
-<title>omit_L86_0_call</title>
-<g id="a_node40"><a xlink:title="20 omitted candidate direct calls">
-<text xml:space="preserve" text-anchor="middle" x="1637" y="-345.4" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksBeforeRcCal_Call_Pass2</title>
+<g id="a_node40"><a xlink:title="OtherChecksBeforeRcCal_Call_Pass2&#10;Summary of 20 candidate direct calls: ExternalChecks, AccelerometerChecks, AirspeedChecks, ArmPermissionChecks, BaroChecks, CpuResourceChecks, DistanceSensorChecks, EscChecks, EstimatorChecks, FailureDetectorChecks, GyroChecks, ImuConsistencyChecks, MagnetometerChecks, HomePositionChecks, MissionChecks, OffboardChecks, ModeChecks, OpenDroneIDChecks, ParachuteChecks, PowerChecks. Each visit executes only the selected direct callee, including its full internal calls and effects.">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="1796.79,-379.8 1583.21,-379.8 1583.21,-325.4 1796.79,-325.4 1796.79,-379.8"/>
+<polygon fill="#e0f2fe" stroke="none" points="1583.21,-352.6 1583.21,-379.8 1796.79,-379.8 1796.79,-352.6 1583.21,-352.6"/>
+<text xml:space="preserve" text-anchor="start" x="1590.21" y="-363.9" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksBeforeRcCal_Call_Pass2</text>
+<text xml:space="preserve" text-anchor="start" x="1590.21" y="-334.6" font-family="Consolas" font-size="11.00">run_other_checks_before_rc_cal();</text>
 </a>
 </g>
 </g>
-<!-- omit_L86_0_test&#45;&gt;omit_L86_0_call -->
+<!-- OtherChecksBeforeRcCal_Match_Pass2&#45;&gt;OtherChecksBeforeRcCal_Call_Pass2 -->
 <g id="edge47" class="edge">
-<title>omit_L86_0_test&#45;&gt;omit_L86_0_call</title>
-<path fill="none" stroke="#15803d" stroke-dasharray="5,2" d="M1267.56,-352.6C1331.51,-352.6 1534.62,-352.6 1609.2,-352.6"/>
-<polygon fill="#15803d" stroke="#15803d" points="1609.12,-355.05 1616.12,-352.6 1609.12,-350.15 1609.12,-355.05"/>
-<text xml:space="preserve" text-anchor="middle" x="1442.5" y="-358.6" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<title>OtherChecksBeforeRcCal_Match_Pass2&#45;&gt;OtherChecksBeforeRcCal_Call_Pass2</title>
+<path fill="none" stroke="#15803d" d="M1373.18,-352.6C1436.45,-352.6 1512.72,-352.6 1574.56,-352.6"/>
+<polygon fill="#15803d" stroke="#15803d" points="1574.29,-355.05 1581.29,-352.6 1574.29,-350.15 1574.29,-355.05"/>
+<text xml:space="preserve" text-anchor="middle" x="1478.07" y="-358.6" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L86_0_call&#45;&gt;BB29 -->
+<!-- OtherChecksBeforeRcCal_Call_Pass2&#45;&gt;BB29 -->
 <g id="edge48" class="edge">
-<title>omit_L86_0_call&#45;&gt;BB29</title>
-<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M1656.77,-347.48C1728.25,-332.58 1969,-282.4 1969,-282.4 1969,-282.4 1989.72,-145.91 1999.72,-80"/>
+<title>OtherChecksBeforeRcCal_Call_Pass2&#45;&gt;BB29</title>
+<path fill="none" stroke="#475569" d="M1797.07,-325.04C1875.75,-305.53 1969,-282.4 1969,-282.4 1969,-282.4 1989.72,-145.91 1999.72,-80"/>
 <polygon fill="#475569" stroke="#475569" points="2002.09,-80.73 2000.71,-73.45 1997.24,-80 2002.09,-80.73"/>
 </g>
-<!-- omit_L86_1_test&#45;&gt;BB33 -->
+<!-- OtherChecksAfterRcCal_Match_Pass2&#45;&gt;BB33 -->
 <g id="edge56" class="edge">
-<title>omit_L86_1_test&#45;&gt;BB33</title>
-<path fill="none" stroke="#b45309" stroke-dasharray="5,2" d="M1248,-128.6C1248,-116.35 1248,-97.42 1248,-80.69"/>
-<polygon fill="#b45309" stroke="#b45309" points="1250.45,-80.7 1248,-73.7 1245.55,-80.7 1250.45,-80.7"/>
+<title>OtherChecksAfterRcCal_Match_Pass2&#45;&gt;BB33</title>
+<path fill="none" stroke="#b45309" d="M1248,-115C1248,-104.43 1248,-92.12 1248,-80.8"/>
+<polygon fill="#b45309" stroke="#b45309" points="1250.45,-80.89 1248,-73.89 1245.55,-80.89 1250.45,-80.89"/>
 <text xml:space="preserve" text-anchor="middle" x="1251.05" y="-90.4" font-family="Arial" font-size="10.00" fill="#b45309">F</text>
 </g>
-<!-- omit_L86_1_call -->
+<!-- OtherChecksAfterRcCal_Call_Pass2 -->
 <g id="node42" class="node">
-<title>omit_L86_1_call</title>
-<g id="a_node42"><a xlink:title="7 omitted candidate direct calls">
-<text xml:space="preserve" text-anchor="middle" x="1498" y="-135.4" font-family="Consolas" font-size="24.00">...</text>
+<title>OtherChecksAfterRcCal_Call_Pass2</title>
+<g id="a_node42"><a xlink:title="OtherChecksAfterRcCal_Call_Pass2&#10;Summary of 7 candidate direct calls: SdCardChecks, SystemChecks, BatteryChecks, WindChecks, GeofenceChecks, FlightTimeChecks, VtolChecks. Each visit executes only the selected direct callee, including its full internal calls and effects.">
+<polygon fill="none" stroke="#64748b" stroke-dasharray="5,2" points="1696.77,-169.8 1489.23,-169.8 1489.23,-115.4 1696.77,-115.4 1696.77,-169.8"/>
+<polygon fill="#e0f2fe" stroke="none" points="1489.23,-142.6 1489.23,-169.8 1696.77,-169.8 1696.77,-142.6 1489.23,-142.6"/>
+<text xml:space="preserve" text-anchor="start" x="1496.23" y="-153.9" font-family="Arial" font-weight="bold" font-size="11.00">OtherChecksAfterRcCal_Call_Pass2</text>
+<text xml:space="preserve" text-anchor="start" x="1496.23" y="-124.6" font-family="Consolas" font-size="11.00">run_other_checks_after_rc_cal();</text>
 </a>
 </g>
 </g>
-<!-- omit_L86_1_test&#45;&gt;omit_L86_1_call -->
+<!-- OtherChecksAfterRcCal_Match_Pass2&#45;&gt;OtherChecksAfterRcCal_Call_Pass2 -->
 <g id="edge49" class="edge">
-<title>omit_L86_1_test&#45;&gt;omit_L86_1_call</title>
-<path fill="none" stroke="#15803d" stroke-dasharray="5,2" d="M1267.62,-142.6C1311.8,-142.6 1419.19,-142.6 1470.21,-142.6"/>
-<polygon fill="#15803d" stroke="#15803d" points="1469.96,-145.05 1476.96,-142.6 1469.96,-140.15 1469.96,-145.05"/>
-<text xml:space="preserve" text-anchor="middle" x="1373" y="-148.6" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
+<title>OtherChecksAfterRcCal_Match_Pass2&#45;&gt;OtherChecksAfterRcCal_Call_Pass2</title>
+<path fill="none" stroke="#15803d" d="M1370.12,-142.6C1406.01,-142.6 1445.09,-142.6 1480.36,-142.6"/>
+<polygon fill="#15803d" stroke="#15803d" points="1480.25,-145.05 1487.25,-142.6 1480.25,-140.15 1480.25,-145.05"/>
+<text xml:space="preserve" text-anchor="middle" x="1429.57" y="-148.6" font-family="Arial" font-size="10.00" fill="#15803d">T</text>
 </g>
-<!-- omit_L86_1_call&#45;&gt;BB29 -->
+<!-- OtherChecksAfterRcCal_Call_Pass2&#45;&gt;BB29 -->
 <g id="edge50" class="edge">
-<title>omit_L86_1_call&#45;&gt;BB29</title>
-<path fill="none" stroke="#475569" stroke-dasharray="5,2" d="M1517.58,-138.21C1586.1,-126.34 1811,-87.4 1811,-87.4 1811,-87.4 1931.97,-75.92 1964.79,-71.09"/>
-<polygon fill="#475569" stroke="#475569" points="1964.98,-73.55 1971.37,-69.78 1964.02,-68.75 1964.98,-73.55"/>
+<title>OtherChecksAfterRcCal_Call_Pass2&#45;&gt;BB29</title>
+<path fill="none" stroke="#475569" d="M1696.93,-120.1C1770.07,-104.97 1855,-87.4 1855,-87.4 1855,-87.4 1937.67,-76.52 1964.59,-71.5"/>
+<polygon fill="#475569" stroke="#475569" points="1965.16,-73.88 1971.38,-69.85 1964,-69.12 1965.16,-73.88"/>
 </g>
 </g>
 </svg>

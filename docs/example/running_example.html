@@ -76,92 +76,60 @@ When the traversal reaches the <code>this</code> parameter of <code>checkAndRepo
 The slice serves as input to TCFA construction.</p>
 <h2 id="from-the-slice-to-a-time-unspecified-tcfa">From the slice to a time-unspecified TCFA</h2>
 <h3 id="control-flow-graph-normalization">Control flow graph normalization</h3>
-<p>RVat normalizes each function's control flow graph (CFG) by consolidating its return points into a single exit basic block.
-In <a href="#figure-2">Figure 2</a>, the two original paths return <code>true</code> and <code>false</code>, respectively.
-After normalization, each path assigns its value to <code>ret</code> and flows into the common block that executes <code>return ret</code>. This gives the inlining step a single exit to reconnect to the caller.</p>
+<p>To construct the TCFA from the slice, RVat adapts the program to the restrictions of the automaton model. Specifically, CFG normalization eliminates multiple exit points and indirect branches in two steps.</p>
+<p>First, RVat consolidates each function's multiple return points into a single exit basic block. In <a href="#figure-2">Figure 2</a>, the two original execution paths return <code>true</code> and <code>false</code>, respectively. After normalization, each path assigns its return value to <code>ret</code> and flows into a common block that executes <code>return ret</code>. This gives the inlining step a single exit to reconnect to the caller.</p>
 <p><a id="figure-2"></a></p>
 <p><img alt="Return unification" loading="lazy" src="../assets/example/images/ret_unification.svg"/></p>
 <p><em>Figure 2. Return unification.</em></p>
-<p>RVat expands each indirect call into explicit branches using the candidate targets resolved by MLTA.
-In <a href="#figure-3">Figure 3</a>, RVat replaces the indirect call <code>r = fp(args)</code> with conditional branches that compare the function pointer <code>fp</code> with each candidate function's address in turn.
-If <code>fp</code> matches the address of <code>func_i</code>, the corresponding branch executes the direct call <code>r = func_i(args)</code>.
-Otherwise, execution proceeds to the next comparison.
-The direct call uses the original arguments <code>args</code> and stores the return value in <code>r</code>.
-Control then continues with the statements after the original call.</p>
+<p>Second, RVat eliminates indirect calls by transforming them into explicit branching structures using candidate target functions resolved by MLTA. In <a href="#figure-3">Figure 3</a>, RVat replaces the indirect call <code>r = fp(args)</code> with conditional branches that compare the function pointer <code>fp</code> with each candidate function address in turn. If <code>fp</code> matches the address of <code>func_i</code>, the corresponding branch executes the direct call <code>r = func_i(args)</code>. Otherwise, execution proceeds to the next candidate comparison. The direct call uses the original arguments <code>args</code> and stores the return value in <code>r</code>. Control then continues with the statements after the original call.</p>
 <p><a id="figure-3"></a></p>
 <p><img alt="Expansion of an indirect call" loading="lazy" src="../assets/example/images/incall_expansion.svg"/></p>
 <p><em>Figure 3. Expansion of an indirect call.</em></p>
-<p>In this example, <code>HealthAndArmingChecks::update()</code> iterates over the <code>_checks</code> array and makes the following indirect call.</p>
-<pre><code class="language-cpp">_checks[i]-&gt;checkAndReport(_context, _reporter)
-</code></pre>
-<p>The candidate targets at this call site include the following.</p>
-<pre><code class="language-text">{
-    RcAndDataLinkChecks::checkAndReport,
-    ManualControlChecks::checkAndReport,
-    ...,
-    RcCalibrationChecks::checkAndReport,
-    ...
-}
-</code></pre>
-<p>The following pseudocode illustrates the expansion in <a href="#figure-3">Figure 3</a> by comparing the function pointer <code>fp</code> loaded for the virtual call with each candidate function's code address.</p>
+<p>In <code>HealthAndArmingChecks::update()</code>, each loop iterates over the <code>_checks</code> array and makes the indirect call <code>_checks[i]-&gt;checkAndReport(_context, _reporter)</code>. MLTA resolves 28 candidate targets for this call site, including <code>RcAndDataLinkChecks</code>, <code>ManualControlChecks</code>, and <code>RcCalibrationChecks</code>. RVat replaces this indirect call with conditional branches comparing the function pointer <code>fp</code> against each candidate address:</p>
 <pre><code class="language-cpp">if (fp == &amp;RcAndDataLinkChecks::checkAndReport) {
-    _rc_and_data_link_checks.RcAndDataLinkChecks::checkAndReport(_context, _reporter)
+    _rc_and_data_link_checks.RcAndDataLinkChecks::checkAndReport(_context, _reporter);
 } else if (fp == &amp;ManualControlChecks::checkAndReport) {
-    _manual_control_checks.ManualControlChecks::checkAndReport(_context, _reporter)
+    _manual_control_checks.ManualControlChecks::checkAndReport(_context, _reporter);
 }
 // ...
 else if (fp == &amp;RcCalibrationChecks::checkAndReport) {
-    _rc_calibration_checks.RcCalibrationChecks::checkAndReport(_context, _reporter)
+    _rc_calibration_checks.RcCalibrationChecks::checkAndReport(_context, _reporter);
 }
 // ...
 </code></pre>
+<p>Applying these normalization steps yields the CFGs in <a href="#figure-4">Figure 4</a> and <a href="#figure-5">Figure 5</a>. For presentation clarity, Figure 4 focuses on <code>RcAndDataLinkChecks::checkAndReport()</code> and condenses the remaining candidates into summary nodes with dashed outlines. <a href="#figure-5">Figure 5</a> shows the normalized CFG of <code>RcAndDataLinkChecks::checkAndReport()</code>. Subsequent transformations directly inherit this compact representation.</p>
+<p><a id="figure-4"></a></p>
+<p><img alt="CFG of HealthAndArmingChecks::update()" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_cfg.svg"/></p>
+<p><em>Figure 4. CFG of HealthAndArmingChecks::update() after normalization.</em></p>
+<p><a id="figure-5"></a></p>
+<p><img alt="CFG of RcAndDataLinkChecks::checkAndReport()" loading="lazy" src="../assets/example/images/RcAndDataLinkChecks_checkAndReport_cfg.svg"/></p>
+<p><em>Figure 5. CFG of RcAndDataLinkChecks::checkAndReport() after normalization.</em></p>
 <h3 id="bounded-function-inlining">Bounded function inlining</h3>
-<p>RVat starts at <span data-display="false" data-math="e_F">e_F</span> and inlines callees up to the maximum inlining depth <span data-display="false" data-math="D_{\max}">D_{\max}</span>.
-<a href="#figure-4">Figure 4</a> shows one inlining step. RVat copies the callee's CFG at the call site and binds the actual arguments <span data-display="false" data-math="\mathrm{val}_i">\mathrm{val}_i</span> to the corresponding formal parameters <span data-display="false" data-math="\mathrm{arg}_i">\mathrm{arg}_i</span>.
+<p>Because the TCFA has no call stack, RVat performs bounded function inlining to eliminate return edges and construct a flat automaton. Starting from the entry function <span data-display="false" data-math="e_F">e_F</span> (<code>HealthAndArmingChecks::update()</code>), RVat inlines callee bodies at each call site up to a maximum inlining depth <span data-display="false" data-math="D_{\max}">D_{\max}</span>. Callees exceeding this depth are treated as external functions.</p>
+<p><a href="#figure-6">Figure 6</a> illustrates one inlining step at a single call site. RVat copies the callee's CFG at the call site and binds the actual arguments <span data-display="false" data-math="\mathrm{val}_i">\mathrm{val}_i</span> to the corresponding formal parameters <span data-display="false" data-math="\mathrm{arg}_i">\mathrm{arg}_i</span>.
 It redirects the callee's exit path to the caller's successor block and assigns the return value <code>ret</code> to <code>a</code> on that path.
 The new CFG replaces the original call and return nodes with the copied instructions and the connecting edges.
-In the figure, the callee's local variable <code>ret</code> becomes the global variable <code>callee_ret_1</code>, where <code>callee</code> abbreviates the mangled function name and <code>1</code> identifies the inlined copy.</p>
-<p><a id="figure-4"></a></p>
-<p><img alt="Bounded function inlining" loading="lazy" src="../assets/example/images/func_inline.svg"/></p>
-<p><em>Figure 4. Function inlining at a single call site.</em></p>
-<p><a href="#figure-5">Figure 5</a> and <a href="#figure-6">Figure 6</a> show the normalized CFGs of the caller and the callee.
-Each loop in <a href="#figure-5">Figure 5</a> has a direct call to <code>RcAndDataLinkChecks::checkAndReport()</code> on the corresponding dispatch branch.
-Both calls are at depth 1 and are therefore inlined with the illustrative setting <span data-display="false" data-math="D_{\max}=1">D_{\max}=1</span>.</p>
-<p>For clarity, Figures 7, 9, and 11 show only a partial expansion, focusing on the two <code>RcAndDataLinkChecks::checkAndReport()</code> calls. Other depth-1 callees are retained as call nodes for compactness.</p>
-<p><a id="figure-5"></a></p>
-<p><img alt="CFG of HealthAndArmingChecks::update()" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_cfg.svg"/></p>
-<p><em>Figure 5. CFG of HealthAndArmingChecks::update() after normalization.</em></p>
+In the figure, the callee's local variable <code>ret</code> becomes the global variable <code>callee_ret_1</code>, where <code>callee</code> abbreviates the mangled function name and <code>1</code> is an instance index distinguishing copies inlined at different call sites.</p>
 <p><a id="figure-6"></a></p>
-<p><img alt="CFG of RcAndDataLinkChecks::checkAndReport()" loading="lazy" src="../assets/example/images/RcAndDataLinkChecks_checkAndReport_cfg.svg"/></p>
-<p><em>Figure 6. CFG of RcAndDataLinkChecks::checkAndReport() after normalization.</em></p>
-<p><a href="#figure-7">Figure 7</a> outlines the two inlined copies of the RC check in red.
-In each copy, RVat binds the receiver <code>_checks[i]</code> to <code>this</code> and passes <code>_context</code> and <code>_reporter</code> by reference to <code>context</code> and <code>reporter</code>.
-Since <code>checkAndReport()</code> returns <code>void</code>, the callee's exit path flows directly to the <code>++i</code> block of the corresponding loop.
-Calls inside the inlined copies that exceed <span data-display="false" data-math="D_{\max}">D_{\max}</span> remain external calls.
-The depth limit therefore determines which callee bodies appear explicitly in the TCFA.</p>
-<p>RVat globalizes each local variable under a name of the form <code>[mangled_func]_[var]_[copy_id]</code>.
-For example, the two copies of <code>elapsed</code> appear as <code>_ZN19RcAndDataLinkChecks14checkAndReportERK7ContextR6Report_elapsed_1</code> and <code>_ZN19RcAndDataLinkChecks14checkAndReportERK7ContextR6Report_elapsed_2</code>.
-These names distinguish the variables of the two copies.
-Member accesses through the bound <code>this</code> pointer still refer to the original object.</p>
+<p><img alt="Bounded function inlining" loading="lazy" src="../assets/example/images/func_inline.svg"/></p>
+<p><em>Figure 6. Function inlining at a single call site.</em></p>
+<p>Applying this inlining procedure to the running example, RVat traverses the caller CFG in <a href="#figure-4">Figure 4</a>. In <a href="#figure-4">Figure 4</a>, each loop contains a call to <code>RcAndDataLinkChecks::checkAndReport()</code> on the corresponding dispatch branch. Because both calls are at depth 1, they are inlined under <span data-display="false" data-math="D_{\max}=1">D_{\max}=1</span> by substituting the callee body from <a href="#figure-5">Figure 5</a> into the call sites. Other checks and nested calls exceeding <span data-display="false" data-math="D_{\max}">D_{\max}</span> are retained as explicit or summary call nodes. <a href="#figure-7">Figure 7</a> shows the resulting inlined CFG, highlighting the two inlined copies in red, where RVat binds the receiver <code>_checks[i]</code> to <code>this</code> and passes <code>_context</code> and <code>_reporter</code> by reference.</p>
+<p>To distinguish variables across multiple inlined copies, RVat globalizes local variables using the scheme shown in <a href="#figure-6">Figure 6</a>. Specifically, it prefixes each local variable with its mangled function name and appends a copy identifier. For example, the local variable <code>elapsed</code> in the two copies becomes <code>_ZN19RcAndDataLinkChecks14checkAndReportERK7ContextR6Report_elapsed_1</code> and <code>_ZN19RcAndDataLinkChecks14checkAndReportERK7ContextR6Report_elapsed_2</code>, respectively. Member accesses through the bound <code>this</code> pointer continue to refer to the original object.</p>
 <p><a id="figure-7"></a></p>
 <p><img alt="Inlining and variable globalization" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_inlined_cfg.svg"/></p>
 <p><em>Figure 7. Partial illustration of inlining and variable globalization in HealthAndArmingChecks::update().</em></p>
-<h3 id="separating-instructions-from-branch-decisions">Separating instructions from branch decisions</h3>
-<p>RVat moves each conditional branch instruction at the end of a basic block into a separate conditional-branch basic block (CBB).
-In <a href="#figure-8">Figure 8</a>, the instructions that precede <code>if (x &gt;= y)</code> remain in the original block.
-Control passes from that block to the CBB and then follows the original true or false successor.
-This separation lets the TCFA execute the preceding instructions on one transition and test the resulting data valuation on the outgoing transitions of the CBB.</p>
+<h3 id="separating-conditional-branch-instructions-into-cbbs">Separating conditional-branch instructions into CBBs</h3>
+<p>Before constructing the time-unspecified TCFA, RVat transforms the inlined CFG by separating each conditional-branch instruction from the end of a basic block into an independent conditional-branch basic block (CBB).</p>
+<p><a href="#figure-8">Figure 8</a> illustrates this transformation on a single basic block. The instruction <code>x = 0</code> remains in <code>BB1</code>, while the conditional-branch instruction <code>if (x &gt;= y)</code> is moved into <code>BB2 (CBB)</code>. Control passes from <code>BB1</code> to <code>BB2</code>, and then follows the original true or false successor (<code>BB3</code> or <code>BB4</code>).</p>
 <p><a id="figure-8"></a></p>
-<p><img alt="Separation of a conditional branch" loading="lazy" src="../assets/example/images/Cond_branch_separation.svg"/></p>
+<p><img alt="Separation of a conditional branch into a CBB" loading="lazy" src="../assets/example/images/Cond_branch_separation.svg"/></p>
 <p><em>Figure 8. Separation of a conditional branch into a CBB.</em></p>
-<p><a href="#figure-9">Figure 9</a> applies this transformation to both inlined copies.</p>
+<p><a href="#figure-9">Figure 9</a> shows the resulting CFG after applying this transformation to the inlined CFG in <a href="#figure-7">Figure 7</a>, where each conditional branch across the caller and the two inlined copies is separated into a dedicated CBB.</p>
 <p><a id="figure-9"></a></p>
 <p><img alt="Inlined CFG after separation of conditional branches" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_inlined_cfg_cbb.svg"/></p>
-<p><em>Figure 9. Inlined CFG of HealthAndArmingChecks::update() after separation of conditional branches.</em></p>
+<p><em>Figure 9. Inlined CFG of HealthAndArmingChecks::update() after separating conditional branches into CBBs.</em></p>
 <h3 id="mapping-cfg-elements-to-the-tcfa">Mapping CFG elements to the TCFA</h3>
-<p>RVat maps each basic block <span data-display="false" data-math="b">b</span> to a location <span data-display="false" data-math="\ell_b">\ell_b</span> and each CFG edge <span data-display="false" data-math="(b,b')">(b,b')</span> to a transition <span data-display="false" data-math="(\ell_b,\sigma,g,R,\ell_{b'})">(\ell_b,\sigma,g,R,\ell_{b'})</span>.
-The guard <span data-display="false" data-math="g=\phi\land\psi">g=\phi\land\psi</span> combines a time constraint <span data-display="false" data-math="\phi">\phi</span> and a data constraint <span data-display="false" data-math="\psi">\psi</span>.
-<a href="#table-2">Table 2</a> shows how the source block determines the instruction sequence and the data constraint.</p>
+<p>RVat maps each basic block <span data-display="false" data-math="b">b</span> to a location <span data-display="false" data-math="\ell_b">\ell_b</span> and each CFG edge <span data-display="false" data-math="(b,b')">(b,b')</span> to a transition <span data-display="false" data-math="(\ell_b,\sigma,g,R,\ell_{b'})">(\ell_b,\sigma,g,R,\ell_{b'})</span>. The guard <span data-display="false" data-math="g=\phi\land\psi">g=\phi\land\psi</span> combines a time constraint <span data-display="false" data-math="\phi">\phi</span> and a data constraint <span data-display="false" data-math="\psi">\psi</span>. At this stage, the time constraint is initialized to <span data-display="false" data-math="\phi = \mathrm{true}">\phi = \mathrm{true}</span> and the clock reset set to <span data-display="false" data-math="R = \emptyset">R = \emptyset</span>. <a href="#table-2">Table 2</a> summarizes the mapping from CFG elements to the time-unspecified TCFA.</p>
 <p><a id="table-2"></a></p>
 <p><strong>Table 2. Mapping from the normalized CFG to the time-unspecified TCFA</strong></p>
 <div aria-label="Running Example table 2" class="table-scroll" role="region" tabindex="0"><table class="data-table">
@@ -197,17 +165,14 @@ The guard <span data-display="false" data-math="g=\phi\land\psi">g=\phi\land\psi
 <p><a href="#figure-10">Figure 10</a> illustrates the mapping with four blocks. <code>BB1</code>, <code>BB2</code> (a CBB), <code>BB3</code>, and <code>BB4</code> become <code>init</code>, <span data-display="false" data-math="L_2">L_2</span>, <span data-display="false" data-math="L_3">L_3</span>, and <span data-display="false" data-math="L_r">L_r</span>, respectively.
 The transition from <code>init</code> to <span data-display="false" data-math="L_2">L_2</span> executes <code>x = 0</code>.
 The two transitions from <span data-display="false" data-math="L_2">L_2</span> have empty instruction sequences and carry the data constraints <code>x &gt;= y</code> and <code>x &lt; y</code>.
-The transition from <span data-display="false" data-math="L_3">L_3</span> to <span data-display="false" data-math="L_r">L_r</span> executes <code>x = y - 1</code> followed by <code>y = x * 10</code>.</p>
+The transition from <span data-display="false" data-math="L_3">L_3</span> to <span data-display="false" data-math="L_r">L_r</span> executes <code>x = y - 1</code> followed by <code>y = x * 10</code>. On transitions, green labels show the data constraints <span data-display="false" data-math="\psi">\psi</span> and blue labels show the instruction sequences <span data-display="false" data-math="\sigma">\sigma</span>. At this stage, every transition has <span data-display="false" data-math="\phi=\mathrm{true}">\phi=\mathrm{true}</span> and <span data-display="false" data-math="R=\emptyset">R=\emptyset</span>, so the figures omit these labels.</p>
 <p><a id="figure-10"></a></p>
 <p><img alt="Mapping a normalized CFG to a time-unspecified TCFA" loading="lazy" src="../assets/example/images/cfg2cfa.svg"/></p>
 <p><em>Figure 10. Mapping a normalized CFG to a time-unspecified TCFA.</em></p>
-<p><a href="#figure-11">Figure 11</a> shows the time-unspecified TCFA obtained by applying the same mapping rules to the CFG in <a href="#figure-9">Figure 9</a>.</p>
+<p>Applying the mapping rules in <a href="#table-2">Table 2</a> to the CFG of <code>HealthAndArmingChecks::update()</code> in <a href="#figure-9">Figure 9</a> produces the time-unspecified TCFA shown in <a href="#figure-11">Figure 11</a>. Each basic block and CBB corresponds to an automaton location, while the edges become transitions labeled with their respective instruction sequences and branch conditions.</p>
 <p><a id="figure-11"></a></p>
 <p><img alt="Time-unspecified TCFA of HealthAndArmingChecks::update()" loading="lazy" src="../assets/example/images/HealthAndArmingChecks_update_cfa.svg"/></p>
 <p><em>Figure 11. Time-unspecified TCFA of HealthAndArmingChecks::update().</em></p>
-<p>In <a href="#figure-10">Figure 10</a> and <a href="#figure-11">Figure 11</a>, green labels show the data constraints <span data-display="false" data-math="\psi">\psi</span> and blue labels show the instruction sequences <span data-display="false" data-math="\sigma">\sigma</span>.
-At this stage every transition has <span data-display="false" data-math="\phi=\mathrm{true}">\phi=\mathrm{true}</span> and <span data-display="false" data-math="R=\emptyset">R=\emptyset</span>, so the figures omit these labels.
-In the subsequent timing stage, RVat uses execution time bounds estimated from hardware measurements to set the time constraints on transitions and the clock invariants on locations.</p>
 <h3 id="adding-timing-constraints">Adding timing constraints</h3>
 <p>RVat incorporates the estimated execution-time bounds into the time-unspecified TCFA by adding transition guards, location invariants, and clock resets. The BCET specifies the earliest time at which a transition may execute its instruction sequence, whereas the WCET limits the time spent at the source location. Together, these constraints restrict the modeled execution time of the instruction sequence to the estimated interval.</p>
 <p>To illustrate this step, consider the time-unspecified TCFA in <a href="#figure-10">Figure 10</a> and suppose that the execution-time intervals for <code>x = 0</code> and <code>x = y - 1; y = x * 10</code> are <span data-display="false" data-math="[1,2]">[1,2]</span> and <span data-display="false" data-math="[2,4]">[2,4]</span> time units, respectively. <a href="#figure-12">Figure 12</a> shows the resulting TCFA with timing constraints. For this example, the clock set is <span data-display="false" data-math="C=\{t,T_{global}\}">C=\{t,T_{global}\}</span>, with both clocks initialized to zero. The local clock <span data-display="false" data-math="t">t</span> measures the time spent at each location and is reset on every transition. The global clock <span data-display="false" data-math="T_{global}">T_{global}</span> advances continuously and is never reset, so each transition has <span data-display="false" data-math="R=\{t\}">R=\{t\}</span> and leaves <span data-display="false" data-math="T_{global}">T_{global}</span> unchanged.</p>
@@ -222,7 +187,26 @@ The transition therefore executes <code>x = 0</code> after between one and two t
 The clock is reset on the incoming transition from <span data-display="false" data-math="L_2">L_2</span> to <span data-display="false" data-math="L_3">L_3</span>, so these bounds measure the time spent at <span data-display="false" data-math="L_3">L_3</span>.
 Upon taking the outgoing transition, the model executes <code>x = y - 1</code> followed by <code>y = x * 10</code> and resets <span data-display="false" data-math="t">t</span>.</p>
 <p>Both clocks increase by the same amount during a time elapse. For example, if the transition from <code>init</code> to <span data-display="false" data-math="L_2">L_2</span> occurs after <span data-display="false" data-math="\delta \in [1,2]">\delta \in [1,2]</span> time units, then immediately after the transition <span data-display="false" data-math="t=0">t=0</span> and <span data-display="false" data-math="T_{global}=\delta">T_{global}=\delta</span>. Along a path with successive delays <span data-display="false" data-math="\delta_1,\ldots,\delta_k">\delta_1,\ldots,\delta_k</span>, the global clock records <span data-display="false" data-math="T_{global}=\sum_{i=1}^{k}\delta_i">T_{global}=\sum_{i=1}^{k}\delta_i</span>, including time accumulated before each reset of <span data-display="false" data-math="t">t</span>. This accumulated time connects the basic-block timing constraints to policy-level timing requirements, such as a deadline <span data-display="false" data-math="T_{global}\leq T_{max}">T_{global}\leq T_{max}</span>. Figure 12 shows the local timing constraints and resets; the non-resetting global clock is implicit.</p>
-</article></main><aside class="toc"><nav aria-label="On this page"><h2>On this page</h2><ul><li class="toc-level-2"><a href="#from-the-policytctl-correspondence-to-slicing-criteria">From the Policy–TCTL correspondence to slicing criteria</a></li><li class="toc-level-2"><a href="#from-slicing-criteria-to-a-function-level-slice">From slicing criteria to a function-level slice</a></li><li class="toc-level-2"><a href="#from-the-slice-to-a-time-unspecified-tcfa">From the slice to a time-unspecified TCFA</a></li><li class="toc-level-3"><a href="#control-flow-graph-normalization">Control flow graph normalization</a></li><li class="toc-level-3"><a href="#bounded-function-inlining">Bounded function inlining</a></li><li class="toc-level-3"><a href="#separating-instructions-from-branch-decisions">Separating instructions from branch decisions</a></li><li class="toc-level-3"><a href="#mapping-cfg-elements-to-the-tcfa">Mapping CFG elements to the TCFA</a></li><li class="toc-level-3"><a href="#adding-timing-constraints">Adding timing constraints</a></li></ul></nav></aside></div>
+<!--
+**可以把 $T_{\mathrm{global}}$ 在模型入口设为 0，也可以用相对时间抽象 PX4 的时间函数。** 这里要分开两个量，即**模型已经跑了多久**，以及**最近一条 RC 消息已经多久没更新**。
+
+设 $a_0$ 是模型启动时，最近一条 RC 消息已经过去的时间。只要到检查点为止都没有新消息刷新时间戳，就有
+
+$$
+\text{检查时的消息年龄} = a_0 + T_{\mathrm{global}}.
+$$
+
+- **模型恰好从消息时间戳对应的时刻开始**，则 $a_0=0$，可以直接用 $T_{\mathrm{global}}$ 表示消息年龄。
+- **模型从更晚的时刻开始**，$T_{\mathrm{global}}$ 仍然可以从 0 开始。因为 $a_0\ge 0$，只要 $T_{\mathrm{global}}$ 本身已经超过阈值，就足以判定这条路径上消息超时。例如阈值是 100 ms，模型内已经过了 110 ms，消息就至少有 110 ms 没更新。反过来，模型内只过了 80 ms，消息也可能因为初始时已有 30 ms 的年龄而超时。
+
+如果你只想找**一条反例**，可以先不单独建模 $a_0$。在同一条消息未刷新的前提下，找一条可达路径，使 $T_{\mathrm{global}}$ 超过阈值时，物理 RC 链路仍然正常，且 RC failsafe 已触发。接近 WCET 的耗时解释的是**模型运行期间累计的这段时间为何可能足够长**，和消息在模型启动前已经过去多久是两个问题。
+-->
+<!-- 
+如何抽象源码中的时间调用，在不向外部函数传递 UPPAAL 时钟的情况下，探索不同分支并检查时间相关属性？
+
+    考虑到 lli 仅负责解释执行 LLVM IR，无法获知目标机上的准确执行时间，且 UPPAAL 的时钟变量不支持作为普通数据变量按值传递给外部函数，lli 在执行 get_time()、hrt_elapsed_time() 等时间调用时无法获取精确的当前时间戳。为此，RVat 在 lli 执行这类外部调用时，依据函数返回类型显式枚举其合法最小值和最大值作为候选返回值，并通过外部调用接口回写至 TCFA 的数据变量，以此触发源码中依赖该返回值的不同控制流分支。TCFA 中的时间流逝则受 TCFA 的时钟约束控制，policy对应的 TCTL 公式中的时间条件中的时间条件通过全局时钟 T_global 检查。
+-->
+</article></main><aside class="toc"><nav aria-label="On this page"><h2>On this page</h2><ul><li class="toc-level-2"><a href="#from-the-policytctl-correspondence-to-slicing-criteria">From the Policy–TCTL correspondence to slicing criteria</a></li><li class="toc-level-2"><a href="#from-slicing-criteria-to-a-function-level-slice">From slicing criteria to a function-level slice</a></li><li class="toc-level-2"><a href="#from-the-slice-to-a-time-unspecified-tcfa">From the slice to a time-unspecified TCFA</a></li><li class="toc-level-3"><a href="#control-flow-graph-normalization">Control flow graph normalization</a></li><li class="toc-level-3"><a href="#bounded-function-inlining">Bounded function inlining</a></li><li class="toc-level-3"><a href="#separating-conditional-branch-instructions-into-cbbs">Separating conditional-branch instructions into CBBs</a></li><li class="toc-level-3"><a href="#mapping-cfg-elements-to-the-tcfa">Mapping CFG elements to the TCFA</a></li><li class="toc-level-3"><a href="#adding-timing-constraints">Adding timing constraints</a></li></ul></nav></aside></div>
   <footer class="site-footer">
     <span>RVAT · Robotic Vehicle Automata-based Testing</span>
     <a href="https://github.com/Lqs66/RVAT">Source code ↗</a>
