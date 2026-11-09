@@ -2,6 +2,7 @@
 
 import argparse
 from dataclasses import dataclass
+from hashlib import sha256
 from html import escape
 from pathlib import Path
 import posixpath
@@ -39,6 +40,8 @@ PAGES = [
          "PX4 policies and UPPAAL formulas, with RVAT, PGFuzz, and RouthSearch results.", True),
     Page("example/running_example.md", "example/running_example.html", "Running Example", "Running Example",
          "Follow PX_RCFS_P1 from a natural-language policy to a timed control flow automaton."),
+    Page("tcfa-data-valuation.md", "tcfa/data-valuation.html", "TCFA Data Valuation", "Data Valuation",
+         "Operational semantics and data valuation update rules for LLVM IR."),
     Page("properties/tab:testing_results.md", "results/testing_results.html", "Testing Results", "Results",
          "Model sizes and testing outcomes at depths 3, 4, and 5.", True),
     Page("properties/tab:violation_report.md", "results/violations.html", "Violation Reports", "Results",
@@ -58,6 +61,7 @@ SECTIONS = {
     "Prompts": "prompts/index.html",
     "Properties": "properties/index.html",
     "Running Example": "example/running_example.html",
+    "Data Valuation": "tcfa/data-valuation.html",
     "Results": "results/testing_results.html",
 }
 
@@ -234,6 +238,7 @@ def document_main(page, soup):
 
 def write_page(output_dir, route, title, section, description, main, wide=False):
     root = relative("index.html", route).removesuffix("index.html")
+    css_version = sha256((DOCS / "assets/site.css").read_bytes()).hexdigest()[:10]
     body_class = "home-page" if route == "index.html" else "document-page"
     math_assets = ""
     if "data-math=" in main:
@@ -244,6 +249,7 @@ def write_page(output_dir, route, title, section, description, main, wide=False)
             'integrity="sha384-a1WQdjRj162i159OYq041X6I4K8NenkrI09LlPmiHg0YOb7CR+wJOraXwK9abpnE" crossorigin="anonymous"></script>'
         )
     html = fill("page.html", TITLE=escape(title), DESCRIPTION=escape(description, quote=True), ROOT=root,
+                CSS_VERSION=css_version,
                 BODY_CLASS=body_class + (" wide-page" if wide else ""), MATH_ASSETS=math_assets,
                 NAVIGATION=navigation(route, section), MAIN=main)
     target = output_dir / route

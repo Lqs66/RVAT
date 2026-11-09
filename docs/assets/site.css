@@ -144,7 +144,7 @@ pre:has(.copy-button) { padding-top: 42px; }
 .section-heading { margin-bottom: 25px; }
 .section-heading h2 { margin: 8px 0 0; font-size: 28px; letter-spacing: -.04em; line-height: 1.25; }
 .section-heading p { margin: 0; }
-.entry-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+.entry-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 17px; }
 .entry-card { display: block; position: relative; border: 1px solid var(--line); padding: 23px 21px; border-radius: 8px; background: #fff; color: var(--ink); text-decoration: none; }
 .entry-card:hover { border-color: #8fb9aa; color: var(--ink); }
 .entry-card h3 { font-size: 16px; font-weight: 650; letter-spacing: -.02em; margin: 11px 0 10px; }
