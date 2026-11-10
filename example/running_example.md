@@ -213,27 +213,3 @@ Both clocks increase by the same amount during a time elapse. For example, if th
 ![Timed control flow automaton of HealthAndArmingChecks::update() with clock bounds](images/HealthAndArmingChecks_update_tcfa.svg)
 
 *Figure 13. TCFA of HealthAndArmingChecks::update() with timing constraints.*
-
-
-<!--
-**可以把 $T_{\mathrm{global}}$ 在模型入口设为 0，也可以用相对时间抽象 PX4 的时间函数。** 这里要分开两个量，即**模型已经跑了多久**，以及**最近一条 RC 消息已经多久没更新**。
-
-设 $a_0$ 是模型启动时，最近一条 RC 消息已经过去的时间。只要到检查点为止都没有新消息刷新时间戳，就有
-
-$$
-\text{检查时的消息年龄} = a_0 + T_{\mathrm{global}}.
-$$
-
-- **模型恰好从消息时间戳对应的时刻开始**，则 $a_0=0$，可以直接用 $T_{\mathrm{global}}$ 表示消息年龄。
-- **模型从更晚的时刻开始**，$T_{\mathrm{global}}$ 仍然可以从 0 开始。因为 $a_0\ge 0$，只要 $T_{\mathrm{global}}$ 本身已经超过阈值，就足以判定这条路径上消息超时。例如阈值是 100 ms，模型内已经过了 110 ms，消息就至少有 110 ms 没更新。反过来，模型内只过了 80 ms，消息也可能因为初始时已有 30 ms 的年龄而超时。
-
-如果你只想找**一条反例**，可以先不单独建模 $a_0$。在同一条消息未刷新的前提下，找一条可达路径，使 $T_{\mathrm{global}}$ 超过阈值时，物理 RC 链路仍然正常，且 RC failsafe 已触发。接近 WCET 的耗时解释的是**模型运行期间累计的这段时间为何可能足够长**，和消息在模型启动前已经过去多久是两个问题。
--->
-
-
-
-<!-- 
-如何抽象源码中的时间调用，在不向外部函数传递 UPPAAL 时钟的情况下，探索不同分支并检查时间相关属性？
-
-    考虑到 lli 仅负责解释执行 LLVM IR，无法获知目标机上的准确执行时间，且 UPPAAL 的时钟变量不支持作为普通数据变量按值传递给外部函数，lli 在执行 get_time()、hrt_elapsed_time() 等时间调用时无法获取精确的当前时间戳。为此，RVat 在 lli 执行这类外部调用时，依据函数返回类型显式枚举其合法最小值和最大值作为候选返回值，并通过外部调用接口回写至 TCFA 的数据变量，以此触发源码中依赖该返回值的不同控制流分支。TCFA 中的时间流逝则受 TCFA 的时钟约束控制，policy对应的 TCTL 公式中的时间条件中的时间条件通过全局时钟 T_global 检查。
--->
