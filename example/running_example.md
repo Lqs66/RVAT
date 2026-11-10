@@ -206,6 +206,14 @@ Upon taking the outgoing transition, the model executes `x = y - 1` followed by 
 
 Both clocks increase by the same amount during a time elapse. For example, if the transition from `init` to $L_2$ occurs after $\delta \in [1,2]$ time units, then immediately after the transition $t=0$ and $T_{global}=\delta$. Along a path with successive delays $\delta_1,\ldots,\delta_k$, the global clock records $T_{global}=\sum_{i=1}^{k}\delta_i$, including time accumulated before each reset of $t$. This accumulated time connects the basic-block timing constraints to policy-level timing requirements, such as a deadline $T_{global}\leq T_{max}$. Figure 12 shows the local timing constraints and resets; the non-resetting global clock is implicit.
 
+[Figure 13](#figure-13) shows the result of applying the timing constraints to [Figure 11](#figure-11). The time unit for this model is 1 ns.
+
+<a id="figure-13"></a>
+
+![Timed control flow automaton of HealthAndArmingChecks::update() with clock bounds](images/HealthAndArmingChecks_update_tcfa.svg)
+
+*Figure 13. TCFA of HealthAndArmingChecks::update() with timing constraints.*
+
 
 <!--
 **可以把 $T_{\mathrm{global}}$ 在模型入口设为 0，也可以用相对时间抽象 PX4 的时间函数。** 这里要分开两个量，即**模型已经跑了多久**，以及**最近一条 RC 消息已经多久没更新**。
