@@ -245,7 +245,7 @@ This document lists all policies and properties discovered by RVAT for PX4.
     <td class="tg-0lax">satisfied</td>
   </tr>
   <tr>
-    <td class="tg-baqh" rowspan="4">Failsafe</td>
+    <td class="tg-baqh" rowspan="5">Failsafe</td>
     <td class="tg-0lax">PX_RCFS_P1</td>
     <td class="tg-0lax">As long as the physical RC link remains healthy, the drone should not enter RC-loss failsafe solely because the RC update time exceeds COM_RC_LOSS_T.</td>
     <td class="tg-0lax">A[] ((rc_link_ok && rc_update_time > COM_RC_LOSS_T) imply !rc_loss_failsafe)</td> 
@@ -278,7 +278,6 @@ This document lists all policies and properties discovered by RVAT for PX4.
     <td class="tg-0lax">satisfied</td>
   </tr>
   <tr>
-    <td class="tg-baqh">BRAKE</td>
     <td class="tg-0lax">PX_BRAKE_P1</td>
     <td class="tg-0lax">If emergency braking is triggered by an excessive vertical rate, then the current vertical speed must be greater than the maximum allowed vertical speed(&gt;0).</td>
     <td class="tg-0lax">(Vertical_Speed_Exceeded == true and Emergency_Braking_activated == true) --&gt; (vertical_speed &gt; max_vertical_speed and max_vertical_speed &gt; 0)</td>
